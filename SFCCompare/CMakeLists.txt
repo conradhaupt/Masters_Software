@@ -33,6 +33,9 @@ project(SFCCompare
     LANGUAGES C CXX
 )
 
+### Options
+option(GENERATE_ASM "generate assembly code to debug optimisations" ON)
+
 ### CMake sub-projects
 add_subdirectory(libsfc)                # Main implementation of SFCs
 add_subdirectory(sfccompare)            # Wrapper program that compares SFCs from libsfc

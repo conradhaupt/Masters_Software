@@ -1,5 +1,9 @@
 
-# Created by https://www.gitignore.io/api/c,c++,cmake,visualstudiocode,clion+all,ninja
+# Created by https://www.gitignore.io/api/c,c++,cmake,visualstudiocode,clion+all,ninja,assembler
+
+### Assembler ###
+*.[sS]
+*.bc
 
 ### C ###
 # Prerequisites
@@ -166,4 +170,4 @@ build
 .history
 
 
-# End of https://www.gitignore.io/api/c,c++,cmake,visualstudiocode,clion+all,ninja
+# End of https://www.gitignore.io/api/c,c++,cmake,visualstudiocode,clion+all,ninja,assembler

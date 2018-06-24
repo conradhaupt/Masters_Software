@@ -58,3 +58,13 @@ set_target_properties(libsfc
     CMAKE_CXX_STANDARD_REQUIRED ON          # Use std-c++ instead of gnu++
     CMAKE_CXX_EXTENSIONS OFF
 )
+
+# Save the assembly output for debugging purposes
+# Note: Does not modify the resulting output library
+if(GENERATE_ASM)
+  target_compile_options(libsfc
+    PRIVATE
+    -fverbose-asm
+    -save-temps
+  )
+endif()
