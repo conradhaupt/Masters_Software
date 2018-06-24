@@ -9,6 +9,9 @@ project(libsfc
     C CXX
 )
 
+### Add compiler tests
+add_subdirectory(tests/compiler_features)   # Used to check for features implemented by the compiler
+
 set(LIBSFC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/libsfc)
 set(LIBSFC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -67,4 +70,25 @@ if(GENERATE_ASM)
     -fverbose-asm
     -save-temps
   )
+endif()
+
+# Handle BMI2 support
+if(BMI2_SUPPORTED)
+  target_compile_options(libsfc PRIVATE -mbmi2)
+  target_compile_definitions(libsfc PUBLIC __LIBSFC_BMI2__)
+  message(STATUS "BMI2 supported, enabling")
+else()
+  # Throw error instead of warning until a work-around is implemented
+  # message(WARNING "BMI2 not supported, using alternative functions")
+  message(FATAL_ERROR "BMI2 not supported")
+endif()
+
+# Handle fold-expression support
+if(FOLD_EXPRESSION_SUPPORTED)
+  target_compile_definitions(libsfc PUBLIC __LIBSFC_FOLD__)
+  message(STATUS "Fold-Expressions supported, enabling")
+else()
+  # No known work-around for fold-expressions, throw an error instead of warning
+  # message(WARNING "Fold-Expressions not supported, using alternative functions")
+  message(FATAL_ERROR "Fold-Expressions not supported")
 endif()
