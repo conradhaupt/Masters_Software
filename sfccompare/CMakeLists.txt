@@ -49,6 +49,12 @@ set_target_properties(libsfc
     CMAKE_CXX_EXTENSIONS OFF
 )
 
+# Save the assembly output for debugging purposes
+# Note: Does not modify the resulting output library
+if(GENERATE_ASM)
+target_compile_options(sfccompare PRIVATE -fverbose-asm -save-temps)
+endif()
+
 # Link to libsfc library, throw error if not found
 if(NOT TARGET libsfc::libsfc)               # Check if the libsfc was found
     message(FATAL_ERROR "sfccompare could not find libsfc")
