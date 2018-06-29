@@ -34,7 +34,9 @@ project(SFCCompare
 )
 
 ### Options
-option(GENERATE_ASM "generate assembly code to debug optimisations" ON)
+option(SFC_GENERATE_ASM
+  "generate assembly code to debug optimisations"
+  ON)
 
 ### CMake sub-projects
 add_subdirectory(libsfc)                # Main implementation of SFCs

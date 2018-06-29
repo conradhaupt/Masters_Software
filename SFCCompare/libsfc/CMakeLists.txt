@@ -64,7 +64,7 @@ set_target_properties(libsfc
 
 # Save the assembly output for debugging purposes
 # Note: Does not modify the resulting output library
-if(GENERATE_ASM)
+if(SFC_GENERATE_ASM)
   target_compile_options(libsfc
     PRIVATE
     -fverbose-asm
