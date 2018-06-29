@@ -9,9 +9,6 @@ project(libsfc
     C CXX
 )
 
-### Add compiler tests
-add_subdirectory(tests/compiler_features)   # Used to check for features implemented by the compiler
-
 set(LIBSFC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/libsfc)
 set(LIBSFC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -71,6 +68,9 @@ if(SFC_GENERATE_ASM)
     -save-temps
   )
 endif()
+
+## Add tests (compiler, unit, benchmark)
+add_subdirectory(tests)
 
 # Handle BMI2 support
 if(BMI2_SUPPORTED)
