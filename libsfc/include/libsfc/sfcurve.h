@@ -64,20 +64,20 @@ class sfcurve {
 
  protected:
   //  Bounds checking functions
-  inline constexpr bool fallsWithinBounds(const coords_type &coords) {
+  inline constexpr bool fallsWithinBounds(const coords_type &coords) const {
     return std::all_of(std::begin(coords), std::end(coords),
                        [this](index_type coord) { return coord < _dimLength; });
   }
 
-  inline void throwIfFallsOutsideBounds(const coords_type &coords) {
+  inline void throwIfFallsOutsideBounds(const coords_type &coords) const {
     if (!fallsWithinBounds(coords)) throw CoordsOutOfBoundsException();
   }
 
-  inline constexpr bool fallsWithinBounds(const index_type &dist) {
+  inline constexpr bool fallsWithinBounds(const index_type &dist) const {
     return dist < _Nm;
   }
 
-  inline void throwIfFallsOutsideBounds(const index_type &dist) {
+  inline void throwIfFallsOutsideBounds(const index_type &dist) const {
     if (!fallsWithinBounds(dist)) throw DistanceOutOfBoundsException();
   }
 
@@ -97,7 +97,7 @@ class sfcurve {
   constexpr size_type totalElements() const { return _Nm; };
   constexpr size_type dimensionLength() const { return _dimLength; }
 
-  constexpr index_type coordsToIndex(const coords_type &coords) {
+  constexpr index_type coordsToIndex(const coords_type &coords) const {
     throwIfFallsOutsideBounds(coords);
     index_type index{0};
     index_type _prev_index{0};
@@ -114,7 +114,7 @@ class sfcurve {
     return index;
   }
 
-  constexpr coords_type indexToCoords(const index_type &index) {
+  constexpr coords_type indexToCoords(const index_type &index) const {
     throwIfFallsOutsideBounds(index);
     coords_type coords{};
     index_type _index = index;
