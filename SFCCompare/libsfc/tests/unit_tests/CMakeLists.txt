@@ -11,6 +11,7 @@ add_executable(sfc_test
   src/base2.cpp
   src/main.cpp
   src/pow.cpp
+  src/sfcurve.cpp
 )
 
 # Alias
