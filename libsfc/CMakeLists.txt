@@ -13,7 +13,10 @@ set(LIBSFC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/libsfc)
 set(LIBSFC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_library(libsfc
+  ## Headers
   ${LIBSFC_INCLUDE_DIR}/base2.h
+  ${LIBSFC_INCLUDE_DIR}/interleave.h
+  ${LIBSFC_INCLUDE_DIR}/morton.h
   ${LIBSFC_INCLUDE_DIR}/pow.h
   ${LIBSFC_INCLUDE_DIR}/range.h
   ${LIBSFC_INCLUDE_DIR}/sfcdef.h
