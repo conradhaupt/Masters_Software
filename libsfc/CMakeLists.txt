@@ -15,6 +15,7 @@ set(LIBSFC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_library(libsfc
   ${LIBSFC_INCLUDE_DIR}/base2.h
   ${LIBSFC_INCLUDE_DIR}/pow.h
+  ${LIBSFC_INCLUDE_DIR}/range.h
   ${LIBSFC_INCLUDE_DIR}/sfcdef.h
   # Cpp Code
   ${LIBSFC_SOURCE_DIR}/main.cpp
