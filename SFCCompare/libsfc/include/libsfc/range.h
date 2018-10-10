@@ -6,18 +6,20 @@
 #define SFC_RANGE_H
 
 #include <type_traits>
+#include "sfcdef.h"
 
 namespace sfc {
-template <class T>
+template <class T = ::sfc::size_t>
 class range {
  private:
   T last;
   T iter;
 
  public:
-  explicit range(T end) : last(end), iter(T()) {
+  explicit range(T begin, T end) : iter{begin}, last{end} {
     static_assert(std::is_integral_v<T>, "Integral required");
   }
+  explicit range(T end) : range(T(), end) {}
 
   // Iterable functions
   const range &begin() const { return *this; }
