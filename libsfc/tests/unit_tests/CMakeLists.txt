@@ -9,6 +9,7 @@ include(GoogleTest)
 # Unit tests
 add_executable(sfc_test
   src/main.cpp
+  src/pow.cpp
 )
 
 # Alias
@@ -19,6 +20,11 @@ message(STATUS "libsfc found")
 else()
 message(FATAL_ERROR "libsfc NOT found")
 endif()
+
+target_include_directories(sfc_test
+  PRIVATE
+    include
+)
 
 target_link_libraries(sfc_test libsfc)
 
