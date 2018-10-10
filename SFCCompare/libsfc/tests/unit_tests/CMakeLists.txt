@@ -8,6 +8,7 @@ include(GoogleTest)
 
 # Unit tests
 add_executable(sfc_test
+  src/base2.cpp
   src/main.cpp
   src/pow.cpp
 )
