@@ -15,6 +15,19 @@
 
 namespace sfc {
 
+/**
+ * @brief Exception indicating that some given coordinates do not fall within
+ * the bounds/scope of the given space-filling curve.
+ *
+ */
+class CoordsOutOfBoundsException : public std::exception {};
+
+/**
+ * @brief Exception indicating that some given space-filling curve distance does
+ * not fall within the bounds/scope of the given space-filling curve.
+ *
+ */
+class DistanceOutOfBoundsException : public std::exception {};
 template <sfc::size_t _NDim>
 class sfcurve {
  public:
@@ -57,8 +70,7 @@ class sfcurve {
   }
 
   inline void throwIfFallsOutsideBounds(const coords_type &coords) {
-    if (!fallsWithinBounds(coords))
-      throw std::out_of_range("coords must fall within the curve bounds");
+    if (!fallsWithinBounds(coords)) throw CoordsOutOfBoundsException();
   }
 
   inline constexpr bool fallsWithinBounds(const index_type &dist) {
@@ -66,8 +78,7 @@ class sfcurve {
   }
 
   inline void throwIfFallsOutsideBounds(const index_type &dist) {
-    if (!fallsWithinBounds(dist))
-      throw std::out_of_range("distance must fall within the curve bounds");
+    if (!fallsWithinBounds(dist)) throw DistanceOutOfBoundsException();
   }
 
  public:
