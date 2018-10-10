@@ -59,7 +59,7 @@ add_subdirectory(tests)
 
 # Handle BMI2 support
 if(BMI2_SUPPORTED)
-  target_compile_options(libsfc PRIVATE -mbmi2)
+  target_compile_options(libsfc PUBLIC -mbmi2)
   target_compile_definitions(libsfc PUBLIC __LIBSFC_BMI2__)
   message(STATUS "BMI2 supported, enabling")
 else()
