@@ -11,10 +11,10 @@ using dist_type = typename sfc::sfcurve<2>::dist_type;
 class simplecurve : public sfc::sfcurve<2> {
  public:
   using sfc::sfcurve<2>::sfcurve;
-  virtual size_type coordsToDist(const coords_type &coords) {
+  virtual size_type coordsToDist(const coords_type &coords) const {
     return sfc::sfcurve<2>::coordsToIndex(coords);
   };
-  virtual coords_type distToCoords(const dist_type &dist) {
+  virtual coords_type distToCoords(const dist_type &dist) const {
     return sfc::sfcurve<2>::indexToCoords(dist);
   };
 };

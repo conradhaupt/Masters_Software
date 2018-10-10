@@ -125,8 +125,8 @@ class sfcurve {
     return coords;
   }
 
-  virtual size_type coordsToDist(const coords_type &coords) = 0;
-  virtual coords_type distToCoords(const dist_type &dist) = 0;
+  virtual size_type coordsToDist(const coords_type &coords) const = 0;
+  virtual coords_type distToCoords(const dist_type &dist) const = 0;
 };
 }  // namespace sfc
 
