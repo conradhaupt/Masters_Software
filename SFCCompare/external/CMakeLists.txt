@@ -7,7 +7,9 @@ include(DownloadProject)
 if(BUILD_TESTS)
 # Try find gtest using find_*
 set(SFC_GTEST_SEARCH_DIR "" CACHE PATH "dir to search in for googletest")
-find_package(GTest HINTS ${SFC_GTEST_SEARCH_DIR})
+# Gives errors if GMock is not installed.
+# TODO: Add a build option to disable/enable system-wide search for GTest
+# find_package(GTest HINTS ${SFC_GTEST_SEARCH_DIR})
 
 # If find_* didn't work, try download, build, and integrate with project
 if(NOT TARGET gtest_main AND NOT SFC_COMPILE_GTEST_IF_NOT_FOUND)
