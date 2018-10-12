@@ -7,9 +7,7 @@ endif()
 include(GoogleTest)
 
 # Unit tests
-add_executable(sfc_bench
-  src/main.cpp
-)
+add_executable(sfc_bench src/main.cpp)
 
 # Alias
 add_executable(libsfc::sfc_bench ALIAS sfc_bench)
