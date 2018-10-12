@@ -8,7 +8,7 @@
 
 #ifndef SFC_BASE2_H
 #define SFC_BASE2_H
-#include <cstdint>
+#include <climits>
 #include <stdexcept>
 #include <type_traits>
 #include "sfcdef.h"
