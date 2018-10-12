@@ -8,27 +8,23 @@ include(GoogleTest)
 
 # Unit tests
 add_executable(sfc_test
-  src/base2.cpp
-  src/interleave.cpp
-  src/range.cpp
-  src/main.cpp
-  src/pow.cpp
-  src/sfcurve.cpp
-)
+               src/base2.cpp
+               src/interleave.cpp
+               src/range.cpp
+               src/main.cpp
+               src/pow.cpp
+               src/sfcurve.cpp)
 
 # Alias
 add_executable(libsfc::sfc_test ALIAS sfc_test)
 
 if(TARGET libsfc)
-message(STATUS "libsfc found")
+  message(STATUS "libsfc found")
 else()
-message(FATAL_ERROR "libsfc NOT found")
+  message(FATAL_ERROR "libsfc NOT found")
 endif()
 
-target_include_directories(sfc_test
-  PRIVATE
-    include
-)
+target_include_directories(sfc_test PRIVATE include)
 
 target_link_libraries(sfc_test libsfc)
 
