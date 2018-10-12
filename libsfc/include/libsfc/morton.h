@@ -39,11 +39,11 @@ class morton : public sfcurve<_NDim> {
   using dist_type = typename sfcurve_type::dist_type;
   using morton_type = morton<_NDim>;
 
- private:
   using sfcurve_type::dimensionLength;
   using sfcurve_type::numberOfDimensions;
   using sfcurve_type::totalElements;
 
+ private:
   void __check_values() {
     // Check if the dimension length allows for coord_type to be stored in
     // dist_type
