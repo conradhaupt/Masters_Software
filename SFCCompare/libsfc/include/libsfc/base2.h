@@ -8,8 +8,10 @@
 
 #ifndef SFC_BASE2_H
 #define SFC_BASE2_H
+#include <cstdint>
 #include <stdexcept>
 #include <type_traits>
+#include "sfcdef.h"
 
 namespace sfc {
 /**
@@ -40,6 +42,9 @@ constexpr std::enable_if_t<std::is_integral_v<T>, T> ilog2(T val) {
   }
   return N;
 }
+
+template <typename _Tp>
+constexpr ::sfc::size_t sizeof_bits = sizeof(_Tp) * CHAR_BIT;
 };  // namespace sfc
 
 #endif
