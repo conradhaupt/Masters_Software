@@ -17,7 +17,8 @@
 
 namespace sfc {
 template <sfc::size_t _NDim = 2>
-class hilbert : public sfcurve<_NDim> {
+class hilbert : public sfcurve<_NDim>
+{
  public:
   // using value_type = _Tp;
   // using pointer = value_type *;
@@ -59,7 +60,8 @@ class hilbert : public sfcurve<_NDim> {
   // Implementation based on code from
   // https://people.sc.fsu.edu/~jburkardt/c_src/hilbert_curve/hilbert_curve.html
   void rot(size_type n, coord_type &x, coord_type &y, coord_type rx,
-           coord_type ry) const {
+           coord_type ry) const
+  {
     size_type t;
 
     if (ry == 0) {
@@ -84,7 +86,8 @@ class hilbert : public sfcurve<_NDim> {
 
   // Implementation based on code from
   // https://people.sc.fsu.edu/~jburkardt/c_src/hilbert_curve/hilbert_curve.html
-  virtual size_type coordsToDist(const coords_type &coords) const override {
+  virtual size_type coordsToDist(const coords_type &coords) const override
+  {
     auto x = coords.at(0);
     auto y = coords.at(1);
     size_type d = 0;
@@ -105,7 +108,8 @@ class hilbert : public sfcurve<_NDim> {
 
   // Implementation based on code from
   // https://people.sc.fsu.edu/~jburkardt/c_src/hilbert_curve/hilbert_curve.html
-  virtual coords_type distToCoords(const dist_type &dist) const override {
+  virtual coords_type distToCoords(const dist_type &dist) const override
+  {
     coord_type x;
     coord_type y;
     coord_type rx;

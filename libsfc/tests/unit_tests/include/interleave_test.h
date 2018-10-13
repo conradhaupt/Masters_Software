@@ -11,8 +11,9 @@
 #include "libsfc/interleave.h"
 #include "libsfc/sfcdef.h"
 
-class interleave_test_case : public ::testing::TestWithParam<
-                                 std::tuple<uint32_t, uint32_t>> {
+class interleave_test_case
+    : public ::testing::TestWithParam<std::tuple<uint32_t, uint32_t>>
+{
  public:
   typedef uint32_t _TpDist;
   typedef uint32_t _TpCoord;

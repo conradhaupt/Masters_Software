@@ -19,7 +19,8 @@ namespace sfc {
 template <typename Tbase, typename Texp>
 constexpr auto pow(Tbase base, Texp exp)
     -> std::enable_if_t<std::is_integral_v<Tbase> && std::is_integral_v<Texp>,
-                        Tbase> {
+                        Tbase>
+{
   if (exp == 0) return 1;   // x^0 condition
   if (base == 0) return 0;  // 0^N condition
 
@@ -38,15 +39,19 @@ constexpr auto pow(Tbase base, Texp exp)
 }
 
 template <typename T>
-constexpr auto pow(T base, T exp)
-    -> std::enable_if_t<!std::is_integral_v<T>, T> {
+constexpr auto pow(T base, T exp) -> std::enable_if_t<!std::is_integral_v<T>, T>
+{
   return std::pow(base, exp);
 }
 
 // Computes 2^exp
 template <unsigned long long exp>
-struct power_of_two {
-  enum { value = 1 << exp };
+struct power_of_two
+{
+  enum
+  {
+    value = 1 << exp
+  };
 };
 
 template <typename T, T exp>
@@ -54,7 +59,8 @@ inline constexpr T power_of_two_v = power_of_two<exp>::value;
 
 template <typename T>
 inline constexpr auto isMultipleOf(const T& val, const T& mult)
-    -> std::enable_if_t<std::is_integral_v<T>, bool> {
+    -> std::enable_if_t<std::is_integral_v<T>, bool>
+{
   return (val % mult) == 0;
 }
 };  // namespace sfc

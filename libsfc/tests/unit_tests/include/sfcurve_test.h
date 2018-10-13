@@ -12,7 +12,8 @@
 
 class sfcurve_test_case
     : public ::testing::TestWithParam<
-          std::tuple<double, double, typename sfc::sfcurve<2>::size_type>> {
+          std::tuple<double, double, typename sfc::sfcurve<2>::size_type>>
+{
  public:
   using index_type = typename sfc::sfcurve<2>::index_type;
   typename sfc::sfcurve<2>::size_type dimLength{std::get<2>(GetParam())};

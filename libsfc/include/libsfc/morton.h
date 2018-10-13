@@ -18,7 +18,8 @@
 
 namespace sfc {
 template <sfc::size_t _NDim>
-class morton : public sfcurve<_NDim> {
+class morton : public sfcurve<_NDim>
+{
  public:
   // using value_type = _Tp;
   // using pointer = value_type *;
@@ -44,10 +45,12 @@ class morton : public sfcurve<_NDim> {
   using sfcurve_type::totalElements;
 
  private:
-  void __check_values() {
+  void __check_values()
+  {
     // Check if the dimension length allows for coord_type to be stored in
     // dist_type
-    if (sfc::max_interleave_dim_length<_NDim, dist_type, index_type>() < dimensionLength())
+    if (sfc::max_interleave_dim_length<_NDim, dist_type, index_type>() <
+        dimensionLength())
       throw std::invalid_argument(
           "dimLength is too large, cannot store all indices in current "
           "datatypes");
@@ -66,11 +69,13 @@ class morton : public sfcurve<_NDim> {
 
   virtual ~morton() {}
 
-  virtual size_type coordsToDist(const coords_type &coords) const override {
+  virtual size_type coordsToDist(const coords_type &coords) const override
+  {
     return sfc::interleaveBits<_NDim, dist_type, coords_type, coord_type>(
         coords);
   }
-  virtual coords_type distToCoords(const dist_type &dist) const override {
+  virtual coords_type distToCoords(const dist_type &dist) const override
+  {
     return sfc::uinterleaveBits<_NDim, dist_type, coords_type, coord_type>(
         dist);
   }

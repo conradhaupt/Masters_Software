@@ -8,7 +8,8 @@
 #include "libsfc/morton.h"
 #include "libsfc/range.h"
 
-int main(void) {
+int main(void)
+{
   std::cout << std::endl;
   constexpr ::sfc::size_t DIM_SIZE = 1UL << 4;
   constexpr ::sfc::size_t DIM_COUNT = 2;
@@ -75,7 +76,8 @@ int main(void) {
 
   auto mtrc = sfc::bounds_metric<2>(gry);
   auto mtrc_res = mtrc.calculate();
-  std::cout << std::get<0>(mtrc_res) << " - " << std::get<1>(mtrc_res) << std::endl;
+  std::cout << std::get<0>(mtrc_res) << " - " << std::get<1>(mtrc_res)
+            << std::endl;
 
   return 0;
 }

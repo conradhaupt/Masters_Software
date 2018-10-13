@@ -12,7 +12,8 @@
 #include "libsfc/sfcdef.h"
 
 class pow_test_case
-    : public ::testing::TestWithParam<std::tuple<sfc::size_t, sfc::size_t>> {
+    : public ::testing::TestWithParam<std::tuple<sfc::size_t, sfc::size_t>>
+{
  public:
   sfc::size_t base = std::get<0>(GetParam());
   sfc::size_t exp = std::get<1>(GetParam());
