@@ -17,15 +17,15 @@
 
 namespace sfc {
 template <typename Tbase, typename Texp>
-constexpr std::enable_if_t<
-    std::is_integral_v<Tbase> && std::is_integral_v<Texp>, Tbase>
-pow(Tbase base, Texp exp) {
+constexpr auto pow(Tbase base, Texp exp)
+    -> std::enable_if_t<std::is_integral_v<Tbase> && std::is_integral_v<Texp>,
+                        Tbase> {
   if (exp == 0) return 1;   // x^0 condition
   if (base == 0) return 0;  // 0^N condition
 
   Tbase result = 1;
   Tbase _result;
-  while (exp > 0) {
+  while (exp > 0ULL) {
     _result = result * base;
     exp--;
     // If overflow occurs, throw an error
@@ -38,7 +38,8 @@ pow(Tbase base, Texp exp) {
 }
 
 template <typename T>
-constexpr std::enable_if_t<!std::is_integral_v<T>, T> pow(T base, T exp) {
+constexpr auto pow(T base, T exp)
+    -> std::enable_if_t<!std::is_integral_v<T>, T> {
   return std::pow(base, exp);
 }
 
@@ -52,8 +53,8 @@ template <typename T, T exp>
 inline constexpr T power_of_two_v = power_of_two<exp>::value;
 
 template <typename T>
-inline constexpr std::enable_if_t<std::is_integral_v<T>, bool> isMultipleOf(
-    const T& val, const T& mult) {
+inline constexpr auto isMultipleOf(const T& val, const T& mult)
+    -> std::enable_if_t<std::is_integral_v<T>, bool> {
   return (val % mult) == 0;
 }
 };  // namespace sfc
