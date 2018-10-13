@@ -4,7 +4,8 @@
 #include "pow_test.h"
 
 namespace {
-TEST(isMultipleOf, trueIfIsMultiple) {
+TEST(isMultipleOf, trueIfIsMultiple)
+{
   for (auto base : {2, 3, 4, 5}) {
     for (auto multiple : {6, 7, 8, 9}) {
       auto val = base * multiple;
@@ -14,7 +15,8 @@ TEST(isMultipleOf, trueIfIsMultiple) {
   }
 }
 
-TEST(isMultipleOf, falseIfNotMultiple) {
+TEST(isMultipleOf, falseIfNotMultiple)
+{
   for (auto base : {2, 3, 4, 5}) {
     for (auto multiple : {6, 7, 8, 9}) {
       auto val = base * multiple;
@@ -24,7 +26,8 @@ TEST(isMultipleOf, falseIfNotMultiple) {
   }
 }
 
-TEST_P(pow_test_case, matchesCMathPow) {
+TEST_P(pow_test_case, matchesCMathPow)
+{
   auto ans_sfc = sfc::pow(base, exp);
   auto ans_std = sfc::size_t(std::pow(double(base), double(exp)));
   EXPECT_EQ(ans_sfc, ans_std);

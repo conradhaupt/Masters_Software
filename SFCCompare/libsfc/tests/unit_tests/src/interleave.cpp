@@ -5,54 +5,70 @@
 #include "interleave_test.h"
 #include "libsfc/range.h"
 
-// Wrappers for sfc::max_interleave_dim_length as GTest doesn't like template parameters
-constexpr uint64_t max_interleave_dim_length_2_u8_u64_t() {
+// Wrappers for sfc::max_interleave_dim_length as GTest doesn't like template
+// parameters
+constexpr uint64_t max_interleave_dim_length_2_u8_u64_t()
+{
   return sfc::max_interleave_dim_length<2, uint8_t, uint64_t>();
 }
-constexpr uint64_t max_interleave_dim_length_2_u16_u64_t() {
+constexpr uint64_t max_interleave_dim_length_2_u16_u64_t()
+{
   return sfc::max_interleave_dim_length<2, uint16_t, uint64_t>();
 }
-constexpr uint64_t max_interleave_dim_length_2_u32_u64_t() {
+constexpr uint64_t max_interleave_dim_length_2_u32_u64_t()
+{
   return sfc::max_interleave_dim_length<2, uint32_t, uint64_t>();
 }
-constexpr uint64_t max_interleave_dim_length_2_u64_u64_t() {
+constexpr uint64_t max_interleave_dim_length_2_u64_u64_t()
+{
   return sfc::max_interleave_dim_length<2, uint64_t, uint64_t>();
 }
-constexpr uint8_t max_interleave_dim_length_2_u16_u8_t() {
+constexpr uint8_t max_interleave_dim_length_2_u16_u8_t()
+{
   return sfc::max_interleave_dim_length<2, uint16_t, uint8_t>();
 }
-constexpr uint8_t max_interleave_dim_length_2_u32_u8_t() {
+constexpr uint8_t max_interleave_dim_length_2_u32_u8_t()
+{
   return sfc::max_interleave_dim_length<2, uint32_t, uint8_t>();
 }
-constexpr uint16_t max_interleave_dim_length_2_u32_u16_t() {
+constexpr uint16_t max_interleave_dim_length_2_u32_u16_t()
+{
   return sfc::max_interleave_dim_length<2, uint32_t, uint16_t>();
 }
-constexpr uint8_t max_interleave_dim_length_2_u64_u8_t() {
+constexpr uint8_t max_interleave_dim_length_2_u64_u8_t()
+{
   return sfc::max_interleave_dim_length<2, uint64_t, uint8_t>();
 }
-constexpr uint16_t max_interleave_dim_length_2_u64_u16_t() {
+constexpr uint16_t max_interleave_dim_length_2_u64_u16_t()
+{
   return sfc::max_interleave_dim_length<2, uint64_t, uint16_t>();
 }
-constexpr uint32_t max_interleave_dim_length_2_u64_u32_t() {
+constexpr uint32_t max_interleave_dim_length_2_u64_u32_t()
+{
   return sfc::max_interleave_dim_length<2, uint64_t, uint32_t>();
 }
-constexpr uint8_t max_interleave_dim_length_2_u8_u8_t() {
+constexpr uint8_t max_interleave_dim_length_2_u8_u8_t()
+{
   return sfc::max_interleave_dim_length<2, uint8_t, uint8_t>();
 }
-constexpr uint16_t max_interleave_dim_length_2_u16_u16_t() {
+constexpr uint16_t max_interleave_dim_length_2_u16_u16_t()
+{
   return sfc::max_interleave_dim_length<2, uint16_t, uint16_t>();
 }
-constexpr uint32_t max_interleave_dim_length_2_u32_u32_t() {
+constexpr uint32_t max_interleave_dim_length_2_u32_u32_t()
+{
   return sfc::max_interleave_dim_length<2, uint32_t, uint32_t>();
 }
 
-TEST(Interleave, maxDimLengthDividesLargerDistanceType) {
+TEST(Interleave, maxDimLengthDividesLargerDistanceType)
+{
   EXPECT_EQ(max_interleave_dim_length_2_u8_u64_t(), (1ULL << 4) - 1);
   EXPECT_EQ(max_interleave_dim_length_2_u16_u64_t(), (1ULL << 8) - 1);
   EXPECT_EQ(max_interleave_dim_length_2_u32_u64_t(), (1ULL << 16) - 1);
 }
 
-TEST(Interleave, maxDimLengthUsesSmallerMaxCoordType) {
+TEST(Interleave, maxDimLengthUsesSmallerMaxCoordType)
+{
   EXPECT_EQ(max_interleave_dim_length_2_u16_u8_t(), (1ULL << 8) - 1);
   EXPECT_EQ(max_interleave_dim_length_2_u32_u8_t(), (1ULL << 8) - 1);
   EXPECT_EQ(max_interleave_dim_length_2_u32_u16_t(), (1ULL << 16) - 1);
@@ -61,7 +77,8 @@ TEST(Interleave, maxDimLengthUsesSmallerMaxCoordType) {
   EXPECT_EQ(max_interleave_dim_length_2_u64_u32_t(), (1ULL << 32) - 1);
 }
 
-TEST(Interleave, maskCorrectForTwoDim32Bit) {
+TEST(Interleave, maskCorrectForTwoDim32Bit)
+{
   using _Tp = uint32_t;
   auto mask_32 = sfc::interleave_mask<2, _Tp>;
   const _Tp MASK{1};
@@ -77,7 +94,8 @@ TEST(Interleave, maskCorrectForTwoDim32Bit) {
   }
 }
 
-TEST(Interleave, maskCorrectForTwoDim64Bit) {
+TEST(Interleave, maskCorrectForTwoDim64Bit)
+{
   using _Tp = uint64_t;
   auto mask_64 = sfc::interleave_mask<2, _Tp>;
   const _Tp MASK{1};
@@ -93,7 +111,8 @@ TEST(Interleave, maskCorrectForTwoDim64Bit) {
   }
 }
 
-TEST(Interleave, maskCorrectForThreeDim32Bit) {
+TEST(Interleave, maskCorrectForThreeDim32Bit)
+{
   using _Tp = uint32_t;
   auto mask_32 = sfc::interleave_mask<3, _Tp>;
   const _Tp MASK{1};
@@ -111,7 +130,8 @@ TEST(Interleave, maskCorrectForThreeDim32Bit) {
   }
 }
 
-TEST(Interleave, maskCorrectForThreeDim64Bit) {
+TEST(Interleave, maskCorrectForThreeDim64Bit)
+{
   using _Tp = uint64_t;
   auto mask_64 = sfc::interleave_mask<3, _Tp>;
   const _Tp MASK{1};
@@ -129,7 +149,8 @@ TEST(Interleave, maskCorrectForThreeDim64Bit) {
   }
 }
 
-TEST_P(interleave_test_case, interleavingIsInvertible) {
+TEST_P(interleave_test_case, interleavingIsInvertible)
+{
   auto dist = sfc::interleaveBits<2, _TpDist, _TpCoords, _TpCoord>(coords);
   auto resCoords = sfc::uinterleaveBits<2, _TpDist, _TpCoords, _TpCoord>(dist);
   EXPECT_EQ(coords[0], resCoords[0]);

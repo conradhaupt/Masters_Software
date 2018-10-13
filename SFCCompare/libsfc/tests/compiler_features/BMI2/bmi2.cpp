@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <iostream>
 
-int main(void) {
+int main(void)
+{
   __builtin_cpu_init();
   if (__builtin_cpu_supports("bmi2")) {
     printf("BMI2 supported \n");

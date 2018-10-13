@@ -24,7 +24,8 @@ namespace sfc {
 namespace internal {
 
 template <typename _TpDist>
-inline constexpr _TpDist __gray_decode_32(_TpDist dist) {
+inline constexpr _TpDist __gray_decode_32(_TpDist dist)
+{
   dist ^= (dist >> 16);
   dist ^= (dist >> 8);
   dist ^= (dist >> 4);
@@ -34,7 +35,8 @@ inline constexpr _TpDist __gray_decode_32(_TpDist dist) {
 }
 
 template <typename _TpDist>
-inline constexpr _TpDist __gray_decode_64(_TpDist dist) {
+inline constexpr _TpDist __gray_decode_64(_TpDist dist)
+{
   dist ^= (dist >> 32);
   dist ^= (dist >> 16);
   dist ^= (dist >> 8);
@@ -47,7 +49,8 @@ inline constexpr _TpDist __gray_decode_64(_TpDist dist) {
 template <typename _TpDist, typename enable = std::enable_if<
                                 (::sfc::sizeof_bits<_TpDist> == 32) ||
                                 (::sfc::sizeof_bits<_TpDist> == 64)>>
-constexpr _TpDist __gray_decode(_TpDist dist) {
+constexpr _TpDist __gray_decode(_TpDist dist)
+{
   if (::sfc::sizeof_bits<_TpDist> == 32)
     return __gray_decode_32(dist);
   else
@@ -56,7 +59,8 @@ constexpr _TpDist __gray_decode(_TpDist dist) {
 };  // namespace internal
 
 template <sfc::size_t _NDim>
-class gray : public morton<_NDim> {
+class gray : public morton<_NDim>
+{
  public:
   // using value_type = _Tp;
   // using pointer = value_type *;
@@ -83,10 +87,12 @@ class gray : public morton<_NDim> {
   using morton_type::numberOfDimensions;
   using morton_type::totalElements;
 
-  dist_type distToGrayDist(const dist_type &dist) const {
+  dist_type distToGrayDist(const dist_type &dist) const
+  {
     return dist ^ (dist >> 1);
   }
-  dist_type grayDistToDist(const dist_type &gray_dist) const {
+  dist_type grayDistToDist(const dist_type &gray_dist) const
+  {
     return ::sfc::internal::__gray_decode(gray_dist);
   }
 
@@ -97,11 +103,13 @@ class gray : public morton<_NDim> {
 
   virtual ~gray() {}
 
-  virtual size_type coordsToDist(const coords_type &coords) const override {
+  virtual size_type coordsToDist(const coords_type &coords) const override
+  {
     auto dist = morton_type::coordsToDist(coords);
     return distToGrayDist(dist);
   }
-  virtual coords_type distToCoords(const dist_type &dist) const override {
+  virtual coords_type distToCoords(const dist_type &dist) const override
+  {
     auto grayDist = grayDistToDist(dist);
     return morton_type::distToCoords(grayDist);
   }

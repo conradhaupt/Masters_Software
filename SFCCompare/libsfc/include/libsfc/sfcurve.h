@@ -20,16 +20,19 @@ namespace sfc {
  * the bounds/scope of the given space-filling curve.
  *
  */
-class CoordsOutOfBoundsException : public std::exception {};
+class CoordsOutOfBoundsException : public std::exception
+{};
 
 /**
  * @brief Exception indicating that some given space-filling curve distance does
  * not fall within the bounds/scope of the given space-filling curve.
  *
  */
-class DistanceOutOfBoundsException : public std::exception {};
+class DistanceOutOfBoundsException : public std::exception
+{};
 template <sfc::size_t _NDim>
-class sfcurve {
+class sfcurve
+{
  public:
   // using value_type = _Tp;
   // using pointer = value_type *;
@@ -52,7 +55,8 @@ class sfcurve {
  private:
   const size_type _dimLength;
   const size_type _Nm;
-  void __check_values() {
+  void __check_values()
+  {
     static_assert(_NDim > 0, "number of dimensions must be a positive integer");
     if (_dimLength <= 1)
       throw std::invalid_argument(
@@ -64,32 +68,38 @@ class sfcurve {
 
  protected:
   //  Bounds checking functions
-  inline constexpr bool fallsWithinBounds(const coords_type &coords) const {
+  inline constexpr bool fallsWithinBounds(const coords_type &coords) const
+  {
     return std::all_of(std::begin(coords), std::end(coords),
                        [this](index_type coord) { return coord < _dimLength; });
   }
 
-  inline void throwIfFallsOutsideBounds(const coords_type &coords) const {
+  inline void throwIfFallsOutsideBounds(const coords_type &coords) const
+  {
     if (!fallsWithinBounds(coords)) throw CoordsOutOfBoundsException();
   }
 
-  inline constexpr bool fallsWithinBounds(const index_type &dist) const {
+  inline constexpr bool fallsWithinBounds(const index_type &dist) const
+  {
     return dist < _Nm;
   }
 
-  inline void throwIfFallsOutsideBounds(const index_type &dist) const {
+  inline void throwIfFallsOutsideBounds(const index_type &dist) const
+  {
     if (!fallsWithinBounds(dist)) throw DistanceOutOfBoundsException();
   }
 
  public:
   sfcurve(size_type dimLength)
-      : _dimLength{dimLength}, _Nm{sfc::pow(dimLength, _NDim)} {
+      : _dimLength{dimLength}, _Nm{sfc::pow(dimLength, _NDim)}
+  {
     __check_values();
   }
 
   sfcurve(const sfcurve_type &sf) : _dimLength{sf._dimLength}, _Nm{sf._Nm} {}
   sfcurve(sfcurve_type &&sf) noexcept
-      : _dimLength{std::move(sf._dimLength)}, _Nm{std::move(sf._Nm)} {}
+      : _dimLength{std::move(sf._dimLength)}, _Nm{std::move(sf._Nm)}
+  {}
 
   virtual ~sfcurve() {}
 
@@ -97,7 +107,8 @@ class sfcurve {
   constexpr size_type totalElements() const { return _Nm; };
   constexpr size_type dimensionLength() const { return _dimLength; }
 
-  constexpr index_type coordsToIndex(const coords_type &coords) const {
+  constexpr index_type coordsToIndex(const coords_type &coords) const
+  {
     throwIfFallsOutsideBounds(coords);
     index_type index{0};
     index_type _prev_index{0};
@@ -114,7 +125,8 @@ class sfcurve {
     return index;
   }
 
-  constexpr coords_type indexToCoords(const index_type &index) const {
+  constexpr coords_type indexToCoords(const index_type &index) const
+  {
     throwIfFallsOutsideBounds(index);
     coords_type coords{};
     index_type _index = index;

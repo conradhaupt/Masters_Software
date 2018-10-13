@@ -10,13 +10,15 @@
 
 namespace sfc {
 template <class T = ::sfc::size_t>
-class range {
+class range
+{
  private:
   T last;
   T iter;
 
  public:
-  explicit range(T begin, T end) : iter{begin}, last{end} {
+  explicit range(T begin, T end) : iter{begin}, last{end}
+  {
     static_assert(std::is_integral_v<T>, "Integral required");
   }
   explicit range(T end) : range(T(), end) {}

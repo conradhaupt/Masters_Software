@@ -15,7 +15,8 @@
 #include "libsfc/range.h"
 
 class range_test_case
-    : public ::testing::TestWithParam<std::tuple<sfc::size_t, sfc::size_t>> {
+    : public ::testing::TestWithParam<std::tuple<sfc::size_t, sfc::size_t>>
+{
  public:
   sfc::size_t begin = std::get<0>(GetParam());
   sfc::size_t end = std::get<1>(GetParam());

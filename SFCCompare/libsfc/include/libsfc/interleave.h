@@ -22,7 +22,8 @@ namespace sfc {
 
 namespace internal {
 template <::sfc::size_t _NDim, typename _TpMask>
-constexpr _TpMask __interleave_mask_impl() {
+constexpr _TpMask __interleave_mask_impl()
+{
   static_assert(_NDim > 0);
   _TpMask _ONE{1};
   const _TpMask _shifter{_NDim};
@@ -40,12 +41,14 @@ constexpr _TpMask interleave_mask =
     internal::__interleave_mask_impl<_NDim, _TpMask>();
 
 template <sfc::size_t _NDim, typename _TpDist>
-constexpr _TpDist expand_coord(const _TpDist& coord, const sfc::size_t& iDim) {
+constexpr _TpDist expand_coord(const _TpDist& coord, const sfc::size_t& iDim)
+{
   return _pdep_u64(coord, interleave_mask<_NDim, _TpDist> << iDim);
 }
 
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoord>
-constexpr _TpCoord remove_coord(const _TpDist& dist, const sfc::size_t& iDim) {
+constexpr _TpCoord remove_coord(const _TpDist& dist, const sfc::size_t& iDim)
+{
   return _pext_u64(dist, interleave_mask<_NDim, _TpDist> << iDim);
 }
 
@@ -70,7 +73,8 @@ constexpr _TpCoord remove_coord(const _TpDist& dist, const sfc::size_t& iDim) {
 //           _NDim, void> {};
 
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoord>
-constexpr _TpCoord max_interleave_dim_length() {
+constexpr _TpCoord max_interleave_dim_length()
+{
   sfc::size_t nBitsDist{sizeof(_TpDist) * CHAR_BIT};
   sfc::size_t nBitsCoord{sizeof(_TpCoord) * CHAR_BIT};
   sfc::size_t nBitsCoord_fromDist{nBitsDist / _NDim};
@@ -79,7 +83,8 @@ constexpr _TpCoord max_interleave_dim_length() {
 
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
           typename _TpCoord>
-constexpr _TpDist interleaveBits(const _TpCoords& coords) {
+constexpr _TpDist interleaveBits(const _TpCoords& coords)
+{
   if (!BMI2_SUPPORTED)
     throw std::runtime_error(
         "BMI2 is not supported, required for bit-interleaving");
@@ -94,7 +99,8 @@ constexpr _TpDist interleaveBits(const _TpCoords& coords) {
 
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
           typename _TpCoord>
-constexpr _TpCoords uinterleaveBits(const _TpDist& dist) {
+constexpr _TpCoords uinterleaveBits(const _TpDist& dist)
+{
   if (!BMI2_SUPPORTED)
     throw std::runtime_error(
         "BMI2 is not supported, required for bit-interleaving");

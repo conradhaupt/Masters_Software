@@ -23,7 +23,8 @@ namespace sfc {
  */
 template <typename T>
 constexpr auto isPowerOfTwo(const T& val)
-    -> std::enable_if_t<std::is_integral_v<T>, bool> {
+    -> std::enable_if_t<std::is_integral_v<T>, bool>
+{
   if (val == 0) {
     return false;
   }
@@ -31,7 +32,8 @@ constexpr auto isPowerOfTwo(const T& val)
 }
 
 template <typename T>
-constexpr auto ilog2(T val) -> std::enable_if_t<std::is_integral_v<T>, T> {
+constexpr auto ilog2(T val) -> std::enable_if_t<std::is_integral_v<T>, T>
+{
   // throw error if not a power of two
   if (!isPowerOfTwo(val))
     throw std::invalid_argument("val must be of the form 2^N where N>=0");

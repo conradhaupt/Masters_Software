@@ -2,46 +2,55 @@
 #include <iostream>
 
 template <typename T, typename... Ts>
-T fold_add(Ts... ts) {
+T fold_add(Ts... ts)
+{
   return (ts + ...);
 }
 
 template <typename T, typename... Ts>
-T fold_minus(Ts... ts) {
+T fold_minus(Ts... ts)
+{
   return (ts - ...);
 }
 
 template <typename T, typename... Ts>
-T fold_multiply(Ts... ts) {
+T fold_multiply(Ts... ts)
+{
   return (ts * ...);
 }
 
 template <typename T, typename... Ts>
-T fold_divide(Ts... ts) {
+T fold_divide(Ts... ts)
+{
   return (... / ts);
 }
 
 template <typename T, typename... Ts>
-T fold_bitand(Ts... ts) {
+T fold_bitand(Ts... ts)
+{
   return (ts & ...);
 }
 
 template <typename T, typename... Ts>
-T fold_bitor(Ts... ts) {
+T fold_bitor(Ts... ts)
+{
   return (ts | ...);
 }
 
 template <typename T, typename... Ts>
-T fold_bitxor(Ts... ts) {
+T fold_bitxor(Ts... ts)
+{
   return (ts ^ ...);
 }
 
 template <typename T, typename... Ts>
-void fold_pipe(Ts... ts) {
+void fold_pipe(Ts... ts)
+{
   (::std::cout << ... << ts);
 }
 
-int main(void) {
+int main(void)
+{
   std::cout << "Values:";
   fold_pipe<int>(1, 2, 3, 4, 5, 6, 7, 8, 9);
   std::cout << std::endl;
