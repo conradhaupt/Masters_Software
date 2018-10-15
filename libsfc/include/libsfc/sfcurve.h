@@ -15,21 +15,6 @@
 
 namespace sfc {
 
-/**
- * @brief Exception indicating that some given coordinates do not fall within
- * the bounds/scope of the given space-filling curve.
- *
- */
-class CoordsOutOfBoundsException : public std::exception
-{};
-
-/**
- * @brief Exception indicating that some given space-filling curve distance does
- * not fall within the bounds/scope of the given space-filling curve.
- *
- */
-class DistanceOutOfBoundsException : public std::exception
-{};
 template <sfc::size_t _NDim>
 class sfcurve
 {
