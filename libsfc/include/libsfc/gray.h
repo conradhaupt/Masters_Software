@@ -113,6 +113,11 @@ class gray : public morton<_NDim>
     auto grayDist = grayDistToDist(dist);
     return morton_type::distToCoords(grayDist);
   }
+
+  std::unique_ptr<sfcurve_type> clone() const override
+  {
+    return std::make_unique<gray_type>(*this);
+  }
 };
 };  // namespace sfc
 
