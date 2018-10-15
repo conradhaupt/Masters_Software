@@ -79,6 +79,11 @@ class morton : public sfcurve<_NDim>
     return sfc::uinterleaveBits<_NDim, dist_type, coords_type, coord_type>(
         dist);
   }
+
+  std::unique_ptr<sfcurve_type> clone() const override
+  {
+    return std::make_unique<morton_type>(*this);
+  }
 };
 };  // namespace sfc
 

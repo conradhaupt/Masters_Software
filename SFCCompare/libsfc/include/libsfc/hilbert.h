@@ -131,6 +131,11 @@ class hilbert : public sfcurve<_NDim>
     }
     return {x, y};
   }
+
+  std::unique_ptr<sfcurve_type> clone() const override
+  {
+    return std::make_unique<hilbert_type>(*this);
+  }
 };
 };  // namespace sfc
 

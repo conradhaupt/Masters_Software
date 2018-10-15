@@ -139,6 +139,7 @@ class sfcurve
 
   virtual size_type coordsToDist(const coords_type &coords) const = 0;
   virtual coords_type distToCoords(const dist_type &dist) const = 0;
+  virtual std::unique_ptr<sfcurve_type> clone() const = 0;
 };
 }  // namespace sfc
 
