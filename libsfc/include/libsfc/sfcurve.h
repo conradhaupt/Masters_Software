@@ -9,6 +9,7 @@
 #include <array>
 #include <memory>
 #include <type_traits>
+#include "iterator.h"
 #include "pow.h"
 #include "range.h"
 #include "sfcdef.h"
@@ -36,6 +37,8 @@ class sfcurve
   using coords_type = std::array<coord_type, _NDim>;
   using dist_type = index_type;
   using sfcurve_type = sfcurve<_NDim>;
+
+  using iterator_type = sfc::iterator<_NDim, sfcurve>;
 
  private:
   const size_type _dimLength;
@@ -126,6 +129,14 @@ class sfcurve
   virtual size_type coordsToDist(const coords_type &coords) const = 0;
   virtual coords_type distToCoords(const dist_type &dist) const = 0;
   virtual std::unique_ptr<sfcurve_type> clone() const = 0;
+
+  iterator_type begin() const { return iterator_type(clone(), 0); }
+  constexpr iterator_type cbegin() const { return iterator_type(clone(), 0); }
+  iterator_type end() const { return iterator_type(clone(), totalElements()); }
+  constexpr iterator_type cend() const
+  {
+    return iterator_type(clone(), totalElements());
+  }
 };
 }  // namespace sfc
 
