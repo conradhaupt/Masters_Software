@@ -154,6 +154,32 @@ class iterator
     return _coords;
   }
 
+  bool operator==(const iterator_type& it) const
+  {
+    if (_dist != it._dist) return false;
+    if (!distOutOfBounds()) {
+      return it._coords == it._coords;
+    } else {
+      return true;
+    }
+  }
+
+  bool operator!=(const iterator_type& it) const
+  {
+    return !(this->operator==(it));
+  }
+
+  // Explicit swap function to eliminate any need for a friend function
+  void swap(iterator_type&& it)
+  {
+    std::swap(_dist, it._dist);
+    std::swap(_coords, it._coords);
+    std::swap(_curve, it._curve);
+  }
+
+  bool outofbounds() const { return distOutOfBounds(); }
+
+  // OPERATORS
   iterator_type& operator++()
   {
     _dist++;
@@ -180,30 +206,47 @@ class iterator
     return tmp;
   }
 
-  bool operator==(const iterator_type& it) const
+  iterator_type& operator+=(const difference_type& n)
   {
-    if (_dist != it._dist) return false;
-    if (!distOutOfBounds()) {
-      return it._coords == it._coords;
-    } else {
-      return true;
-    }
+    _dist += n;
+    updateCoordsFromDistIfInBounds();
+    return *this;
   }
 
-  bool operator!=(const iterator_type& it) const
+  iterator_type& operator-=(const difference_type& n)
   {
-    return !(this->operator==(it));
+    _dist -= n;
+    updateCoordsFromDistIfInBounds();
+    return *this;
   }
 
-  // Explicit swap function to eliminate any need for a friend function
-  void swap(iterator_type&& it)
+  iterator_type operator+(const difference_type& n)
   {
-    std::swap(_dist, it._dist);
-    std::swap(_coords, it._coords);
-    std::swap(_curve, it._curve);
+    auto tmp = *this;
+    tmp._dist += n;
+    tmp.updateCoordsFromDistIfInBounds();
+    return tmp;
   }
 
-  bool outofbounds() const { return distOutOfBounds(); }
+  iterator_type operator-(const difference_type& n)
+  {
+    auto tmp = *this;
+    tmp._dist -= n;
+    tmp.updateCoordsFromDistIfInBounds();
+    return tmp;
+  }
+
+  point_type operator[](const difference_type& n)
+  {
+    auto it = this + n;
+    it.throwIfDistOutOfBounds();
+    return *it;
+  }
+
+  bool operator<(const iterator_type& it) { return _dist < it._dist; }
+  bool operator>(const iterator_type& it) { return _dist > it._dist; }
+  bool operator<=(const iterator_type& it) { return _dist <= it._dist; }
+  bool operator>=(const iterator_type& it) { return _dist >= it._dist; }
 };
 
 template <sfc::size_t _NDim>
