@@ -88,8 +88,9 @@ class sfcurve
 
   virtual ~sfcurve() {}
 
-  constexpr size_type numberOfDimensions() const { return _NDim; };
-  constexpr size_type totalElements() const { return _Nm; };
+  constexpr size_type numberOfDimensions() const { return _NDim; }
+  constexpr size_type totalElements() const { return _Nm; }
+  constexpr size_type maxDistance() const { return _Nm - 1; }
   constexpr size_type dimensionLength() const { return _dimLength; }
 
   constexpr index_type coordsToIndex(const coords_type &coords) const
