@@ -14,6 +14,7 @@ add_library(libsfc
             ${LIBSFC_INCLUDE_DIR}/gray.h
             ${LIBSFC_INCLUDE_DIR}/hilbert.h
             ${LIBSFC_INCLUDE_DIR}/interleave.h
+            ${LIBSFC_INCLUDE_DIR}/iterator.h
             ${LIBSFC_INCLUDE_DIR}/morton.h
             ${LIBSFC_INCLUDE_DIR}/pow.h
             ${LIBSFC_INCLUDE_DIR}/range.h
