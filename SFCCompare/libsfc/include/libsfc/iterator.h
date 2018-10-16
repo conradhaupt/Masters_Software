@@ -25,16 +25,6 @@ template <sfc::size_t>
 class sfcurve;
 
 /**
- * @brief Alias for the coordinates type structure
- * TODO: add this definition to sfcurve.h and it's function arguments.
- *
- * @tparam _NDim the number of dimensions in the curve space
- * @tparam _TpCoord the type to be used for each dimension coordinate
- */
-template <sfc::size_t _NDim, typename _TpCoord>
-using coordinates = std::array<_TpCoord, _NDim>;
-
-/**
  * @brief A point in a curve space that contains values defining its position in
  * the space as well as the distance along the given curve.
  *
@@ -42,11 +32,14 @@ using coordinates = std::array<_TpCoord, _NDim>;
  * @tparam _TpCoord the type to be used for each dimension coordinate
  * @tparam _TpDist the type to be used for the distance along the given curve
  */
+template <class T, sfc::size_t N>
+using coordinates_ = std::array<T, N>;
+
 template <sfc::size_t _NDim, typename _TpCoord, typename _TpDist>
 struct point
 {
   _TpDist distance;
-  sfc::coordinates<_NDim, _TpCoord> coords;
+  sfc::coordinates_<_TpCoord, _NDim> coords;
 
   bool operator==(const point<_NDim, _TpCoord, _TpDist>& p)
   {
