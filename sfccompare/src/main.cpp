@@ -3,15 +3,18 @@
 //
 
 #include <fstream>
+#include <initializer_list>
+#include <map>
+#include "libsfc/algorithm.h"
 #include "libsfc/gray.h"
 #include "libsfc/hilbert.h"
+#include "libsfc/metric.h"
 #include "libsfc/morton.h"
 #include "libsfc/range.h"
 
 int main(void)
 {
-  std::cout << std::endl;
-  constexpr ::sfc::size_t DIM_SIZE = 1UL << 4;
+  constexpr ::sfc::size_t DIM_SIZE = 1UL << 3;
   constexpr ::sfc::size_t DIM_COUNT = 2;
 
   // MORTON
@@ -76,8 +79,21 @@ int main(void)
 
   auto mtrc = sfc::bounds_metric<2>(gry);
   auto mtrc_res = mtrc.calculate();
-  std::cout << std::get<0>(mtrc_res) << " - " << std::get<1>(mtrc_res)
-            << std::endl;
+  std::cout << std::get<0>(std::get<0>(mtrc_res)) << ", "
+            << std::get<1>(std::get<0>(mtrc_res)) << " - "
+            << std::get<0>(std::get<1>(mtrc_res)) << ", "
+            << std::get<1>(std::get<1>(mtrc_res)) << std::endl;
 
+  std::map<sfc::morton<2>::dist_type, unsigned long long> map;
+  sfc::for_each_combination(
+      std::begin(hlbrt), std::end(hlbrt), [&map](auto a, auto b) {
+        auto manhatten =
+            sfc::coords::DistanceTo<sfc::NORM::FIRST>(a.coords, b.coords);
+        map[manhatten]++;
+      });
+
+  for (auto i : map) {
+    std::cout << i.second << std::endl;
+  }
   return 0;
 }
