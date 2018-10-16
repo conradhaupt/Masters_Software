@@ -6,9 +6,9 @@
 #define SFC_SFCURVE_H
 
 #include <algorithm>
-#include <array>
 #include <memory>
 #include <type_traits>
+#include "coordinates.h"
 #include "iterator.h"
 #include "pow.h"
 #include "range.h"
@@ -34,7 +34,7 @@ class sfcurve
   using size_type = sfc::size_t;
   using difference_type = std::ptrdiff_t;
   using coord_type = index_type;
-  using coords_type = std::array<coord_type, _NDim>;
+  using coords_type = sfc::coordinates<coord_type, _NDim>;
   using dist_type = index_type;
   using sfcurve_type = sfcurve<_NDim>;
 
