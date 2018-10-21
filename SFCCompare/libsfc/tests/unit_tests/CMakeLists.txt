@@ -11,6 +11,7 @@ add_executable(sfc_test
                src/base2.cpp
                src/interleave.cpp
                src/iterator.cpp
+               src/libhilbert.cpp
                src/range.cpp
                src/main.cpp
                src/pow.cpp

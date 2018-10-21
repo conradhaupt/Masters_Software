@@ -32,6 +32,7 @@ target_include_directories(
          $<INSTALL_INTERFACE:include>
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+message(STATUS ${libhilbert_INCLDUE_DIR})
 # Modify target compiler properties
 target_compile_features(libsfc
                         PUBLIC
@@ -49,6 +50,9 @@ set_target_properties(libsfc
                                  ON # Use std-c++ instead of gnu++
                                  CMAKE_CXX_EXTENSIONS
                                  OFF)
+
+# Link to libhilbert for Hilbert mapping
+target_link_libraries(libsfc PUBLIC libhilbert)
 
 # Save the assembly output for debugging purposes Note: Does not modify the
 # resulting output library

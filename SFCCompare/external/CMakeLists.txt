@@ -71,3 +71,18 @@ endif() # if BUILD_BENCHMARKS
 # # Add CLIPP library headers add_library(clipp INTERFACE)
 # target_include_directories(clipp INTERFACE
 # $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>)
+
+# Add libhilbert library from github.com/conradhaupt/libhilbert
+message(STATUS "Invoking libhilbert DownloadPackage")
+include(libhilbert-download)
+# Add libhilbert subdir
+add_subdirectory(${libhilbert_SOURCE_DIR} ${libhilbert_BINARY_DIR}
+                 EXCLUDE_FROM_ALL)
+
+include_directories("${libhilbert_SOURCE_DIR}/src")
+
+if(TARGET libhilbert)
+  message(STATUS "Found downloaded libhilbert")
+else()
+  message(FATAL_ERROR "Could NOT find downloaded libhilbert")
+endif() # if
