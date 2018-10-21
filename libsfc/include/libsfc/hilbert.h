@@ -12,6 +12,7 @@
 #include <limits>
 #include <type_traits>
 #include "base2.h"
+#include "hilbert_mapping.h"
 #include "sfcdef.h"
 #include "sfcurve.h"
 
@@ -88,48 +89,17 @@ class hilbert : public sfcurve<_NDim>
   // https://people.sc.fsu.edu/~jburkardt/c_src/hilbert_curve/hilbert_curve.html
   virtual size_type coordsToDist(const coords_type &coords) const override
   {
-    auto x = coords.at(0);
-    auto y = coords.at(1);
-    size_type d = 0;
-    size_type n;
-    size_type rx;
-    size_type ry;
-    size_type s;
-
-    auto n_2 = sfc::pow(2, dimensionLength() - 1);
-    for (s = n_2; s > 0; s = s / 2) {
-      rx = (x & s) > 0;
-      ry = (y & s) > 0;
-      d = d + s * s * ((3 * rx) ^ ry);
-      rot(s, x, y, rx, ry);
-    }
-    return d;
+    auto distance =
+        sfc::libhilbert::getHKeyFromIntCoord<_NDim>(dimensionLength(), coords);
+    return distance;
   }
 
   // Implementation based on code from
   // https://people.sc.fsu.edu/~jburkardt/c_src/hilbert_curve/hilbert_curve.html
   virtual coords_type distToCoords(const dist_type &dist) const override
   {
-    coord_type x;
-    coord_type y;
-    coord_type rx;
-    coord_type ry;
-    size_type s;
-    dist_type t = dist;
-
-    auto n = sfc::pow(2, dimensionLength());
-
-    x = 0;
-    y = 0;
-    for (s = 1; s < n; s = s * 2) {
-      rx = 1 & (t / 2);
-      ry = 1 & (t ^ rx);
-      rot(s, x, y, rx, ry);
-      x = x + s * rx;
-      y = y + s * ry;
-      t = t / 4;
-    }
-    return {x, y};
+    return libhilbert::getIntCoordFromHKey<_NDim, coords_type>(
+        dimensionLength(), dist);
   }
 
   std::unique_ptr<sfcurve_type> clone() const override
