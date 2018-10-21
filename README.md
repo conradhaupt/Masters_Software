@@ -34,7 +34,15 @@ SFCCompare uses CMake to manage dependencies etc.
   - **NOTE:** Current CMakeLists.txt may not support non-GNU compiler arguments for the required features.
 
 ## Dependencies
-No external dependencies yet. Will add testing frameworks soon.
+
+The following dependencies are downloaded during the configure stage of the build process. See ```./external/CMakeLists.txt``` for more details.
+
+- Google Test
+  - [https://github.com/google/googletest](https://github.com/google/googletest)
+- Google Benchmark Framework
+  - [https://github.com/google/benchmark](https://github.com/google/benchmark)
+- libhilbert
+  - [https://github.com/conradhaupt/libhilbert](https://github.com/conradhaupt/libhilbert)
 
 ## Building
 
