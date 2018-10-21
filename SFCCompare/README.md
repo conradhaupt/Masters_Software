@@ -45,7 +45,7 @@ mkdir build
 cd build
 cmake ..
 make
-./sfccompare
+./sfccompare/sfccompare
 ```
 
 ## License
