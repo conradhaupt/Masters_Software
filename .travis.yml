@@ -1,6 +1,9 @@
 language: cpp
 compiler: gcc
 
+cache:
+    apt: true
+
 matrix:
   include:
     - os: linux
@@ -17,6 +20,7 @@ matrix:
          - MATRIX_EVAL="export CC=gcc-8 && export CXX=g++-8"
          - OMP_NUM_THREADS=4
          - MAKEFLAGS="-j 2"
+         - CTESTFLAGS="-j 4"
 
 
 before_install:
@@ -29,5 +33,5 @@ before_script:
   - cmake ..
 
 script:
-  - make
-  - ctest
+  - make $MAKEFLAGS
+  - ctest $CTESTFLAGS
