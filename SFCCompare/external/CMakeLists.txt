@@ -8,8 +8,8 @@ if(BUILD_TESTS)
   # Try find gtest using find_*
   set(SFC_GTEST_SEARCH_DIR "" CACHE PATH "dir to search in for googletest")
 
-  # Gives errors if GMock is not installed.
-  # TODO: Add a build option to disable/enable system-wide search for
+  # Gives errors if GMock is not installed. TODO: Add a build option to
+  # disable/enable system-wide search for
   # ~~~
   # find_package(GTest HINTS ${SFC_GTEST_SEARCH_DIR})
   # ~~~
@@ -85,4 +85,17 @@ if(TARGET libhilbert)
   message(STATUS "Found downloaded libhilbert")
 else()
   message(FATAL_ERROR "Could NOT find downloaded libhilbert")
+endif() # if
+
+# Add libmorton library from github.com/conradhaupt/libmorton
+message(STATUS "Invoking libmorton DownloadPackage")
+include(libmorton-download)
+# Add libmorton subdir
+add_subdirectory(${libmorton_SOURCE_DIR} ${libmorton_BINARY_DIR}
+                 EXCLUDE_FROM_ALL)
+
+if(TARGET libmorton)
+  message(STATUS "Found downloaded libmorton")
+else()
+  message(FATAL_ERROR "Could NOT find downloaded libmorton")
 endif() # if
