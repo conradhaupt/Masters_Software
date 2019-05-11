@@ -32,7 +32,6 @@ target_include_directories(
          $<INSTALL_INTERFACE:include>
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-message(STATUS ${libhilbert_INCLDUE_DIR})
 # Modify target compiler properties
 target_compile_features(libsfc
                         PUBLIC
@@ -69,9 +68,8 @@ if(BMI2_SUPPORTED)
   target_compile_definitions(libsfc PUBLIC __LIBSFC_BMI2__)
   message(STATUS "BMI2 supported, enabling")
 else()
-  # Throw error instead of warning until a work-around is implemented
-  # message(WARNING "BMI2 not supported, using alternative functions")
-  message(FATAL_ERROR "BMI2 not supported")
+  message(WARNING "BMI2 not supported, linking to libmorton")
+  target_link_libraries(libsfc PRIVATE libmorton)
 endif()
 
 # Handle fold-expression support

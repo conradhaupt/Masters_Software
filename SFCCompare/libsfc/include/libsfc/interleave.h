@@ -16,6 +16,7 @@
 #include <numeric>
 #include <stdexcept>
 #include <type_traits>
+#include "libmorton/morton.h"
 #include "sfcdef.h"
 
 namespace sfc {
@@ -40,6 +41,16 @@ template <sfc::size_t _NDim, typename _TpMask>
 constexpr _TpMask interleave_mask =
     internal::__interleave_mask_impl<_NDim, _TpMask>();
 
+template <sfc::size_t _NDim, typename _TpDist, typename _TpCoord>
+constexpr _TpCoord max_interleave_dim_length()
+{
+  sfc::size_t nBitsDist{sizeof(_TpDist) * CHAR_BIT};
+  sfc::size_t nBitsCoord{sizeof(_TpCoord) * CHAR_BIT};
+  sfc::size_t nBitsCoord_fromDist{nBitsDist / _NDim};
+  return (1ULL << std::min(nBitsCoord, nBitsCoord_fromDist)) - 1;
+}
+
+#if defined(__LIBSFC_BMI2__)
 template <sfc::size_t _NDim, typename _TpDist>
 constexpr _TpDist expand_coord(const _TpDist& coord, const sfc::size_t& iDim)
 {
@@ -71,15 +82,6 @@ constexpr _TpCoord remove_coord(const _TpDist& dist, const sfc::size_t& iDim)
 //     : public ::sfc::internal::__can_interleave_impl<
 //           sizeof(_TpDist) * CHAR_BIT, ::sfc::log2e<_TpCoord, 0, _max>::value,
 //           _NDim, void> {};
-
-template <sfc::size_t _NDim, typename _TpDist, typename _TpCoord>
-constexpr _TpCoord max_interleave_dim_length()
-{
-  sfc::size_t nBitsDist{sizeof(_TpDist) * CHAR_BIT};
-  sfc::size_t nBitsCoord{sizeof(_TpCoord) * CHAR_BIT};
-  sfc::size_t nBitsCoord_fromDist{nBitsDist / _NDim};
-  return (1ULL << std::min(nBitsCoord, nBitsCoord_fromDist)) - 1;
-}
 
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
           typename _TpCoord>
@@ -113,6 +115,28 @@ constexpr _TpCoords uinterleaveBits(const _TpDist& dist)
 
   return coords;
 }
+#else
+
+template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
+          typename _TpCoord>
+constexpr _TpDist interleaveBits(const _TpCoords& coords)
+{
+  return libmorton::morton2D_64_encode(coords[0], coords[1]);
+}
+
+template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
+          typename _TpCoord>
+constexpr auto uinterleaveBits(const _TpDist& dist)
+    -> std::enable_if_t<_NDim == 2, _TpCoords>
+{
+  // Have to explicitly state variable type or the compiler gives an lvalue
+  // rvalue assignment error
+  uint_fast32_t x;
+  uint_fast32_t y;
+  libmorton::morton2D_64_decode(dist, x, y);
+  return _TpCoords{x, y};
+}
+#endif
 };  // namespace sfc
 
 #endif
