@@ -34,4 +34,4 @@ before_script:
 
 script:
   - make $MAKEFLAGS
-  - ctest $CTESTFLAGS
+  - ./libsfc/tests/unit_tests/sfc_test
