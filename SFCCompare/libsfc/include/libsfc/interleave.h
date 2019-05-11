@@ -137,6 +137,28 @@ constexpr auto uinterleaveBits(const _TpDist& dist)
   libmorton::morton2D_64_decode(dist, x, y);
   return _TpCoords{x, y};
 }
+
+template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
+          typename _TpCoord>
+constexpr auto interleaveBits(const _TpCoords& coords)
+    -> std::enable_if_t<_NDim == 3, _TpCoords>
+{
+  return libmorton::morton3D_64_encode(coords[0], coords[1]);
+}
+
+template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
+          typename _TpCoord>
+constexpr auto uinterleaveBits(const _TpDist& dist)
+    -> std::enable_if_t<_NDim == 3, _TpCoords>
+{
+  // Have to explicitly state variable type or the compiler gives an lvalue
+  // rvalue assignment error
+  uint_fast32_t x;
+  uint_fast32_t y;
+  uint_fast32_t z;
+  libmorton::morton3D_64_decode(dist, x, y, z);
+  return _TpCoords{x, y, z};
+}
 #endif
 };  // namespace sfc
 
