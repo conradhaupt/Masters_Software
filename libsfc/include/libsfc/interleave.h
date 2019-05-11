@@ -123,7 +123,7 @@ constexpr _TpCoords uinterleaveBits(const _TpDist& dist)
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
           typename _TpCoord>
 constexpr auto interleaveBits(const _TpCoords& coords)
-    -> std::enable_if_t<_NDim == 2, _TpCoords>
+    -> std::enable_if_t<_NDim == 2, _TpDist>
 {
   return libmorton::morton2D_64_encode(coords[0], coords[1]);
 }
@@ -144,7 +144,7 @@ constexpr auto uinterleaveBits(const _TpDist& dist)
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
           typename _TpCoord>
 constexpr auto interleaveBits(const _TpCoords& coords)
-    -> std::enable_if_t<_NDim == 3, _TpCoords>
+    -> std::enable_if_t<_NDim == 3, _TpDist>
 {
   return libmorton::morton3D_64_encode(coords[0], coords[1]);
 }
