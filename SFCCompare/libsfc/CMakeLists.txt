@@ -69,7 +69,7 @@ if(BMI2_SUPPORTED)
   message(STATUS "BMI2 supported, enabling")
 else()
   message(WARNING "BMI2 not supported, linking to libmorton")
-  target_link_libraries(libsfc PRIVATE libmorton)
+  target_link_libraries(libsfc PUBLIC libmorton)
 endif()
 
 # Handle fold-expression support
