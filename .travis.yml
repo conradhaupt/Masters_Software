@@ -1,13 +1,12 @@
 language: cpp
 compiler: gcc
 
-cache:
-    apt: true
-
 matrix:
   include:
     - os: linux
       dist: xenial
+      cache:
+        apt: true
       addons:
         apt:
           sources:
