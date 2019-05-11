@@ -16,8 +16,11 @@
 #include <numeric>
 #include <stdexcept>
 #include <type_traits>
-#include "libmorton/morton.h"
 #include "sfcdef.h"
+
+#ifndef __LIBSFC_BMI2__
+#include "libmorton/morton.h"
+#endif
 
 namespace sfc {
 
