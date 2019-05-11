@@ -119,7 +119,8 @@ constexpr _TpCoords uinterleaveBits(const _TpDist& dist)
 
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
           typename _TpCoord>
-constexpr _TpDist interleaveBits(const _TpCoords& coords)
+constexpr auto interleaveBits(const _TpCoords& coords)
+    -> std::enable_if_t<_NDim == 2, _TpCoords>
 {
   return libmorton::morton2D_64_encode(coords[0], coords[1]);
 }
