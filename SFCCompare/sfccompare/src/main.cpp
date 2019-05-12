@@ -9,6 +9,7 @@
 #include "libsfc/gray.h"
 #include "libsfc/hilbert.h"
 #include "libsfc/metric.h"
+#include "libsfc/metric_clusters.h"
 #include "libsfc/morton.h"
 #include "libsfc/range.h"
 #include "libsfc/raster.h"
@@ -105,16 +106,11 @@ int main(void)
             << std::get<0>(std::get<1>(mtrc_res)) << ", "
             << std::get<1>(std::get<1>(mtrc_res)) << std::endl;
 
-  std::map<sfc::morton<2>::dist_type, unsigned long long> map;
-  sfc::for_each_combination(
-      std::begin(hlbrt), std::end(hlbrt), [&map](auto a, auto b) {
-        auto manhatten =
-            sfc::coords::DistanceTo<sfc::NORM::FIRST>(a.coords, b.coords);
-        map[manhatten]++;
-      });
+  auto mtrc_clstrs = sfc::clusters_metric<2>(mrtn,2);
+  auto result = mtrc_clstrs.calculate();
 
-  for (auto i : map) {
-    std::cout << i.second << std::endl;
+  for (auto i : result) {
+    std::cout << "(" << i.first << ") " << i.second << std::endl;
   }
   return 0;
 }

@@ -10,7 +10,7 @@ class simplecurve : public sfc::sfcurve<2>
 {
  public:
   using sfc::sfcurve<2>::sfcurve;
-  virtual size_type coordsToDist(const coords_type &coords) const
+  virtual dist_type coordsToDist(const coords_type &coords) const
   {
     return sfc::sfcurve<2>::coordsToIndex(coords);
   };
