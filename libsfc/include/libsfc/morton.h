@@ -69,7 +69,7 @@ class morton : public sfcurve<_NDim>
 
   virtual ~morton() {}
 
-  virtual size_type coordsToDist(const coords_type &coords) const override
+  virtual dist_type coordsToDist(const coords_type &coords) const override
   {
     return sfc::interleaveBits<_NDim, dist_type, coords_type, coord_type>(
         coords);
