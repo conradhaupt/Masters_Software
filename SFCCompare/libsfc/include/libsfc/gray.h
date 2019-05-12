@@ -103,7 +103,7 @@ class gray : public morton<_NDim>
 
   virtual ~gray() {}
 
-  virtual size_type coordsToDist(const coords_type &coords) const override
+  virtual dist_type coordsToDist(const coords_type &coords) const override
   {
     auto dist = morton_type::coordsToDist(coords);
     return distToGrayDist(dist);
