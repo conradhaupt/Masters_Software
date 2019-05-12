@@ -1,9 +1,6 @@
 language: cpp
 compiler: gcc
 
-cache:
-    apt: true
-
 matrix:
   include:
     - os: linux

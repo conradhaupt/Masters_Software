@@ -5,7 +5,7 @@ project(libmorton-downloadproj NONE)
 download_project(PROJ
                  libmorton
                  GIT_REPOSITORY
-                 git@github.com:conradhaupt/libmorton.git
+                 https://github.com/conradhaupt/libmorton.git
                  GIT_TAG
                  master
                  UPDATE_DISCONNECTED
