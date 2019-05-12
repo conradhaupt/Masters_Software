@@ -24,6 +24,7 @@ class metric
  public:
   using sfcurve_t = sfc::sfcurve<_NDim>;
   using sfcurve_ptr_t = std::unique_ptr<sfcurve_t>;
+  using metric_t = _TpMetric;
 
   template <typename _TpSFC>
   metric(const _TpSFC& sfc) : _curve{std::make_unique<_TpSFC>(sfc)}

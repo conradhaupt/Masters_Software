@@ -53,9 +53,9 @@ TEST(iterator, outOfBoundsBasedOnDistanceBounds)
   simplecurve crv(16);
   auto it = std::begin(crv);
   for (; it != std::end(crv); it++) {
-    EXPECT_TRUE((it.distance() <= crv.maxDistance()) == !it.outofbounds());
+    EXPECT_EQ((it.distance() <= crv.maxDistance()), !it.outofbounds());
   }
-  EXPECT_TRUE((it.distance() > crv.maxDistance()) == it.outofbounds());
+  EXPECT_EQ((it.distance() > crv.maxDistance()), it.outofbounds());
 }
 
 TEST(iterator, notOutOfBoundsBeforeEnd)
@@ -93,7 +93,7 @@ TEST(iterator, stdBeginIsBegin)
 {
   simplecurve crv(16);
   auto begin = std::begin(crv);
-  EXPECT_TRUE(begin.distance() == simplecurve::dist_type{});
+  EXPECT_EQ(begin.distance(), simplecurve::dist_type{});
 }
 
 TEST(iterator, stdEndIsEnd)
@@ -110,7 +110,7 @@ TEST(iterator, coordinatesMatchCurveCoordinatesForGivenDistance)
   for (auto p : crv) {
     auto dist = p.distance;
     auto coords = p.coords;
-    EXPECT_TRUE(coords == crv.distToCoords(dist));
+    EXPECT_EQ(coords, crv.distToCoords(dist));
   }
 }
 

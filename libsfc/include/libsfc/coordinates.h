@@ -12,7 +12,9 @@
 #define SFC_COORDINATES_H
 
 #include <algorithm>
+#include <array>
 #include <numeric>
+#include "range.h"
 #include "sfcdef.h"
 #include "unsigned.h"
 
@@ -104,5 +106,22 @@ auto DistanceTo(const coordinates<T, N>& coords1,
 }
 };  // namespace coords
 };  // namespace sfc
+
+template <class T, sfc::size_t N>
+sfc::coordinates<T, N> operator+(const sfc::coordinates<T, N>& lhs,
+                                 const sfc::coordinates<T, N>& rhs)
+{
+  auto output = lhs;
+  for (auto i : sfc::range<sfc::size_t>(0, N)) output[i] += rhs[i];
+  return output;
+}
+
+template <class T, sfc::size_t N>
+sfc::coordinates<T, N>& operator+=(sfc::coordinates<T, N>& lhs,
+                                   const sfc::coordinates<T, N>& rhs)
+{
+  for (auto i : sfc::range<sfc::size_t>(0, N)) lhs[i] += rhs[i];
+  return lhs;
+}
 
 #endif
