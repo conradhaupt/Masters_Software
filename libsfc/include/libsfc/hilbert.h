@@ -87,7 +87,7 @@ class hilbert : public sfcurve<_NDim>
 
   // Implementation based on code from
   // https://people.sc.fsu.edu/~jburkardt/c_src/hilbert_curve/hilbert_curve.html
-  virtual size_type coordsToDist(const coords_type &coords) const override
+  virtual dist_type coordsToDist(const coords_type &coords) const override
   {
     auto distance =
         sfc::libhilbert::getHKeyFromIntCoord<_NDim>(dimensionLength(), coords);
