@@ -85,11 +85,26 @@ int main(void)
             << std::get<0>(std::get<1>(mtrc_res)) << ", "
             << std::get<1>(std::get<1>(mtrc_res)) << std::endl;
 
-  auto mtrc_clstrs = sfc::clusters_metric<2>(mrtn,2);
+  auto mtrc_clstrs = sfc::clusters_metric<2>(mrtn, 2);
   auto result = mtrc_clstrs.calculate();
 
   for (auto i : result) {
     std::cout << "(" << i.first << ") " << i.second << std::endl;
   }
+  auto mtrc_clstrs_num_regions =
+      std::accumulate(std::begin(result), std::end(result), 0LL,
+                      [](auto c, auto e) { return c + e.second; });
+  auto mtrc_clstrs_average =
+      std::accumulate(
+          std::begin(result), std::end(result), 0.0,
+          [](auto curr, auto e) { return curr + (e.first * e.second); }) /
+      mtrc_clstrs_num_regions;
+  auto mtrc_clstrs_max =
+      std::max_element(std::begin(result), std::end(result),
+                       [](auto a, auto b) { return a.first < b.first; });
+  std::cout << "Average number of clusters is " << mtrc_clstrs_average
+            << std::endl;
+  std::cout << "Maximum number of clusters is " << mtrc_clstrs_max->first
+            << std::endl;
   return 0;
 }
