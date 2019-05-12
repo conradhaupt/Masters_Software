@@ -9,6 +9,8 @@ include(GoogleTest)
 # Unit tests
 add_executable(sfc_test
                src/base2.cpp
+               src/coordinates.cpp
+               src/clusters.cpp
                src/interleave.cpp
                src/iterator.cpp
                src/libhilbert.cpp
