@@ -11,6 +11,7 @@
 #include "libsfc/metric.h"
 #include "libsfc/morton.h"
 #include "libsfc/range.h"
+#include "libsfc/raster.h"
 
 int main(void)
 {
@@ -76,6 +77,26 @@ int main(void)
     grayFile << coords[0] << "\t" << coords[1] << std::endl;
   }
   grayFile.close();
+
+  // RASTER
+  sfc::raster<DIM_COUNT> rstr(DIM_SIZE);
+  std::ofstream rasterFile;
+  rasterFile.open("./raster.coords");
+  rows = 0;
+  newline = 0;
+  for (auto dist : sfc::range<sfc::size_t>(DIM_SIZE * DIM_SIZE)) {
+    auto coords = rstr.distToCoords(dist);
+    if ((dist / DIM_SIZE) != rows) {
+      rows = dist / DIM_SIZE;
+      std::cout << ".";
+    }
+    if ((dist / (DIM_SIZE * 16)) != newline) {
+      newline = dist / (DIM_SIZE * 16);
+      std::cout << newline << std::endl;
+    }
+    rasterFile << coords[0] << "\t" << coords[1] << std::endl;
+  }
+  rasterFile.close();
 
   auto mtrc = sfc::bounds_metric<2>(gry);
   auto mtrc_res = mtrc.calculate();
