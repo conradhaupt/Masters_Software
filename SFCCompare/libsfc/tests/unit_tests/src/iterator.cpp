@@ -114,4 +114,12 @@ TEST(iterator, coordinatesMatchCurveCoordinatesForGivenDistance)
   }
 }
 
+TEST(iterator, isRandomAccessIterator)
+{
+  EXPECT_EQ(
+      typeid(
+          std::iterator_traits<simplecurve::iterator_type>::iterator_category),
+      typeid(std::random_access_iterator_tag));
+}
+
 };  // namespace
