@@ -21,6 +21,7 @@ add_library(libsfc
             ${LIBSFC_INCLUDE_DIR}/metric_clusters.h
             ${LIBSFC_INCLUDE_DIR}/morton.h
             ${LIBSFC_INCLUDE_DIR}/pow.h
+            ${LIBSFC_INCLUDE_DIR}/progress_bar.h
             ${LIBSFC_INCLUDE_DIR}/range.h
             ${LIBSFC_INCLUDE_DIR}/raster.h
             ${LIBSFC_INCLUDE_DIR}/sfcdef.h
@@ -29,6 +30,12 @@ add_library(libsfc
             ${LIBSFC_SOURCE_DIR}/main.cpp)
 
 add_library(libsfc::libsfc ALIAS libsfc) # Library alias
+
+# Link to OpenMP
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(libsfc PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 # Handle include paths
 target_include_directories(
