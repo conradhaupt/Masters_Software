@@ -17,6 +17,7 @@
 #include <map>
 #include "clusters.h"
 #include "metric.h"
+#include "progress_bar.h"
 #include "raster.h"
 
 namespace sfc {
@@ -63,10 +64,12 @@ class clusters_metric
 
     // For each region
     // auto _region_coord = std::begin(region_coord_curve);
+    auto pg = sfc::cli::progressbar(region_coord_curve.totalElements());
     std::mutex map_mtx;
 #pragma omp parallel for shared(pg)
     for (auto _region_coord = region_coord_curve.begin();
          _region_coord < region_coord_curve.end(); ++_region_coord) {
+      pg.addProgress();
       sfc::clusters<typename sfcurve_t::dist_type> _region_clusters;
       // For each point in the region
       for (const auto _region_offset : region_curve) {
