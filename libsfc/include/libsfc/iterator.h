@@ -229,6 +229,11 @@ class iterator
     return tmp;
   }
 
+  difference_type operator-(const iterator_type& it)
+  {
+    return this->_dist - it._dist;
+  }
+
   point_type operator[](const difference_type& n)
   {
     auto it = this + n;
