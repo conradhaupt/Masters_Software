@@ -241,6 +241,10 @@ class iterator
     return *it;
   }
 
+  point_type operator->(){
+    return point_type{_dist,_coords};
+  }
+
   bool operator<(const iterator_type& it) { return _dist < it._dist; }
   bool operator>(const iterator_type& it) { return _dist > it._dist; }
   bool operator<=(const iterator_type& it) { return _dist <= it._dist; }
