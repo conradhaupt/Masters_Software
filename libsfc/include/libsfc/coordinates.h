@@ -79,7 +79,7 @@ T InfiniteNormTo(const coordinates<T, N>& coords1,
                    return sfc::abs_diff(t1, t2);
                  });
   //  Return the max value
-  return std::max(std::begin(res_diff), std::end(res_diff));
+  return *(std::max(std::begin(res_diff), std::end(res_diff)));
 }
 
 template <NORM norm, class T, sfc::size_t N>
@@ -103,6 +103,22 @@ auto DistanceTo(const coordinates<T, N>& coords1,
     -> std::enable_if_t<norm == NORM::INFINITE, T>
 {
   return InfiniteNormTo(coords1, coords2);
+}
+
+template <class T, sfc::size_t N>
+constexpr T DistanceTo(const coordinates<T, N>& coords1,
+                       const coordinates<T, N>& coords2, const NORM& norm)
+{
+  switch (norm) {
+    case NORM::FIRST:
+      return ManhattenDistanceTo(coords1, coords2);
+    case NORM::SECOND:
+      return EuclideanDistanceTo(coords1, coords2);
+    case NORM::INFINITE:
+      return InfiniteNormTo(coords1, coords2);
+    default:
+      throw std::exception();
+  }
 }
 };  // namespace coords
 };  // namespace sfc
