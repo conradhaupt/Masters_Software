@@ -10,6 +10,7 @@
 #include "libsfc/hilbert.h"
 #include "libsfc/metric.h"
 #include "libsfc/metric_clusters.h"
+#include "libsfc/metric_ratio.h"
 #include "libsfc/morton.h"
 #include "libsfc/range.h"
 #include "libsfc/raster.h"
@@ -127,5 +128,34 @@ int main(void)
             << std::endl;
   std::cout << "Maximum number of clusters is " << mtrc_clstrs_max->first
             << std::endl;
+
+  auto mtrc_ratio = sfc::metric_ratio<2>(mrtn, sfc::NORM::FIRST);
+  auto result_ratio = mtrc_ratio.calculate();
+
+  for (auto i : result_ratio) {
+    std::cout << "(" << i.first << ") " << i.second << std::endl;
+  }
+  auto mtrc_ratio_num_pairs =
+      std::accumulate(std::begin(result_ratio), std::end(result_ratio), 0LL,
+                      [](auto c, auto e) { return c + e.second; });
+  auto mtrc_ratio_average =
+      std::accumulate(
+          std::begin(result_ratio), std::end(result_ratio), 0.0,
+          [](auto curr, auto e) { return curr + (e.first * e.second); }) /
+      mtrc_ratio_num_pairs;
+  auto mtrc_ratio_max =
+      std::max_element(std::begin(result_ratio), std::end(result_ratio),
+                       [](auto a, auto b) { return a.first < b.first; });
+  std::cout << "Average ratio is " << mtrc_ratio_average << std::endl;
+  std::cout << "Maximum ratio is " << mtrc_ratio_max->first << std::endl;
+
+  std::ofstream mtrc_ratio_file;
+  mtrc_ratio_file.open("mtrc_ratio.dat");
+  for (auto pair : result_ratio) {
+    for (auto count = 0; count < pair.second; count++)
+      mtrc_ratio_file << pair.first << std::endl;
+  }
+  mtrc_ratio_file.close();
+
   return 0;
 }
