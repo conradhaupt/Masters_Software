@@ -37,7 +37,6 @@ class metric
 
   virtual _TpMetric calculate() = 0;
 
- protected:
   const sfcurve_ptr_t& curve_ptr() const { return _curve; }
 
  private:
