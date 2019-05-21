@@ -1,75 +1,36 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(libsfc
-        VERSION 0.1 DESCRIPTION
-                "Library that impliments numerous space-filling curves"
+        VERSION 0.1
+        DESCRIPTION "Library that impliments numerous space-filling curves"
         LANGUAGES C CXX)
 
 set(LIBSFC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/libsfc)
-set(LIBSFC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-add_library(libsfc
-            # Headers
-            ${LIBSFC_INCLUDE_DIR}/base2.h
-            ${LIBSFC_INCLUDE_DIR}/coordinates.h
-            ${LIBSFC_INCLUDE_DIR}/clusters.h
-            ${LIBSFC_INCLUDE_DIR}/gray.h
-            ${LIBSFC_INCLUDE_DIR}/hilbert.h
-            ${LIBSFC_INCLUDE_DIR}/interleave.h
-            ${LIBSFC_INCLUDE_DIR}/iterator.h
-            ${LIBSFC_INCLUDE_DIR}/metric.h
-            ${LIBSFC_INCLUDE_DIR}/metric_clusters.h
-            ${LIBSFC_INCLUDE_DIR}/morton.h
-            ${LIBSFC_INCLUDE_DIR}/pow.h
-            ${LIBSFC_INCLUDE_DIR}/progress_bar.h
-            ${LIBSFC_INCLUDE_DIR}/range.h
-            ${LIBSFC_INCLUDE_DIR}/raster.h
-            ${LIBSFC_INCLUDE_DIR}/sfcdef.h
-            ${LIBSFC_INCLUDE_DIR}/sfcurve.h
-            # Cpp Code
-            ${LIBSFC_SOURCE_DIR}/main.cpp)
+add_library(libsfc INTERFACE)
 
 add_library(libsfc::libsfc ALIAS libsfc) # Library alias
 
 # Link to OpenMP
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)
-  target_link_libraries(libsfc PUBLIC OpenMP::OpenMP_CXX)
+  target_link_libraries(libsfc INTERFACE OpenMP::OpenMP_CXX)
 endif()
 
 # Handle include paths
 target_include_directories(
   libsfc
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>
-  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+  INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>)
 
 # Modify target compiler properties
 target_compile_features(libsfc
-                        PUBLIC
+                        INTERFACE
                         cxx_std_17 # Require C++17 for some features
                         )
 
-target_compile_options(libsfc
-                       PRIVATE $<$<CXX_COMPILER_ID:GNU>:-O2> # Enable
-                                                             # optimisation flag
-                                                             # for GNU compilers
-                       )
-
-set_target_properties(libsfc
-                      PROPERTIES CMAKE_CXX_STANDARD_REQUIRED
-                                 ON # Use std-c++ instead of gnu++
-                                 CMAKE_CXX_EXTENSIONS
-                                 OFF)
-
 # Link to libhilbert for Hilbert mapping
-target_link_libraries(libsfc PUBLIC libhilbert)
-
-# Save the assembly output for debugging purposes Note: Does not modify the
-# resulting output library
-if(SFC_GENERATE_ASM)
-  target_compile_options(libsfc PRIVATE -fverbose-asm -save-temps)
-endif()
+target_link_libraries(libsfc INTERFACE libhilbert)
 
 # Add tests (compiler, unit, benchmark)
 add_subdirectory(tests)
@@ -80,13 +41,13 @@ if(BMI2_SUPPORTED)
   target_compile_definitions(libsfc PUBLIC __LIBSFC_BMI2__)
   message(STATUS "BMI2 supported, enabling")
 else()
-  message(WARNING "BMI2 not supported, linking to libmorton")
-  target_link_libraries(libsfc PUBLIC libmorton)
+  message(STATUS "BMI2 not supported, linking to libmorton")
+  target_link_libraries(libsfc INTERFACE libmorton)
 endif()
 
 # Handle fold-expression support
 if(FOLD_EXPRESSION_SUPPORTED)
-  target_compile_definitions(libsfc PUBLIC __LIBSFC_FOLD__)
+  target_compile_definitions(libsfc INTERFACE __LIBSFC_FOLD__)
   message(STATUS "Fold-Expressions supported, enabling")
 else()
   # No known work-around for fold-expressions, throw an error instead of warning
