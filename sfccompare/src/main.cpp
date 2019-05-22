@@ -100,15 +100,15 @@ int main(void)
   }
   rasterFile.close();
 
-  auto mtrc = sfc::bounds_metric<2>(gry);
-  auto mtrc_res = mtrc.calculate();
+  auto mtrc = sfc::bounds_metric<2>();
+  auto mtrc_res = mtrc.calculateFor(gry);
   std::cout << std::get<0>(std::get<0>(mtrc_res)) << ", "
             << std::get<1>(std::get<0>(mtrc_res)) << " - "
             << std::get<0>(std::get<1>(mtrc_res)) << ", "
             << std::get<1>(std::get<1>(mtrc_res)) << std::endl;
 
-  auto mtrc_clstrs = sfc::clusters_metric<2>(mrtn, 2);
-  auto result = mtrc_clstrs.calculate();
+  auto mtrc_clstrs = sfc::clusters_metric<2>(2);
+  auto result = mtrc_clstrs.calculateFor(mrtn);
 
   for (auto i : result) {
     std::cout << "(" << i.first << ") " << i.second << std::endl;
@@ -129,8 +129,8 @@ int main(void)
   std::cout << "Maximum number of clusters is " << mtrc_clstrs_max->first
             << std::endl;
 
-  auto mtrc_ratio = sfc::metric_ratio<2>(mrtn, sfc::NORM::FIRST);
-  auto result_ratio = mtrc_ratio.calculate();
+  auto mtrc_ratio = sfc::metric_ratio<2>(sfc::NORM::FIRST);
+  auto result_ratio = mtrc_ratio.calculateFor(mrtn);
 
   for (auto i : result_ratio) {
     std::cout << "(" << i.first << ") " << i.second << std::endl;

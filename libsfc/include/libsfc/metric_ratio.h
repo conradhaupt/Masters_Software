@@ -25,28 +25,26 @@ class metric_ratio : public sfc::metric<_NDim, std::map<double, unsigned long>>
   using nPairs_t = unsigned long;
 
  private:
-  using _metric_inherit = sfc::metric<_NDim, std::map<ratio_t, nPairs_t>>;
   sfc::NORM _norm;
 
  public:
-  using metric_t = typename _metric_inherit::metric_t;
+  using metric_inherit = metric<_NDim, std::map<ratio_t, nPairs_t>>;
+  using metric_t = typename metric_inherit::metric_t;
 
-  template <typename _TpSFC>
-  metric_ratio(const _TpSFC& sfc, const sfc::NORM& distance_norm)
-      : _metric_inherit::metric(sfc), _norm(distance_norm)
-  {}
+  metric_ratio(const sfc::NORM& distance_norm) : _norm(distance_norm) {}
+  virtual ~metric_ratio() {}
 
-  virtual metric_t calculate()
+  virtual metric_t calculateFor(const sfc::sfcurve<_NDim>& curve) override
   {
     metric_t metric_dist;
-    for (auto point1_it = this->curve_ptr()->begin();
-         point1_it < this->curve_ptr()->end(); point1_it++) {
+    for (auto point1_it = std::begin(curve); point1_it < std::end(curve);
+         point1_it++) {
       for (auto point2_it = std::next(point1_it);
-           point1_it < point2_it && point2_it < this->curve_ptr()->end();
-           point2_it++) {
+           point1_it < point2_it && point2_it < std::end(curve); point2_it++) {
         auto ratio =
             (static_cast<double>(point2_it.distance() - point1_it.distance())) /
-            (sfc::coords::DistanceTo(point2_it.coordinates(), point1_it.coordinates(), _norm));
+            (sfc::coords::DistanceTo(point2_it.coordinates(),
+                                     point1_it.coordinates(), _norm));
         metric_dist[ratio]++;
       }
     }
