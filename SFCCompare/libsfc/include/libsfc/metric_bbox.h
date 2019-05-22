@@ -11,19 +11,19 @@
 #ifndef SFC_METRIC_BBOX_H
 #define SFC_METRIC_BBOX_H
 #include <functional>
+#include <map>
 #include "metric.h"
 #include "progress_bar.h"
 #include "sfcdef.h"
 namespace sfc {
 template <sfc::size_t _NDim>
 class bounds_metric
-    : public metric<_NDim, std::tuple<unsigned long long, unsigned long long>>
+    : public metric<_NDim, std::map<unsigned long long, unsigned long long>>
 {
  public:
   using coordinates_t = sfc::coordinates<sfc::size_t, _NDim>;
   using metric_inherit =
-      metric<_NDim, std::tuple<sfc::coordinates<sfc::size_t, _NDim>,
-                               sfc::coordinates<sfc::size_t, _NDim>>>;
+      metric<_NDim, std::map<unsigned long long, unsigned long long>>;
   using metric_t = typename metric_inherit::metric_t;
 
   bounds_metric() {}
@@ -45,8 +45,9 @@ class bounds_metric
         sfc::coordinates<sfc::size_t, _NDim> bbox;
         for (auto ni = 0; ni < _NDim; ni++) {
           auto minmax =
-              std::minmax(point1_it, point2_it,
-                          [ni](auto &p1, auto &p2) { return p1[ni] < p2[ni]; });
+              std::minmax(point1_it, point2_it, [ni](auto p1, auto p2) {
+                return ((*p1).coords[ni] < (*p2).coords[ni]);
+              });
           bbox[ni] = minmax.second - minmax.first;
         }
         auto area = std::accumulate(std::begin(bbox), std::end(bbox), 1ULL,
