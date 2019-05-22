@@ -9,6 +9,7 @@
 #include "libsfc/gray.h"
 #include "libsfc/hilbert.h"
 #include "libsfc/metric.h"
+#include "libsfc/metric_bbox.h"
 #include "libsfc/metric_clusters.h"
 #include "libsfc/metric_ratio.h"
 #include "libsfc/morton.h"
