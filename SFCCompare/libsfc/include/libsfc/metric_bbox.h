@@ -11,6 +11,7 @@
 #ifndef SFC_METRIC_BBOX_H
 #define SFC_METRIC_BBOX_H
 #include "metric.h"
+#include "sfcdef.h"
 namespace sfc {
 template <sfc::size_t _NDim>
 class bounds_metric
