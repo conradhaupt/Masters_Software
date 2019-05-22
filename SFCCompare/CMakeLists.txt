@@ -64,7 +64,6 @@ option(BUILD_BENCHMARKS # It is the responsability of benchmarking modules to
        OFF)
 
 if(BUILD_TESTS)
-  include(CTest)
   enable_testing()
 endif()
 
