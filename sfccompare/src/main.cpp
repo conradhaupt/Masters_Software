@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <initializer_list>
+#include <limits>
 #include <map>
 #include "libsfc/algorithm.h"
 #include "libsfc/gray.h"
@@ -158,7 +159,7 @@ int main(void)
   }
   mtrc_ratio_file.close();
 
-  auto mtrc_bbox = sfc::metric_ratio<2>(sfc::NORM::FIRST);
+  auto mtrc_bbox = sfc::bounds_metric<2>();
   auto result_bbox = mtrc_bbox.calculateFor(gry);
 
   // for (auto i : result_bbox) {
@@ -181,8 +182,13 @@ int main(void)
   std::ofstream mtrc_bbox_file;
   mtrc_bbox_file.open("mtrc_bbox.dat");
   for (auto pair : result_bbox) {
-    for (auto count = 0; count < pair.second; count++)
-      mtrc_bbox_file << pair.first << std::endl;
+    // for (auto count = 0; count < pair.second; count++)
+    mtrc_bbox_file << std::setprecision(
+                          std::numeric_limits<double>::max_digits10)
+                   << std::scientific << pair.first << "\t"
+                   << std::setprecision(
+                          std::numeric_limits<unsigned long long>::max_digits10)
+                   << pair.second << std::endl;
   }
   mtrc_bbox_file.close();
 

@@ -106,6 +106,8 @@ class iterator
     static_assert(std::is_base_of_v<sfc::sfcurve<_NDim>, TpCurve>);
   }
 
+  iterator() : _curve(nullptr), _dist{0} {}
+
   template <class TpCurve>
   iterator(const TpCurve& curve) : iterator(curve, dist_type{})
   {
@@ -136,7 +138,7 @@ class iterator
 
   point_type operator*() const
   {
-    throwIfDistOutOfBounds();
+    // throwIfDistOutOfBounds();
     return point_type{_dist, _coords};
   }
 
