@@ -138,7 +138,7 @@ class iterator
 
   point_type operator*() const
   {
-    // throwIfDistOutOfBounds();
+    throwIfDistOutOfBounds();
     return point_type{_dist, _coords};
   }
 
@@ -265,6 +265,6 @@ auto operator-(const sfc::iterator<_NDim, _TpCurve>& it1,
                const sfc::iterator<_NDim, _TpCurve>& it2) ->
     typename sfc::iterator<_NDim, _TpCurve>::difference_type
 {
-  return (*it1).distance - (*it2).distance;
+  return it1.distance() - it2.distance();
 }
 #endif
