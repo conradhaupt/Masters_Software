@@ -106,6 +106,8 @@ class iterator
     static_assert(std::is_base_of_v<sfc::sfcurve<_NDim>, TpCurve>);
   }
 
+  iterator() : _curve(nullptr), _dist{0} {}
+
   template <class TpCurve>
   iterator(const TpCurve& curve) : iterator(curve, dist_type{})
   {
@@ -136,7 +138,7 @@ class iterator
 
   point_type operator*() const
   {
-    throwIfDistOutOfBounds();
+    // throwIfDistOutOfBounds();
     return point_type{_dist, _coords};
   }
 
@@ -229,11 +231,6 @@ class iterator
     return tmp;
   }
 
-  difference_type operator-(const iterator_type& it)
-  {
-    return this->_dist - it._dist;
-  }
-
   point_type operator[](const difference_type& n)
   {
     auto it = this + n;
@@ -241,9 +238,7 @@ class iterator
     return *it;
   }
 
-  point_type operator->(){
-    return point_type{_dist,_coords};
-  }
+  point_type operator->() { return point_type{_dist, _coords}; }
 
   bool operator<(const iterator_type& it) { return _dist < it._dist; }
   bool operator>(const iterator_type& it) { return _dist > it._dist; }
@@ -263,4 +258,13 @@ bool operator!=(const iterator<_NDim>& it1, const iterator<_NDim>& it2)
   return it1.operator!=(it2);
 }
 };  // namespace sfc
+
+template <sfc::size_t _NDim,
+          template <sfc::size_t> typename _TpCurve = sfc::sfcurve>
+auto operator-(const sfc::iterator<_NDim, _TpCurve>& it1,
+               const sfc::iterator<_NDim, _TpCurve>& it2) ->
+    typename sfc::iterator<_NDim, _TpCurve>::difference_type
+{
+  return (*it1).distance - (*it2).distance;
+}
 #endif
