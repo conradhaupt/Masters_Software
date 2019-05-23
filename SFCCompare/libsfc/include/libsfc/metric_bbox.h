@@ -17,13 +17,11 @@
 #include "sfcdef.h"
 namespace sfc {
 template <sfc::size_t _NDim>
-class bounds_metric
-    : public metric<_NDim, std::map<unsigned long long, unsigned long long>>
+class bounds_metric : public metric<_NDim, std::map<double, unsigned long long>>
 {
  public:
   using coordinates_t = sfc::coordinates<sfc::size_t, _NDim>;
-  using metric_inherit =
-      metric<_NDim, std::map<unsigned long long, unsigned long long>>;
+  using metric_inherit = metric<_NDim, std::map<double, unsigned long long>>;
   using metric_t = typename metric_inherit::metric_t;
 
   bounds_metric() {}
@@ -44,17 +42,20 @@ class bounds_metric
         //  Find maximum for traversal between point1 and point2
         sfc::coordinates<sfc::size_t, _NDim> bbox;
         for (auto ni = 0; ni < _NDim; ni++) {
-          auto minmax =
-              std::minmax(point1_it, point2_it, [ni](auto p1, auto p2) {
-                return ((*p1).coords[ni] < (*p2).coords[ni]);
+          auto minmax = std::minmax_element(
+              point1_it, std::next(point2_it), [ni](auto p1, auto p2) {
+                return (p1.coords[ni] < p2.coords[ni]);
               });
           bbox[ni] = minmax.second - minmax.first;
         }
-        auto area = std::accumulate(std::begin(bbox), std::end(bbox), 1ULL,
-                                    std::multiplies<unsigned long long>());
+        auto area = std::accumulate(std::begin(bbox), std::end(bbox), 1.0,
+                                    std::multiplies<double>());
+        // std::cout << std::scientific << area << "\t" << point2_it.distance()
+        //           << "\t" << point1_it.distance() << std::endl;
+        auto wba = static_cast<double>(area) / (point2_it - point1_it);
         // Calculate area
         metric_mutex.lock();
-        metric_dist[area]++;
+        metric_dist[wba]++;
         metric_mutex.unlock();
       }
     }
