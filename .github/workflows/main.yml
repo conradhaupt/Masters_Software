@@ -12,7 +12,7 @@ jobs:
     - name: make build
       run: mkdir build && cd build
     - name: cmake
-      run: cmake ..
+      run: cmake ../SFCCompare
     - name: make
       run: make -j
     - name: test
