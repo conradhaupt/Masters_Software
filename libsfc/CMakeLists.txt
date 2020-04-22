@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(libsfc
-        VERSION 0.1
-        DESCRIPTION "Library that impliments numerous space-filling curves"
-        LANGUAGES C CXX)
+project(
+  libsfc
+  VERSION 1.0
+  DESCRIPTION "Library that impliments numerous space-filling curves"
+  LANGUAGES C CXX)
 
 set(LIBSFC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/libsfc)
 
@@ -19,26 +20,24 @@ endif()
 
 # Handle include paths
 target_include_directories(
-  libsfc
-  INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
+  libsfc INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+                   $<INSTALL_INTERFACE:include>)
 
 # Modify target compiler properties
-target_compile_features(libsfc
-                        INTERFACE
-                        cxx_std_17 # Require C++17 for some features
-                        )
+target_compile_features(
+  libsfc INTERFACE cxx_std_17 # Require C++17 for some features
+)
 
 # Link to libhilbert for Hilbert mapping
 target_link_libraries(libsfc INTERFACE libhilbert)
 
-# Add tests (compiler, unit, benchmark)
+# Add tests (compiler, unit)
 add_subdirectory(tests)
 
 # Handle BMI2 support
 if(BMI2_SUPPORTED)
-  target_compile_options(libsfc PUBLIC -mbmi2)
-  target_compile_definitions(libsfc PUBLIC __LIBSFC_BMI2__)
+  target_compile_options(libsfc INTERFACE -mbmi2)
+  target_compile_definitions(libsfc INTERFACE __LIBSFC_BMI2__)
   message(STATUS "BMI2 supported, enabling")
 else()
   message(STATUS "BMI2 not supported, linking to libmorton")
@@ -46,12 +45,5 @@ else()
 endif()
 
 # Handle fold-expression support
-if(FOLD_EXPRESSION_SUPPORTED)
-  target_compile_definitions(libsfc INTERFACE __LIBSFC_FOLD__)
-  message(STATUS "Fold-Expressions supported, enabling")
-else()
-  # No known work-around for fold-expressions, throw an error instead of warning
-  # message(WARNING "Fold-Expressions not supported, using alternative
-  # functions")
-  message(FATAL_ERROR "Fold-Expressions not supported")
-endif()
+target_compile_definitions(libsfc INTERFACE __LIBSFC_FOLD__)
+message(STATUS "Fold-Expressions supported, enabling")

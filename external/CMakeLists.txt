@@ -5,14 +5,7 @@ include(DownloadProject)
 
 # Add googletest library if BUILD_TESTS is enabled
 if(BUILD_TESTS)
-  # Try find gtest using find_*
   set(SFC_GTEST_SEARCH_DIR "" CACHE PATH "dir to search in for googletest")
-
-  # Gives errors if GMock is not installed. TODO: Add a build option to
-  # disable/enable system-wide search for
-  # ~~~
-  # find_package(GTest HINTS ${SFC_GTEST_SEARCH_DIR})
-  # ~~~
 
   # If find_* didn't work, try download, build, and integrate with project
   if(NOT TARGET gtest_main AND NOT SFC_COMPILE_GTEST_IF_NOT_FOUND)
@@ -42,36 +35,6 @@ if(BUILD_TESTS)
   endif() # if target gtest_main found
 endif() # if BUILD_TESTS
 
-# Add google benchmark library if BUILD_BENCHMARKS is enabled
-if(BUILD_BENCHMARKS)
-  set(SFC_BENCHMARK_SEARCH_DIR "" CACHE PATH "dir to search in for googletest")
-  find_package(benchmark HINTS ${SFC_BENCHMARK_SEARCH_DIR})
-
-  # If find_* didn't work, try download, build, and integrate with project
-  if(benchmark_DIR
-     AND NOT TARGET benchmark_main
-     AND NOT SFC_COMPILE_BENCHMARK_IF_NOT_FOUND)
-    message(
-      FATAL_ERROR
-        "Could NOT find benchmark. Enable SFC_COMPILE_BENCHMARK_IF_NOT_FOUND to download and install it"
-      )
-  elseif(NOT TARGET benchmark_main)
-    message(STATUS "benchmark not found, using ExternalPackage")
-    include(benchmark-download)
-    # Add benchmark subdir
-    add_subdirectory(${benchmark_SOURCE_DIR} ${benchmark_BINARY_DIR})
-  endif()
-  if(TARGET benchmark_main)
-    message(STATUS "Found downloaded benchmark")
-  else()
-    message(FATAL_ERROR "Could NOT find downloaded benchmark")
-  endif() # if target benchmark_main found
-endif() # if BUILD_BENCHMARKS
-
-# # Add CLIPP library headers add_library(clipp INTERFACE)
-# target_include_directories(clipp INTERFACE
-# $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>)
-
 # Add libhilbert library from github.com/conradhaupt/libhilbert
 message(STATUS "Invoking libhilbert DownloadPackage")
 include(libhilbert-download)
@@ -98,4 +61,17 @@ if(TARGET libmorton)
   message(STATUS "Found downloaded libmorton")
 else()
   message(FATAL_ERROR "Could NOT find downloaded libmorton")
+endif() # if
+
+# Add args library for argument parsing from https://github.com/Taywee/args.git
+message(STATUS "Invoking args DownloadPackage")
+set(ARGS_BUILD_UNITTESTS OFF CACHE BOOL "Hello")
+include(args-download)
+# Add args subdir
+add_subdirectory(${args_SOURCE_DIR} ${args_BINARY_DIR} EXCLUDE_FROM_ALL)
+
+if(TARGET args)
+  message(STATUS "Found downloaded args")
+else()
+  message(FATAL_ERROR "Could NOT find downloaded args")
 endif() # if
