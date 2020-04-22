@@ -1,5 +1,7 @@
 # Multi-Dimensional Digital Compression Methods Based On Space-Filling Curves
 
+[![Build Status](https://travis-ci.com/conradhaupt/Masters_Software.svg?token=DCNTppJFLpca6782k9kK&branch=master)](https://travis-ci.com/conradhaupt/Masters_Software)
+
 This program compares numerous space-filling curves using the following metrics: number of discontinuities,
 localisation, and continuous lengths in a straight line.
 
