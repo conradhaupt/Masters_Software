@@ -1,11 +1,11 @@
 /**
  * @file hilbert_mapping.h
- * @author Conrad Haupt (conradjhaupt@gmail.com)
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
  * @brief
- * @version 0.1
+ * @version 1.0
  * @date 2018-10-21
  *
- * @copyright Copyright (c) 2018
+ * @copyright Copyright (c) 2020
  *
  * Used to map the C library libhilbert to C++. This code uses the modified
  * version hosted at https://github.com/conradhaupt/libhilbert which was forked
@@ -36,12 +36,12 @@ uint64_t getHKeyFromIntCoord(const sfc::size_t dimSize,
   static_assert(coords.size() == _NDim);
   uint64_t tmp_coords[_NDim];
   std::copy(std::begin(coords), std::end(coords), std::rbegin(tmp_coords));
-  std::for_each(std::begin(coords), std::end(coords),
-                [](auto& i) { std::cout << i << " "; });
-  std::cout << std::endl;
-  std::for_each(std::begin(tmp_coords), std::end(tmp_coords),
-                [](auto& i) { std::cout << i << " "; });
-  std::cout << std::endl;
+  // std::for_each(std::begin(coords), std::end(coords),
+  //               [](auto& i) { std::cout << i << " "; });
+  // std::cout << std::endl;
+  // std::for_each(std::begin(tmp_coords), std::end(tmp_coords),
+  //               [](auto& i) { std::cout << i << " "; });
+  // std::cout << std::endl;
   int error;
   auto dim_m = sfc::ilog2(dimSize);
   auto hKey = __extern_c_libhilbert::getHKeyFromIntCoord(dim_m, _NDim,

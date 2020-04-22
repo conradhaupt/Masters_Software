@@ -1,6 +1,13 @@
-//
-// Created by conrad on 2018/06/05.
-//
+/**
+ * @file sfcdef.h
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-06-05
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 
 #ifndef SFC_SFCDEF_H
 #define SFC_SFCDEF_H

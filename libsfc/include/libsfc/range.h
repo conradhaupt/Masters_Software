@@ -1,6 +1,13 @@
-//
-// Created by conrad on 2018/05/31.
-//
+/**
+ * @file range.h
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-05-31
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 
 #ifndef SFC_RANGE_H
 #define SFC_RANGE_H

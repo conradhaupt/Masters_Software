@@ -1,9 +1,12 @@
 /**
- * @brief implementation of morton order/z-order curve
- *
  * @file hilbert.h
- * @author Conrad Haupt
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
  * @date 2018-08-09
+ *
+ * @copyright Copyright (c) 2020
+ *
  */
 
 #ifndef SFC_HILBERT_H

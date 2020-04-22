@@ -1,6 +1,13 @@
-//
-// Created by conrad on 2018/05/23.
-//
+/**
+ * @file sfcurve.h
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-05-23
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 
 #ifndef SFC_SFCURVE_H
 #define SFC_SFCURVE_H
@@ -46,7 +53,7 @@ class sfcurve
   void __check_values()
   {
     static_assert(_NDim > 0, "number of dimensions must be a positive integer");
-    if (_dimLength <= 1)
+    if (_dimLength < 1)
       throw std::invalid_argument(
           "dimension length must be a positive integer greater than 1");
     if (_Nm != sfc::pow(_dimLength, _NDim))

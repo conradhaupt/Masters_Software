@@ -1,16 +1,17 @@
 /**
  * @file progress_bar.h
- * @author Conrad Haupt (conradjhaupt@gmail.com)
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
  * @brief
- * @version 0.1
+ * @version 1.0
  * @date 2019-05-14
  *
- * @copyright Copyright (c) 2019
+ * @copyright Copyright (c) 2020
  *
  */
 #ifndef SFC_PROGRESS_BAR_H
 #define SFC_PROGRESS_BAR_H
 
+#include <omp.h>
 #include <iomanip>
 #include <iostream>
 #include <mutex>
@@ -38,7 +39,7 @@ class progressbar
         _current(0),
         _bar_char(bar_char),
         _bar_width(bar_width),
-        _prev_percentage(0),
+        _prev_percentage(-1),
         _perc_width(3)
   {
     _max_width = _bar_width + 1 + _perc_width;
@@ -46,6 +47,8 @@ class progressbar
 
   ~progressbar()
   {
+    _current = _max - 1;
+    this->addProgress();
     updateCLI();
     std::cout << std::endl;
   }
@@ -54,13 +57,15 @@ class progressbar
 
   void addProgress()
   {
-    std::lock_guard<std::mutex> lock(_mtx);
+// std::lock_guard<std::mutex> lock(_mtx);
+#pragma omp critical
     _current++;
+    // if (omp_get_thread_num() != 0) return;
     auto _curr_percentage =
         static_cast<int>(static_cast<double>(_current * 100) / _max);
     if (_curr_percentage > _prev_percentage) {
-      updateCLI();
       _prev_percentage = _curr_percentage;
+      updateCLI();
     }
     // __print_count = ++__print_count % _n_before_print;
     // std::cout << __print_count << std::endl;

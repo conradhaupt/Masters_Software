@@ -1,9 +1,12 @@
 /**
- * @brief implementation of morton order/z-order curve
- *
  * @file morton.h
- * @author Conrad Haupt
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
  * @date 2018-07-03
+ *
+ * @copyright Copyright (c) 2020
+ *
  */
 
 #ifndef SFC_MORTON_H

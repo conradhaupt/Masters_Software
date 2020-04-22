@@ -1,9 +1,12 @@
 /**
- * @brief exponent operations/code
- *
  * @file pow.h
- * @author Conrad Haupt
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
  * @date 2018-06-29
+ *
+ * @copyright Copyright (c) 2020
+ *
  */
 
 #ifndef SFC_POW_H

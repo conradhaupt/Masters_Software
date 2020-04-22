@@ -1,11 +1,11 @@
 /**
  * @file gray.h
- * @author Conrad Haupt (conradjhaupt@gmail.com)
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
  * @brief
- * @version 0.1
+ * @version 1.0
  * @date 2018-10-05
  *
- * @copyright Copyright (c) 2018
+ * @copyright Copyright (c) 2020
  *
  */
 

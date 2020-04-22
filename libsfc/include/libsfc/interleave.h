@@ -1,9 +1,12 @@
 /**
- * @brief contains code to manage bit-interleaving
- *
  * @file interleave.h
- * @author Conrad Haupt
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
  * @date 2018-07-03
+ *
+ * @copyright Copyright (c) 2020
+ *
  */
 
 #ifndef SFC_INTERLEAVE_H
@@ -146,7 +149,7 @@ template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,
 constexpr auto interleaveBits(const _TpCoords& coords)
     -> std::enable_if_t<_NDim == 3, _TpDist>
 {
-  return libmorton::morton3D_64_encode(coords[0], coords[1]);
+  return libmorton::morton3D_64_encode(coords[0], coords[1], coords[2]);
 }
 
 template <sfc::size_t _NDim, typename _TpDist, typename _TpCoords,

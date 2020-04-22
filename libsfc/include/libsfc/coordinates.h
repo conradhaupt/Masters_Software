@@ -1,11 +1,11 @@
 /**
  * @file coordinates.h
- * @author Conrad Haupt (conradjhaupt@gmail.com)
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
  * @brief
- * @version 0.1
+ * @version 1.0
  * @date 2018-10-16
  *
- * @copyright Copyright (c) 2018
+ * @copyright Copyright (c) 2020
  *
  */
 #ifndef SFC_COORDINATES_H
@@ -111,14 +111,63 @@ constexpr T DistanceTo(const coordinates<T, N>& coords1,
 {
   switch (norm) {
     case NORM::FIRST:
-      return ManhattenDistanceTo(coords1, coords2);
+      return DistanceTo<NORM::FIRST, T, N>(coords1, coords2);
     case NORM::SECOND:
-      return EuclideanDistanceTo(coords1, coords2);
+      return DistanceTo<NORM::SECOND, T, N>(coords1, coords2);
     case NORM::INFINITE:
-      return InfiniteNormTo(coords1, coords2);
+      return DistanceTo<NORM::INFINITE, T, N>(coords1, coords2);
     default:
       throw std::exception();
   }
+}
+
+template <class T, sfc::size_t N>
+constexpr bool greaterThan(const sfc::coordinates<T, N>& coords1,
+                           const sfc::coordinates<T, N>& coords2)
+{
+  sfc::coordinates<bool, N> _gt{};
+  std::transform(std::begin(coords1), std::end(coords1), std::begin(coords2),
+                 std::begin(_gt), std::greater<T>());
+  return std::all_of(std::begin(_gt), std::end(_gt), [](auto& b) { return b; });
+}
+
+template <class T, sfc::size_t N>
+constexpr bool greaterThanEqual(const sfc::coordinates<T, N>& coords1,
+                                const sfc::coordinates<T, N>& coords2)
+{
+  sfc::coordinates<bool, N> _gt{};
+  std::transform(std::begin(coords1), std::end(coords1), std::begin(coords2),
+                 std::begin(_gt), std::greater_equal<T>());
+  return std::all_of(std::begin(_gt), std::end(_gt), [](auto& b) { return b; });
+}
+
+template <class T, sfc::size_t N>
+constexpr bool lessThan(const sfc::coordinates<T, N>& coords1,
+                        const sfc::coordinates<T, N>& coords2)
+{
+  sfc::coordinates<bool, N> _gt{};
+  std::transform(std::begin(coords1), std::end(coords1), std::begin(coords2),
+                 std::begin(_gt), std::less<T>());
+  return std::all_of(std::begin(_gt), std::end(_gt), [](auto& b) { return b; });
+}
+
+template <class T, sfc::size_t N>
+constexpr bool lessThanEqual(const sfc::coordinates<T, N>& coords1,
+                             const sfc::coordinates<T, N>& coords2)
+{
+  sfc::coordinates<bool, N> _gt{};
+  std::transform(std::begin(coords1), std::end(coords1), std::begin(coords2),
+                 std::begin(_gt), std::less_equal<T>());
+  return std::all_of(std::begin(_gt), std::end(_gt), [](auto& b) { return b; });
+}
+
+template <class T, sfc::size_t N>
+constexpr sfc::coordinates<T, N> make_unitcoordinate(
+    const sfc::size_t& dimIndex)
+{
+  sfc::coordinates<T, N> coord{};
+  coord[dimIndex] = T{1};
+  return coord;
 }
 };  // namespace coords
 };  // namespace sfc
@@ -140,4 +189,20 @@ sfc::coordinates<T, N>& operator+=(sfc::coordinates<T, N>& lhs,
   return lhs;
 }
 
+template <class T, sfc::size_t N>
+sfc::coordinates<T, N> operator-(const sfc::coordinates<T, N>& lhs,
+                                 const sfc::coordinates<T, N>& rhs)
+{
+  auto output = lhs;
+  for (auto i : sfc::range<sfc::size_t>(0, N)) output[i] -= rhs[i];
+  return output;
+}
+
+template <class T, sfc::size_t N>
+sfc::coordinates<T, N>& operator-=(sfc::coordinates<T, N>& lhs,
+                                   const sfc::coordinates<T, N>& rhs)
+{
+  for (auto i : sfc::range<sfc::size_t>(0, N)) lhs[i] -= rhs[i];
+  return lhs;
+}
 #endif

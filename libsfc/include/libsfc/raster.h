@@ -1,13 +1,11 @@
 /**
  * @file raster.h
- * @author Conrad Haupt (conradjhaupt@gmail.com)
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
  * @brief
- * @version 0.1
+ * @version 1.0
  * @date 2019-05-10
  *
- * @copyright Copyright (c) 2019
- * This software is released under the MIT License.
- * https://opensource.org/licenses/MIT
+ * @copyright Copyright (c) 2020
  *
  */
 #ifndef SFC_RASTER_H

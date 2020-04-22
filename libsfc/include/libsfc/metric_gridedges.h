@@ -1,37 +1,39 @@
 /**
- * @file metric_bbox.h
+ * @file metric_gridedges.h
  * @author Conrad Haupt (conrad@conradhaupt.co.za)
  * @brief
  * @version 1.0
- * @date 2019-05-22
+ * @date 2019-05-25
  *
  * @copyright Copyright (c) 2020
  *
  */
-#ifndef SFC_METRIC_BBOX_H
-#define SFC_METRIC_BBOX_H
+#ifndef METRIC_GRIDEDGES_H
+#define METRIC_GRIDEDGES_H
+
 #include <cmath>
 #include <functional>
 #include <map>
+#include "coordinates.h"
 #include "metric.h"
 #include "progress_bar.h"
-#include "rectangle.h"
+#include "raster.h"
 #include "sfcdef.h"
 namespace sfc {
 template <sfc::size_t _NDim>
-class bounds_metric : public metric<_NDim>
+class metric_gridedges : public metric<_NDim>
 {
  public:
   using coordinates_t = typename sfc::coordinates<sfc::size_t, _NDim>;
-  using metric_t = std::map<double, unsigned long long>;
+  using metric_t = std::map<unsigned long long, unsigned long long>;
 
  private:
   std::unique_ptr<metric_t> _results;
   unsigned long long _result_sidelength;
 
  public:
-  bounds_metric() {}
-  virtual ~bounds_metric() override {}
+  metric_gridedges() {}
+  virtual ~metric_gridedges() override {}
 
   virtual void calculateFor(
       const std::unique_ptr<sfc::sfcurve<_NDim>>& curve) override
@@ -40,23 +42,30 @@ class bounds_metric : public metric<_NDim>
     auto pg = sfc::cli::progressbar(curve->totalElements() *
                                     curve->totalElements() / 2);
     std::mutex metric_mutex;
+    auto _traversal_curve = sfc::raster<_NDim>(curve->dimensionLength() - 1);
 #pragma omp parallel for shared(pg)
-    for (auto point1_it = curve->begin(); point1_it < curve->end();
-         point1_it++) {
-      sfc::rectangle<sfc::size_t, _NDim> _region(point1_it.coordinates(),
-                                                 point1_it.coordinates());
-      for (auto point2_it = std::next(point1_it); point2_it < curve->end();
-           point2_it++) {
-        pg.addProgress();
-        _region.expandToInclude(point2_it.coordinates());
-
-        // std::cout << std::scientific << area << "\t" << point2_it.distance()
-        //           << "\t" << point1_it.distance() << std::endl;
-        auto wba =
-            static_cast<double>(_region.area()) / (point2_it - point1_it);
-        // Calculate area
+    for (auto point = std::begin(_traversal_curve);
+         point < std::end(_traversal_curve); point++) {
+      pg.addProgress();
+      auto point_coords = point.coordinates();
+      for (auto ni = 0; ni < _NDim; ni++) {
+        if (point_coords[ni] != 0) {
+          auto neg_dist = sfc::abs_diff(
+              curve->coordsToDist(
+                  point_coords -
+                  sfc::coords::make_unitcoordinate<unsigned long, _NDim>(ni)),
+              point.distance());
+          metric_mutex.lock();
+          metric_dist[neg_dist]++;
+          metric_mutex.unlock();
+        }
+        auto dist = sfc::abs_diff(
+            curve->coordsToDist(
+                point_coords +
+                sfc::coords::make_unitcoordinate<unsigned long, _NDim>(ni)),
+            point.distance());
         metric_mutex.lock();
-        metric_dist[wba]++;
+        metric_dist[dist]++;
         metric_mutex.unlock();
       }
     }
@@ -67,12 +76,13 @@ class bounds_metric : public metric<_NDim>
   virtual bool writeTo(std::ostream& os)
   {
     if (_results == nullptr || _result_sidelength == 0ULL) return false;
-    os << "Area\tRegions\tNormalised" << std::endl;
     auto nElems = sfc::pow(_result_sidelength, 2);
     auto nComb = std::tgammal(nElems) / (std::tgammal(nElems - 2.0) * 2.0);
+    os << "Distance\tRegions\tNormalised" << std::endl;
     for (auto pair : *_results) {
-      os << std::setprecision(std::numeric_limits<double>::max_digits10)
-         << std::scientific << pair.first << "\t"
+      os << std::setprecision(
+                std::numeric_limits<unsigned long long>::max_digits10)
+         << pair.first << "\t"
          << std::setprecision(
                 std::numeric_limits<unsigned long long>::max_digits10)
          << pair.second << "\t"
@@ -83,5 +93,6 @@ class bounds_metric : public metric<_NDim>
     return true;
   }
 };
-};     // namespace sfc
-#endif /* METRIC_BBOX_H */
+};  // namespace sfc
+
+#endif /* METRIC_GRIDEDGES_H */
