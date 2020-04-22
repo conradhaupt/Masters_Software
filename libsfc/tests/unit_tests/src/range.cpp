@@ -1,3 +1,13 @@
+/**
+ * @file range.cpp
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-10-12
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #include "libsfc/range.h"
 #include <gtest/gtest.h>
 #include "range_test.h"

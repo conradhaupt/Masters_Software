@@ -1,3 +1,13 @@
+/**
+ * @file libhilbert.cpp
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-10-21
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #include "libhilbert.h"
 #include <gtest/gtest.h>
 #include "libsfc/coordinates.h"

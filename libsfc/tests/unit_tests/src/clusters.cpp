@@ -1,3 +1,13 @@
+/**
+ * @file clusters.cpp
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2019-05-12
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #include "libsfc/clusters.h"
 #include <gtest/gtest.h>
 #include <bitset>

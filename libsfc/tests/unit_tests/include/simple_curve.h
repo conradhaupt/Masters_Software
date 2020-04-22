@@ -1,3 +1,14 @@
+/**
+ * @file simple_curve.h
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-10-15
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
+
 #ifndef SFC_TEST_SIMPLE_CURVE_H
 #define SFC_TEST_SIMPLE_CURVE_H
 

@@ -1,3 +1,13 @@
+/**
+ * @file iterator.cpp
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-10-15
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #include "libsfc/iterator.h"
 #include <gtest/gtest.h>
 #include "simple_curve.h"

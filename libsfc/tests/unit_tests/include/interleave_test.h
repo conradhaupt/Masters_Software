@@ -1,7 +1,12 @@
 /**
  * @file interleave_test.h
- * @author Conrad Haupt
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
  * @date 2018-07-03
+ *
+ * @copyright Copyright (c) 2020
+ *
  */
 
 #ifndef SFC_INTERLEAVE_TEST_H

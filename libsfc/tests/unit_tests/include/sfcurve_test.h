@@ -1,7 +1,12 @@
 /**
  * @file sfcurve_test.h
- * @author Conrad Haupt
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
  * @date 2018-07-01
+ *
+ * @copyright Copyright (c) 2020
+ *
  */
 
 #ifndef SFC_SFCURVE_TEST_H

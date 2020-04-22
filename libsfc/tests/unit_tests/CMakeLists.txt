@@ -9,14 +9,15 @@ include(GoogleTest)
 # Unit tests
 add_executable(sfc_test
                src/base2.cpp
-               src/coordinates.cpp
                src/clusters.cpp
+               src/coordinates.cpp
                src/interleave.cpp
                src/iterator.cpp
                src/libhilbert.cpp
-               src/range.cpp
                src/main.cpp
                src/pow.cpp
+               src/range.cpp
+               src/rectangle.cpp
                src/sfcurve.cpp)
 
 # Alias

@@ -1,4 +1,13 @@
-
+/**
+ * @file fold_expressions.cpp
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-06-24
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #include <iostream>
 
 template <typename T, typename... Ts>

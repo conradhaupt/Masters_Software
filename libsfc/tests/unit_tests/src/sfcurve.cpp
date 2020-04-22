@@ -1,3 +1,14 @@
+/**
+ * @file sfcurve.cpp
+ * @author Conrad Haupt (conrad@conradhaupt.co.za)
+ * @brief
+ * @version 1.0
+ * @date 2018-10-10
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
+
 #include "libsfc/sfcurve.h"
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
