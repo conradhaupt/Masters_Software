@@ -1,0 +1,34 @@
+language: cpp
+compiler: gcc
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-8
+            - g++-8
+            - cmake
+      env:
+         - MATRIX_EVAL="export CC=gcc-8 && export CXX=g++-8"
+         - OMP_NUM_THREADS=4
+         - MAKEFLAGS="-j 2"
+         - CTESTFLAGS="-j 4"
+
+
+before_install:
+  - eval "${MATRIX_EVAL}"
+  - $CC -v && $CXX -v && cmake --version
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script:
+  - make $MAKEFLAGS
+  - ctest $CTESTFLAGS
