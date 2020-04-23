@@ -88,6 +88,18 @@ These programs were compiled and developed on an Ubuntu 18.04 machine. The
 environment is described in `environment.txt`, generated using the script
 provided at [https://github.com/SC-Tech-Program/Author-Kit](https://github.com/SC-Tech-Program/Author-Kit).
 
+### Raw Results
+
+The results from this research are given in the `results` subdirectory. They are
+organised into the two datasets: HDF5 SKA and SRTM30. The CSVs store the following
+information:
+
+- File-sizes for uncompressed and compressed files in bytes.
+- File statistics as retrieved using `tools/sfcc_stats.py`.
+- File block-entropies as retrieved using `tools/sfcc_block_entropy.py`.
+  - These files are compressed using GZIP as they are quite large uncompressed.
+- Geographical Extents for each file [Only for the SRTM30 dataset].
+
 ## License
 
 See the LICENSE file for the program's licensing. Dependencies are under their own licenses, listed in LICENSE. Some source-files have their own license listed in the header. Source-files under their own license are listed in `LICENSE`.
