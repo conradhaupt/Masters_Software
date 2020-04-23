@@ -22,6 +22,7 @@ Prints information about sfcc files.
 
 ## Dependencies
 
+- tqdm
 - scipy
 - progress
 - pandas
@@ -29,3 +30,4 @@ Prints information about sfcc files.
 - joblib
 - h5py
 - georaster: [https://github.com/atedstone/georaster](https://github.com/atedstone/georaster)
+- binwalk: [https://github.com/ReFirmLabs/binwalk](https://github.com/ReFirmLabs/binwalk)
