@@ -12,6 +12,8 @@ The project is organised into sub-projects. libsfc is the primary space-filling 
 ```bash
 .
 ├── cmake                         #  CMake config dependencies
+├── examples                      #  Examples describing usage of executables
+│   └── files                     #  Sample sfcc files from HDF5 and SRTM30 datasets
 ├── external                      #  External dependencies' CMake configs
 │   └── cmake
 ├── libsfc                        #  Main SFC library
@@ -21,21 +23,23 @@ The project is organised into sub-projects. libsfc is the primary space-filling 
 ├── sfccompare                    #  Executable to run some locality metrics
 │   ├── src
 │   └── tools                     #  Tools for comparing locality metrics
-└── sfccompress                   #  Executable to compress sfcc files
-    ├── include
-    ├── src
-    └── tests                     #  GTests for compression executable
+├── sfccompress                   #  Executable to compress sfcc files
+│   ├── include
+│   ├── src
+│   └── tests                     #  GTests for compression executable
+└── tools                         #  Tools to manage sfcc files
 ```
 
-Note: sfccompare is not fully completed and some metrics may not be fully functional.
+**Note: `sfccompare` is not fully completed and some metrics may not be fully functional.**
 
 ## Requirements
 
 - CMake 3.10+
-- C/C++ compiler with compatibility for:
+- C/C++ compiler, such as GCC Version 9.x, with compatibility for:
   - BMI2 (Intel 2013 chips and newer) [Optional]
-  - Some C++17 features
+  - Some C++17 features.
   - **NOTE:** Current CMakeLists.txt may not support non-GNU compiler arguments for the required features.
+- Git to download dependencies.
 
 ## Building
 
@@ -54,6 +58,17 @@ cd build
 cmake ..
 make -j
 ```
+
+### Compiled Output
+
+There are five binary output files from this repo. Four are executables and one is a static library.
+There are two unit-testing executables, sfc_test and sfccompress_test, which are
+located in `%BUILD_DIR/{libsfc,sfccompress}/tests/unit_tests/`. The main programs
+are present in `$BUILD_DIR/sfccompare` and `%BUILD_DIR/sfccompress`. The static
+library contains the main implementation for sfccompress in
+`%BUILD_DIR/sfccompress/libsfccompress.a`.
+
+**There is no `install` target, requiring that the binaries are manually installed.**
 
 ## Dependencies
 
