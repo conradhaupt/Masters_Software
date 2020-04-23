@@ -2,8 +2,17 @@
 
 [![Build Status](https://travis-ci.com/conradhaupt/Masters_Software.svg?token=DCNTppJFLpca6782k9kK&branch=master)](https://travis-ci.com/conradhaupt/Masters_Software)
 
-This program compares numerous space-filling curves using the following metrics: number of discontinuities,
-localisation, and continuous lengths in a straight line.
+**By Conrad J. Haupt**
+
+**Supervised by Professor Ekow J. Otoo and Professor Ling Cheng**
+
+This project contains two C++ programs that 1) compare SFCs using locality
+metrics and 2) reorders and compresses sfcc files using SFCs and standard
+compression techniques. These were created for Conrad Haupt's Electrical
+Engineering Masters Dissertation at the University of the Witwatersrand,
+Johannesburg in South Africa. There are also two papers associated with this
+research though they have not been published yet. The dissertation has also not
+yet been published.
 
 ## Project Directory Structure
 
