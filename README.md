@@ -82,6 +82,12 @@ The following dependencies are downloaded during the configure stage of the buil
    - Original: [https://github.com/Forceflow/libmorton](https://github.com/Forceflow/libmorton)
 5. DownloadProject: [https://github.com/Crascit/DownloadProject](https://github.com/Crascit/DownloadProject)
 
+## Testing Environment
+
+These programs were compiled and developed on an Ubuntu 18.04 machine. The
+environment is described in `environment.txt`, generated using the script
+provided at [https://github.com/SC-Tech-Program/Author-Kit](https://github.com/SC-Tech-Program/Author-Kit).
+
 ## License
 
 See the LICENSE file for the program's licensing. Dependencies are under their own licenses, listed in LICENSE. Some source-files have their own license listed in the header. Source-files under their own license are listed in `LICENSE`.

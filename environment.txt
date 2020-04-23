@@ -1,0 +1,255 @@
+SUDO_GID=1013
+MAIL=/var/mail/USER
+LANGUAGE=en_ZA:en
+USER=USER
+TEMPDIR=/tmp/user/0
+HOME=/home/swbsutg14
+SUDO_UID=1013
+TMPDIR=/tmp/user/0
+LOGNAME=USER
+TEMP=/tmp/user/0
+TERM=xterm-256color
+USERNAME=USER
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+LANG=en_ZA.UTF-8
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+TMP=/tmp/user/0
+SUDO_COMMAND=./collect_environment.sh
+SHELL=/bin/bash
+SUDO_USER=swbsutg14
+PWD=/home/swbsutg14/Author-Kit
++ lsb_release -a
+No LSB modules are available.
+Distributor ID:	Ubuntu
+Description:	Ubuntu 18.04.4 LTS
+Release:	18.04
+Codename:	bionic
++ uname -a
+Linux hornet01 4.15.0-91-generic #92-Ubuntu SMP Fri Feb 28 11:09:48 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
++ lscpu
+Architecture:        x86_64
+CPU op-mode(s):      32-bit, 64-bit
+Byte Order:          Little Endian
+CPU(s):              8
+On-line CPU(s) list: 0-7
+Thread(s) per core:  2
+Core(s) per socket:  4
+Socket(s):           1
+NUMA node(s):        1
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               42
+Model name:          Intel(R) Xeon(R) CPU E31270 @ 3.40GHz
+Stepping:            7
+CPU MHz:             1917.246
+CPU max MHz:         3800.0000
+CPU min MHz:         1600.0000
+BogoMIPS:            6784.72
+Virtualization:      VT-x
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            256K
+L3 cache:            8192K
+NUMA node0 CPU(s):   0-7
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer aes xsave avx lahf_lm epb pti ssbd ibrs ibpb stibp tpr_shadow vnmi flexpriority ept vpid xsaveopt dtherm ida arat pln pts md_clear flush_l1d
++ cat /proc/meminfo
+MemTotal:       16132392 kB
+MemFree:         8886508 kB
+MemAvailable:   14878432 kB
+Buffers:          741300 kB
+Cached:          5019692 kB
+SwapCached:            0 kB
+Active:          2595728 kB
+Inactive:        3489464 kB
+Active(anon):     347520 kB
+Inactive(anon):   146972 kB
+Active(file):    2248208 kB
+Inactive(file):  3342492 kB
+Unevictable:       11116 kB
+Mlocked:           11116 kB
+SwapTotal:      31246420 kB
+SwapFree:       31246420 kB
+Dirty:               180 kB
+Writeback:             0 kB
+AnonPages:        334932 kB
+Mapped:           405628 kB
+Shmem:            167808 kB
+Slab:             928440 kB
+SReclaimable:     733492 kB
+SUnreclaim:       194948 kB
+KernelStack:        8020 kB
+PageTables:        24548 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:    39312616 kB
+Committed_AS:    2354760 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+CmaTotal:              0 kB
+CmaFree:               0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:      408148 kB
+DirectMap2M:    16087040 kB
++ inxi -F -c0
+System:    Host: hornet01 Kernel: 4.15.0-91-generic x86_64 bits: 64 Console: tty 0 Distro: Ubuntu 18.04.4 LTS
+Machine:   Device: server System: Intel product: S1200BTL v: .................... serial: ............
+           Mobo: Intel model: S1200BTL v: E98681-306 serial: QSBT11600759
+           BIOS: Intel v: S1200BT.86B.01.00.0030.091320110948 date: 09/13/2011
+CPU:       Quad core Intel Xeon E31270 (-MT-MCP-) cache: 8192 KB
+           clock speeds: max: 3800 MHz 1: 1969 MHz 2: 1790 MHz 3: 2726 MHz 4: 1741 MHz 5: 1874 MHz 6: 1776 MHz
+           7: 1679 MHz 8: 2034 MHz
+Graphics:  Card: NVIDIA GF116 [GeForce GTX 550 Ti]
+           Display Server: X.org 1.19.6 drivers: nvidia (unloaded: modesetting,fbdev,vesa,nouveau)
+           tty size: 126x41 Advanced Data: N/A for root out of X
+Audio:     Card NVIDIA GF116 High Definition Audio Controller driver: snd_hda_intel
+           Sound: Advanced Linux Sound Architecture v: k4.15.0-91-generic
+Network:   Card-1: Intel 82579LM Gigabit Network Connection (Lewisville) driver: e1000e
+           IF: eno1 state: up speed: 1000 Mbps duplex: full mac: 00:1e:67:14:6a:f5
+           Card-2: Intel 82574L Gigabit Network Connection driver: e1000e
+           IF: rename3 state: down mac: 00:1e:67:14:6a:f4
+Drives:    HDD Total Size: 4000.8GB (10.1% used)
+           ID-1: /dev/sda model: ST32000641AS size: 2000.4GB
+           ID-2: /dev/sdb model: ST32000641AS size: 2000.4GB
+Partition: ID-1: / size: 117G used: 7.7G (7%) fs: ext4 dev: /dev/md126p3
+           ID-2: /usr size: 44G used: 17G (41%) fs: ext4 dev: /dev/md126p5
+           ID-3: /boot size: 463M used: 170M (39%) fs: ext4 dev: /dev/md126p1
+           ID-4: /opt size: 44G used: 53M (1%) fs: ext4 dev: /dev/md126p6
+           ID-5: /home size: 550G used: 322G (62%) fs: ext4 dev: /dev/md126p7
+           ID-6: swap-1 size: 32.00GB used: 0.00GB (0%) fs: swap dev: /dev/md126p2
+RAID:      Device-1: /dev/md126 - active raid: 1 components: online: 2/2 - sda sdb
+           Device-2: /dev/md127 - inactive components: online: none spare: sdb sda
+Sensors:   System Temperatures: cpu: 29.8C mobo: 27.8C
+           Fan Speeds (in rpm): cpu: N/A
+Info:      Processes: 277 Uptime: 30 days Memory: 1458.5/15754.3MB Init: systemd runlevel: 5
+           Client: Shell (collect_environ) inxi: 2.3.56
++ lsblk -a
+NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINT
+loop0         7:0    0         0 loop  
+loop1         7:1    0         0 loop  
+loop2         7:2    0         0 loop  
+loop3         7:3    0         0 loop  
+loop4         7:4    0         0 loop  
+loop5         7:5    0         0 loop  
+loop6         7:6    0         0 loop  
+loop7         7:7    0         0 loop  
+sda           8:0    0   1.8T  0 disk  
+├─md126       9:126  0   1.8T  0 raid1 
+│ ├─md126p1 259:0    0 486.3M  0 md    /boot
+│ ├─md126p2 259:1    0  29.8G  0 md    [SWAP]
+│ ├─md126p3 259:2    0 119.2G  0 md    /
+│ ├─md126p4 259:3    0     1K  0 md    
+│ ├─md126p5 259:4    0  44.7G  0 md    /usr
+│ ├─md126p6 259:5    0  44.7G  0 md    /opt
+│ ├─md126p7 259:6    0 558.8G  0 md    /home
+│ ├─md126p8 259:7    0 558.8G  0 md    /home1
+│ └─md126p9 259:8    0 506.5G  0 md    /home2
+└─md127       9:127  0         0 md    
+sdb           8:16   0   1.8T  0 disk  
+├─md126       9:126  0   1.8T  0 raid1 
+│ ├─md126p1 259:0    0 486.3M  0 md    /boot
+│ ├─md126p2 259:1    0  29.8G  0 md    [SWAP]
+│ ├─md126p3 259:2    0 119.2G  0 md    /
+│ ├─md126p4 259:3    0     1K  0 md    
+│ ├─md126p5 259:4    0  44.7G  0 md    /usr
+│ ├─md126p6 259:5    0  44.7G  0 md    /opt
+│ ├─md126p7 259:6    0 558.8G  0 md    /home
+│ ├─md126p8 259:7    0 558.8G  0 md    /home1
+│ └─md126p9 259:8    0 506.5G  0 md    /home2
+└─md127       9:127  0         0 md    
+sr0          11:0    1  1024M  0 rom   
++ lsscsi -s
+[0:0:0:0]    disk    ATA      ST32000641AS     CC13  /dev/sda   2.00TB
+[1:0:0:0]    disk    ATA      ST32000641AS     CC13  /dev/sdb   2.00TB
+[2:0:0:0]    cd/dvd  ATAPI    iHAS524   B      AL29  /dev/sr0        -
++ module list
+./collect_environment.sh: 17: ./collect_environment.sh: module: not found
++ nvidia-smi
+Thu Apr 23 11:21:20 2020       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 390.132                Driver Version: 390.132                   |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 550 Ti  Off  | 00000000:01:00.0 N/A |                  N/A |
+| 40%   30C   P12    N/A /  N/A |    129MiB /   963MiB |     N/A      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|    0                    Not Supported                                       |
++-----------------------------------------------------------------------------+
++ lshw -short -quiet -sanitize
++ cat
+H/W path         Device      Class       Description
+====================================================
+                             system      S1200BTL (To be filled by O.E.M.)
+/0                           bus         S1200BTL
+/0/0                         memory      64KiB BIOS
+/0/4                         processor   Intel(R) Xeon(R) CPU E31270 @ 3.40GHz
+/0/4/5                       memory      64KiB L1 cache
+/0/4/6                       memory      256KiB L2 cache
+/0/4/7                       memory      8MiB L3 cache
+/0/41                        memory      16GiB System Memory
+/0/41/0                      memory      4GiB DIMM DDR3 Synchronous 1067 MHz (0.9 ns)
+/0/41/1                      memory      4GiB DIMM DDR3 Synchronous 1067 MHz (0.9 ns)
+/0/41/2                      memory      4GiB DIMM DDR3 Synchronous 1067 MHz (0.9 ns)
+/0/41/3                      memory      4GiB DIMM DDR3 Synchronous 1067 MHz (0.9 ns)
+/0/100                       bridge      Xeon E3-1200 Processor Family DRAM Controller
+/0/100/1                     bridge      Xeon E3-1200/2nd Generation Core Processor Family PCI Express Root Port
+/0/100/1/0                   display     GF116 [GeForce GTX 550 Ti]
+/0/100/1/0.1                 multimedia  GF116 High Definition Audio Controller
+/0/100/19        eno1        network     82579LM Gigabit Network Connection (Lewisville)
+/0/100/1a                    bus         6 Series/C200 Series Chipset Family USB Enhanced Host Controller #2
+/0/100/1a/1      usb1        bus         EHCI Host Controller
+/0/100/1a/1/1                bus         Integrated Rate Matching Hub
+/0/100/1a/1/1/1              input       Virtual Keyboard and Mouse
+/0/100/1c                    bridge      6 Series/C200 Series Chipset Family PCI Express Root Port 1
+/0/100/1c.4                  bridge      6 Series/C200 Series Chipset Family PCI Express Root Port 5
+/0/100/1c.4/0    rename3     network     82574L Gigabit Network Connection
+/0/100/1c.5                  bridge      6 Series/C200 Series Chipset Family PCI Express Root Port 6
+/0/100/1d                    bus         6 Series/C200 Series Chipset Family USB Enhanced Host Controller #1
+/0/100/1d/1      usb2        bus         EHCI Host Controller
+/0/100/1d/1/1                bus         Integrated Rate Matching Hub
+/0/100/1d/1/1/3              input       Microsoft 3-Button Mouse with IntelliEye(TM)
+/0/100/1d/1/1/4              input       Comfort Curve Keyboard 2000
+/0/100/1e                    bridge      82801 PCI Bridge
+/0/100/1f                    bridge      C204 Chipset LPC Controller
+/0/100/1f.2                  storage     SATA Controller [RAID mode]
+/0/100/1f.3                  bus         6 Series/C200 Series Chipset Family SMBus Controller
+/0/1             scsi0       storage     
+/0/1/0.0.0       /dev/sda    disk        2TB ST32000641AS
+/0/1/0.0.0/1                 volume      486MiB EXT4 volume
+/0/1/0.0.0/2                 volume      29GiB Linux swap volume
+/0/1/0.0.0/3                 volume      119GiB EXT4 volume
+/0/1/0.0.0/4                 volume      1713GiB Extended partition
+/0/1/0.0.0/4/5               volume      44GiB EXT4 volume
+/0/1/0.0.0/4/6               volume      44GiB EXT4 volume
+/0/1/0.0.0/4/7               volume      558GiB EXT4 volume
+/0/1/0.0.0/4/8               volume      558GiB EXT4 volume
+/0/1/0.0.0/4/9               volume      506GiB EXT4 volume
+/0/2             scsi1       storage     
+/0/2/0.0.0       /dev/sdb    disk        2TB ST32000641AS
+/0/2/0.0.0/1                 volume      486MiB EXT4 volume
+/0/2/0.0.0/2                 volume      29GiB Linux swap volume
+/0/2/0.0.0/3                 volume      119GiB EXT4 volume
+/0/2/0.0.0/4                 volume      1713GiB Extended partition
+/0/2/0.0.0/4/5               volume      44GiB EXT4 volume
+/0/2/0.0.0/4/6               volume      44GiB EXT4 volume
+/0/2/0.0.0/4/7               volume      558GiB EXT4 volume
+/0/2/0.0.0/4/8               volume      558GiB EXT4 volume
+/0/2/0.0.0/4/9               volume      506GiB EXT4 volume
+/0/3             scsi2       storage     
+/0/3/0.0.0       /dev/cdrom  disk        iHAS524   B
