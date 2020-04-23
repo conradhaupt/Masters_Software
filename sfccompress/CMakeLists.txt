@@ -1,33 +1,37 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(sfccompress
-        VERSION 1.0
-        DESCRIPTION "Program that manages sfc compress files"
-        LANGUAGES C CXX)
+project(
+  sfccompress
+  VERSION 1.0
+  DESCRIPTION "Program that manages sfc compress files"
+  LANGUAGES C CXX)
 
 set(LIBSFCCOMPRESS_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(LIBSFCCOMPRESS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-add_library(libsfccompress
-            # Source files
-            ${LIBSFCCOMPRESS_SOURCE_DIR}/sfcc.cpp
-            ${LIBSFCCOMPRESS_SOURCE_DIR}/compressor.cpp
-            ${LIBSFCCOMPRESS_SOURCE_DIR}/huffman.cpp
-            ${LIBSFCCOMPRESS_SOURCE_DIR}/lzw.cpp
-            ${LIBSFCCOMPRESS_SOURCE_DIR}/bitstream.cpp
-            # ${LIBSFCCOMPRESS_SOURCE_DIR}/rle.cpp
-            # Header files
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/bwt.h
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/compress_handler.h
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/compressor.h
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/huffman.h
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/mtf.h
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/reorder.h
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/sfcc.h
-            ${LIBSFCCOMPRESS_INCLUDE_DIR}/sfccexcept.h)
-add_executable(sfccompress
-               # Source files
-               ${LIBSFCCOMPRESS_SOURCE_DIR}/main.cpp)
+add_library(
+  libsfccompress
+  # Source files
+  ${LIBSFCCOMPRESS_SOURCE_DIR}/sfcc.cpp
+  ${LIBSFCCOMPRESS_SOURCE_DIR}/compressor.cpp
+  ${LIBSFCCOMPRESS_SOURCE_DIR}/huffman.cpp
+  ${LIBSFCCOMPRESS_SOURCE_DIR}/lzw.cpp
+  ${LIBSFCCOMPRESS_SOURCE_DIR}/bitstream.cpp
+  # ${LIBSFCCOMPRESS_SOURCE_DIR}/rle.cpp
+  # Header files
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/bwt.h
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/compress_handler.h
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/compressor.h
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/huffman.h
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/mtf.h
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/reorder.h
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/sfcc.h
+  ${LIBSFCCOMPRESS_INCLUDE_DIR}/sfccexcept.h)
+set_target_properties(libsfccompress PROPERTIES PREFIX "")
+add_executable(
+  sfccompress
+  # Source files
+  ${LIBSFCCOMPRESS_SOURCE_DIR}/main.cpp)
 
 add_library(sfc::libsfccompress ALIAS libsfccompress)
 add_executable(sfc::sfccompress ALIAS sfccompress)
@@ -45,15 +49,13 @@ target_include_directories(
          $<INSTALL_INTERFACE:include>
   PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-target_compile_features(libsfccompress
-                        PUBLIC
-                        cxx_std_17 # Require C++17 for some features
-                        )
+target_compile_features(
+  libsfccompress PUBLIC cxx_std_17 # Require C++17 for some features
+)
 
-target_compile_features(sfccompress
-                        PUBLIC
-                        cxx_std_17 # Require C++17 for some features
-                        )
+target_compile_features(
+  sfccompress PUBLIC cxx_std_17 # Require C++17 for some features
+)
 
 # Optimise to level 3 if using GNU compilers
 target_compile_options(libsfccompress PRIVATE $<$<CXX_COMPILER_ID:GNU>:-O3>)
