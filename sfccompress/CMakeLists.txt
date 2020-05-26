@@ -6,6 +6,10 @@ project(
   DESCRIPTION "Program that manages sfc compress files"
   LANGUAGES C CXX)
 
+
+# Option to link to stdc++fs. This is required if GCC8 is being used.
+set(LINK_STD_CPP_FS ON CACHE BOOL "Whether to link to stdc++fs to enable std::filesystem usage")
+
 set(LIBSFCCOMPRESS_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(LIBSFCCOMPRESS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
@@ -84,6 +88,13 @@ endif()
 target_link_libraries(libsfccompress PUBLIC libsfc)
 target_link_libraries(sfccompress PUBLIC libsfccompress)
 target_link_libraries(libsfccompress PUBLIC args)
+
+if(LINK_STD_CPP_FS)
+  message(STATUS "Linking to stdc++fs")
+  target_link_libraries(libsfccompress PRIVATE "stdc++fs")
+else()
+  message(STATUS "Not linking to stdc++fs. Enable LINK_STD_CPP_FS if a compilation error occurs relating to std::filesystem.")
+endif()
 
 # Add tests (unit)
 add_subdirectory(tests)

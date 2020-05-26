@@ -13,6 +13,8 @@ endif()
 # Add ./cmake to module path
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Git submodules
 find_package(Git REQUIRED)
 
