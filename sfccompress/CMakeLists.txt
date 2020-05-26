@@ -88,6 +88,7 @@ endif()
 target_link_libraries(libsfccompress PUBLIC libsfc)
 target_link_libraries(sfccompress PUBLIC libsfccompress)
 target_link_libraries(libsfccompress PUBLIC args)
+target_link_libraries(libsfccompress PUBLIC divsufsort)
 
 if(LINK_STD_CPP_FS)
   message(STATUS "Linking to stdc++fs")
