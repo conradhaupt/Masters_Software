@@ -9,4 +9,6 @@ download_project(PROJ
                  GIT_TAG
                  master
                  UPDATE_DISCONNECTED
-                 ON)
+                 ON
+                 CMAKE_ARGS
+                 "-DBUILD_SHARED_LIBS=OFF")
