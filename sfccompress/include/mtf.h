@@ -65,6 +65,48 @@ std::tuple<::std::unique_ptr<TIndex[]>, T, T> easyMTFAnyuType(
   return {std::move(output), min_elem, max_elem};
 }
 
-}  // namespace sfcc
+template <typename T, typename TIndex>
+::std::unique_ptr<T[]> easyMTFDecodeAnyuType(const TIndex* data,
+                                             unsigned long long length,
+                                             const T& min, const T& max)
+{
+  const auto min_elem = min;
+  const auto max_elem = max;
+  std::cout << "MTF: " << std::int64_t(min_elem) << " to "
+            << std::int64_t(max_elem) << std::endl;
+  auto alphabet_size = 0ULL;
+  std::list<T> alphabet;
+  auto prev = min_elem;
+  for (auto minimum = min_elem; minimum <= max_elem; minimum++) {
+    alphabet.push_back(minimum);
+    alphabet_size++;
+    if (minimum == max) break;
+  }
+  if (1ULL << (sizeof(TIndex) * 8) < alphabet_size)
+    throw std::runtime_error(
+        "TIndex is not large enough to hold all indices for the given "
+        "alphabet");
+  std::cout << "Allocating MTF output memory" << std::endl;
+  auto output = std::make_unique<T[]>(length);
+  std::cout << "Finished allocating MTF output memory" << std::endl;
+  // Populate output array given input data
+  std::transform(
+      data, data + length, output.get(),
+      [&alphabet, &min_elem, &max_elem, &alphabet_size](TIndex index) {
+        if (index >= alphabet_size) {
+          throw std::runtime_error("MTF index is out-of-bounds of alphabet: " +
+                                   std::to_string(index) +
+                                   ", minmax=" + std::to_string(min_elem) +
+                                   ", " + std::to_string(max_elem));
+        }
+        auto value_it = std::next(std::begin(alphabet), index);
+        auto value = *value_it;
+        alphabet.erase(value_it);
+        alphabet.push_front(value);
+        return value;
+      });
+  return std::move(output);
+}
 
+}  // namespace sfcc
 #endif

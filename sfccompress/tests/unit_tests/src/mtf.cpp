@@ -21,3 +21,19 @@ TEST(mtf, returnsCorrectSequence)
       sfcc::easyMTFAnyuType<char, std::uint8_t>(data, length);
   for (auto i = 0; i < length; i++) EXPECT_EQ(mtf[i], expected[i]);
 }
+
+TEST(mtf, isReversible)
+{
+  // Data with the alphabet A-G
+  char data[] = {'E', 'F', 'G', 'A', 'C', 'A', 'A', 'A', 'G', 'E'};
+  auto expected_min = 'A';
+  auto expected_max = 'G';
+  const auto length = 10;
+  auto [mtf, min, max] =
+      sfcc::easyMTFAnyuType<char, std::uint8_t>(data, length);
+  auto reversed_data = sfcc::easyMTFDecodeAnyuType<char, std::uint8_t>(
+      mtf.get(), length, min, max);
+  for (auto i = 0; i < length; i++) {
+    EXPECT_EQ(data[i], reversed_data[i]);
+  }
+}
