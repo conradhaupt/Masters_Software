@@ -81,6 +81,7 @@ struct sfcc_header
   std::uint8_t dtype_nbytes;
   std::optional<std::uint8_t> npaddingbits;
   bool bittransposed;
+  std::optional<std::uint32_t> output_block_length;
 
   static bool CompressionRequiresPaddingBits(
       const sfcc::compression_t& compressionType)
@@ -89,6 +90,7 @@ struct sfcc_header
       case sfcc::compression_t::HUFFMAN:
       case sfcc::compression_t::LZW:
       case sfcc::compression_t::DEFLATE:
+      case sfcc::compression_t::BZIP_LZW:
         return true;
       default:
         return false;

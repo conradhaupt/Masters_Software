@@ -183,11 +183,11 @@ class bzip : public compressor
   {
     std::uint32_t length;  // Length in bytes
     std::uint8_t* data;
-    bool uncompressed = true;
     std::optional<std::int8_t> min_value;
     std::optional<std::int8_t> max_value;
     std::optional<std::uint32_t> bwt_primary_index;
     std::optional<std::uint8_t> npaddingbits;
+    bool encoded = false;
     std::uint8_t* dataptr() { return data; }
     // Number of bytes in un/compressed data
     std::uint32_t data_length() { return length; }
@@ -195,10 +195,13 @@ class bzip : public compressor
     {
       std::uint32_t _size{};
       // Block structure
-      _size += sizeof(std::uint32_t);  // Block size (excluding metadata)
-      if (npaddingbits) _size += sizeof(npaddingbits.value());
-      _size += sizeof(min_value.value());
-      _size += sizeof(max_value.value());
+      if (encoded) {
+        _size += sizeof(std::uint32_t);  // Block size (excluding metadata)
+        if (npaddingbits) _size += sizeof(npaddingbits.value());
+        if (min_value) _size += sizeof(min_value.value());
+        if (max_value) _size += sizeof(max_value.value());
+        if (bwt_primary_index) _size += sizeof(bwt_primary_index.value());
+      }
       _size += length;
       return _size;
     }
@@ -207,20 +210,31 @@ class bzip : public compressor
     {
       auto array = std::make_unique<std::uint8_t[]>(size());
       auto array_ptr = array.get();
-      *((std::uint32_t*)array_ptr) = data_length();
-      array_ptr += sizeof(data_length());
+      if (encoded) {
+        *((std::uint32_t*)array_ptr) = data_length();
+        array_ptr += sizeof(data_length());
 
-      if (npaddingbits) {
-        *((std::uint8_t*)array_ptr) = npaddingbits.value();
-        array_ptr += sizeof(npaddingbits.value());
+        if (npaddingbits) {
+          *((std::uint8_t*)array_ptr) = npaddingbits.value();
+          array_ptr += sizeof(npaddingbits.value());
+        }
+
+        if (min_value) {
+          *((std::uint8_t*)array_ptr) = min_value.value();
+          array_ptr += sizeof(min_value.value());
+        }
+
+        if (max_value) {
+          *((std::uint8_t*)array_ptr) = max_value.value();
+          array_ptr += sizeof(max_value.value());
+        }
+        if (bwt_primary_index) {
+          *((std::uint32_t*)array_ptr) = bwt_primary_index.value();
+          array_ptr += sizeof(bwt_primary_index.value());
+        }
       }
 
-      *((std::uint8_t*)array_ptr) = min_value.value();
-      array_ptr += sizeof(min_value.value());
-      *((std::uint8_t*)array_ptr) = max_value.value();
-      array_ptr += sizeof(max_value.value());
-      *((std::uint32_t*)array_ptr) = bwt_primary_index.value();
-      array_ptr += sizeof(bwt_primary_index.value());
+      std::copy(data, data + data_length(), array_ptr);
 
       return std::move(array);
     }
