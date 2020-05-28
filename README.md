@@ -90,6 +90,7 @@ The following dependencies are downloaded during the configure stage of the buil
 4. libmorton: [https://github.com/conradhaupt/libmorton](https://github.com/conradhaupt/libmorton)
    - Original: [https://github.com/Forceflow/libmorton](https://github.com/Forceflow/libmorton)
 5. DownloadProject: [https://github.com/Crascit/DownloadProject](https://github.com/Crascit/DownloadProject)
+6. libdivsufsort: [https://github.com/y-256/libdivsufsort](https://github.com/y-256/libdivsufsort)
 
 ## Testing Environment
 

@@ -27,6 +27,7 @@ endif()
 target_include_directories(sfccompress_test PRIVATE include)
 
 target_link_libraries(sfccompress_test libsfccompress)
+target_link_libraries(sfccompress_test divsufsort)
 
 # Use googletest for testing
 if(TARGET gtest_main)

@@ -250,9 +250,10 @@ int main(int argc, char* argv[])
     std::cerr << eParse.what() << std::endl;
     std::cerr << parser;
     exit(EXIT_FAILURE);
-  } catch (...) {
-    return -1;
   }
+  //  catch (...) {
+  //   return -1;
+  // }
 
   return 0;
 }

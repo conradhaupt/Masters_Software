@@ -9,7 +9,11 @@
  *
  */
 #include "bwt.h"
+#include <divsufsort.h>
 #include <gtest/gtest.h>
+#include <array>
+#include <cstdlib>
+#include <ctime>
 #include "compressor.h"
 
 TEST(bwt, bwtSortsCharsAppropriately)
@@ -85,4 +89,88 @@ TEST(bzip, compressesIntegerDataCorrectly)
   for (auto i = 0; i < (data_size + 1) * 2; i++) {
     EXPECT_EQ(bwt[i], *((std::uint8_t*)expected_bwt + i));
   }
+}
+
+TEST(divsufsort, bwTransformIsReversible_int8_t)
+{
+#define __bwt_array_size 16384
+  std::srand(std::time(0));
+  // Generate random input array
+  std::array<std::int8_t, __bwt_array_size> input_array;
+  for (auto& i : input_array) i = std::int8_t(rand());
+
+  const auto length_char = __bwt_array_size * sizeof(std::int8_t);
+
+  // Calculate BWT transform of input sequence
+  std::array<std::int8_t, __bwt_array_size> bwt_array;
+  auto result =
+      divbwt((const sauchar_t*)input_array.data(), (sauchar_t*)bwt_array.data(),
+             (saidx_t*)nullptr, length_char / sizeof(sauchar_t));
+
+  // result must be >=0 or else an error occurred.
+  EXPECT_GE(result, 0);
+
+  std::array<std::int8_t, __bwt_array_size> reversed_array;
+  auto reverse_result = inverse_bw_transform((const sauchar_t*)bwt_array.data(),
+                                             (sauchar_t*)reversed_array.data(),
+                                             nullptr, length_char, result);
+  EXPECT_EQ(reverse_result, 0);
+
+  EXPECT_EQ(input_array, reversed_array);
+}
+
+TEST(divsufsort, bwTransformIsReversible_int16_t)
+{
+#define __bwt_array_size 16384
+  std::srand(std::time(0));
+  // Generate random input array
+  std::array<std::int16_t, __bwt_array_size> input_array;
+  for (auto& i : input_array) i = std::int16_t(rand());
+
+  const auto length_char = __bwt_array_size * sizeof(std::int16_t);
+
+  // Calculate BWT transform of input sequence
+  std::array<std::int16_t, __bwt_array_size> bwt_array;
+  auto result =
+      divbwt((const sauchar_t*)input_array.data(), (sauchar_t*)bwt_array.data(),
+             (saidx_t*)nullptr, length_char / sizeof(sauchar_t));
+
+  // result must be >=0 or else an error occurred.
+  EXPECT_GE(result, 0);
+
+  std::array<std::int16_t, __bwt_array_size> reversed_array;
+  auto reverse_result = inverse_bw_transform((const sauchar_t*)bwt_array.data(),
+                                             (sauchar_t*)reversed_array.data(),
+                                             nullptr, length_char, result);
+  EXPECT_EQ(reverse_result, 0);
+
+  EXPECT_EQ(input_array, reversed_array);
+}
+
+TEST(divsufsort, bwTransformIsReversible_float_t)
+{
+#define __bwt_array_size 16384
+  std::srand(std::time(0));
+  // Generate random input array
+  std::array<std::float_t, __bwt_array_size> input_array;
+  for (auto& i : input_array) i = std::float_t(rand());
+
+  const auto length_char = __bwt_array_size * sizeof(std::float_t);
+
+  // Calculate BWT transform of input sequence
+  std::array<std::float_t, __bwt_array_size> bwt_array;
+  auto result =
+      divbwt((const sauchar_t*)input_array.data(), (sauchar_t*)bwt_array.data(),
+             (saidx_t*)nullptr, length_char / sizeof(sauchar_t));
+
+  // result must be >=0 or else an error occurred.
+  EXPECT_GE(result, 0);
+
+  std::array<std::float_t, __bwt_array_size> reversed_array;
+  auto reverse_result = inverse_bw_transform((const sauchar_t*)bwt_array.data(),
+                                             (sauchar_t*)reversed_array.data(),
+                                             nullptr, length_char, result);
+  EXPECT_EQ(reverse_result, 0);
+
+  EXPECT_EQ(input_array, reversed_array);
 }

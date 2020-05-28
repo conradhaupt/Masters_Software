@@ -75,3 +75,18 @@ if(TARGET args)
 else()
   message(FATAL_ERROR "Could NOT find downloaded args")
 endif() # if
+
+# add libdivsufsort library
+message(STATUS "Invoking libdivsufsort DownloadPackage")
+include(libdivsufsort-download)
+add_subdirectory(${libdivsufsort_SOURCE_DIR} ${libdivsufsort_BINARY_DIR} EXCLUDE_FROM_ALL)
+include_directories("${libdivsufsort_BINARY_DIR}/include")
+message("${libdivsufsort_BINARY_DIR}/include")
+
+## libdivsufsort
+if(TARGET divsufsort)
+  message(STATUS "Found downloaded libdivsufsort")
+  target_include_directories(divsufsort PUBLIC "${libdivsufsort_BINARY_DIR}/include")
+else()
+  message(FATAL_ERROR "Could NOT find downloadeded libdivsufsort")
+endif()

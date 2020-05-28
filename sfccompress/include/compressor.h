@@ -11,6 +11,7 @@
 
 #ifndef SFCC_COMPRESSOR_H
 #define SFCC_COMPRESSOR_H
+#include <divsufsort.h>
 #include <algorithm>
 #include <exception>
 #include <memory>
@@ -174,7 +175,7 @@ class bzip : public compressor
  protected:
   const bool _forceByteCompression;
   constexpr static std::uint16_t MAX_BLOCK_SIZE_BYTES_EXP =
-      18;  // 2^ceillog2(900k)), close to the maximum block size of BZIP2
+      20;  // 2^ceillog2(900k)), close to the maximum block size of BZIP2
   constexpr static std::uint32_t MAX_BLOCK_SIZE_BYTES =
       1U << MAX_BLOCK_SIZE_BYTES_EXP;  // 2^ceil(log2(900k)), close to the
   // maximum block size of BZIP2
@@ -182,69 +183,59 @@ class bzip : public compressor
   {
     std::uint32_t length;  // Length in bytes
     std::uint8_t* data;
-    bool uncompressed = true;
-    std::optional<std::uint64_t> min_value;
-    std::optional<std::uint64_t> max_value;
-    std::optional<std::uint32_t> bwt_iFirst;
-    std::optional<std::uint32_t> bwt_iLast;
+    std::optional<std::int8_t> min_value;
+    std::optional<std::int8_t> max_value;
+    std::optional<std::uint32_t> bwt_primary_index;
     std::optional<std::uint8_t> npaddingbits;
+    bool encoded = false;
     std::uint8_t* dataptr() { return data; }
-    std::uint16_t* dataptr_16() { return (std::uint16_t*)data; }
-    std::uint32_t* dataptr_32() { return (std::uint32_t*)data; }
-
-    int sizeinbytes(int dtype_nbytes)
+    // Number of bytes in un/compressed data
+    std::uint32_t data_length() { return length; }
+    std::uint32_t size()
     {
-      auto size = sizeof(length);
-      if (!uncompressed) {
-        size += dtype_nbytes * 2;  // Number of bytes for the min and max value
-        size += sizeof(bwt_iFirst.value());
-        size += sizeof(bwt_iLast.value());
+      std::uint32_t _size{};
+      // Block structure
+      if (encoded) {
+        _size += sizeof(std::uint32_t);  // Block size (excluding metadata)
+        if (npaddingbits) _size += sizeof(npaddingbits.value());
+        if (min_value) _size += sizeof(min_value.value());
+        if (max_value) _size += sizeof(max_value.value());
+        if (bwt_primary_index) _size += sizeof(bwt_primary_index.value());
       }
-      if (npaddingbits) size += sizeof(npaddingbits.value());
-      return size;
+      _size += length;
+      return _size;
     }
 
-    std::uint32_t length_8() { return length; }
-    std::uint32_t length_16() { return length / sizeof(std::uint16_t); }
-    std::uint32_t length_32() { return length / sizeof(std::uint32_t); }
-    std::uint32_t length_var(int dtype_nbytes)
+    std::unique_ptr<std::uint8_t[]> toArray()
     {
-      if (dtype_nbytes == 1)
-        return length_8();
-      else if (dtype_nbytes == 2)
-        return length_16();
-      else if (dtype_nbytes == 4)
-        return length_32();
-      else
-        return 0;
-    }
-
-    std::unique_ptr<std::uint8_t[]> toArray(int dtype_nbytes)
-    {
-      auto array = std::make_unique<std::uint8_t[]>(sizeinbytes(dtype_nbytes));
+      auto array = std::make_unique<std::uint8_t[]>(size());
       auto array_ptr = array.get();
-      *((std::uint32_t*)array_ptr) = length;
-      array_ptr += sizeof(length);
+      if (encoded) {
+        *((std::uint32_t*)array_ptr) = data_length();
+        array_ptr += sizeof(data_length());
 
-      if (!uncompressed) {
-        if (dtype_nbytes == 2) {
-          *((std::uint16_t*)array_ptr) = min_value.value();
-          array_ptr += dtype_nbytes;
-          *((std::uint16_t*)array_ptr) = max_value.value();
-          array_ptr += dtype_nbytes;
-        } else if (dtype_nbytes == 4) {
-          *((std::uint32_t*)array_ptr) = min_value.value();
-          array_ptr += dtype_nbytes;
-          *((std::uint32_t*)array_ptr) = max_value.value();
-          array_ptr += dtype_nbytes;
-        } else {
-          throw std::runtime_error("Unexpected data-type size");
+        if (npaddingbits) {
+          *((std::uint8_t*)array_ptr) = npaddingbits.value();
+          array_ptr += sizeof(npaddingbits.value());
         }
-        *((std::uint32_t*)array_ptr) = bwt_iFirst.value();
-        array_ptr += sizeof(bwt_iFirst.value());
-        *((std::uint32_t*)array_ptr) = bwt_iLast.value();
-        array_ptr += sizeof(bwt_iLast.value());
+
+        if (min_value) {
+          *((std::uint8_t*)array_ptr) = min_value.value();
+          array_ptr += sizeof(min_value.value());
+        }
+
+        if (max_value) {
+          *((std::uint8_t*)array_ptr) = max_value.value();
+          array_ptr += sizeof(max_value.value());
+        }
+        if (bwt_primary_index) {
+          *((std::uint32_t*)array_ptr) = bwt_primary_index.value();
+          array_ptr += sizeof(bwt_primary_index.value());
+        }
       }
+
+      std::copy(data, data + data_length(), array_ptr);
+
       return std::move(array);
     }
   };
