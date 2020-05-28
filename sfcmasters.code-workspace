@@ -1,9 +1,7 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
+	"folders": [{
+		"path": "."
+	}],
 	"settings": {
 		"files.associations": {
 			"*.tpp": "cpp",
@@ -87,7 +85,10 @@
 		"licenser.author": "Conrad Haupt",
 		"doxdocgen.generic.authorEmail": "conrad@conradhaupt.co.za",
 		"doxdocgen.generic.authorName": "Conrad Haupt",
-		"doxdocgen.file.versionTag": "@version 1.0"
+		"doxdocgen.file.versionTag": "@version 1.0",
+		"C_Cpp.clang_format_fallbackStyle": "Google",
+		"C_Cpp.clang_format_sortIncludes": true,
+		"C_Cpp.clang_format_style": "file",
 	},
 	"doxdocgen.file.copyrightTag": [],
 	"doxdocgen.generic.order": [],
