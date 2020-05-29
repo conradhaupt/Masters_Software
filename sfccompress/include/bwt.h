@@ -19,6 +19,7 @@
 #include <memory>
 #include <tuple>
 #include <vector>
+#include "sfcc.h"
 
 namespace sfcc {
 
@@ -56,8 +57,9 @@ easyBWT(T* data, unsigned long long length)
 {
   // Check if the block is all the same
   auto [min, max] = std::minmax_element(data, data + length);
-  std::cout << "BWT data with min=" << std::int16_t(*min)
-            << " and max=" << std::int16_t(*max) << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "BWT data with min=" << std::int16_t(*min)
+              << " and max=" << std::int16_t(*max) << std::endl;
   if (*min == *max) {
     // Block is all the same value
     auto bwt_output =
@@ -102,7 +104,8 @@ easyBWT(T* data, unsigned long long length)
   std::move((std::uint8_t*)bwt_output.get(),
             ((std::uint8_t*)bwt_output.get()) + ((length + 1) * sizeof(T)),
             output.get());
-  std::cout << "BWT_OUTPUT Size: " << (length + 1) * sizeof(T) << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "BWT_OUTPUT Size: " << (length + 1) * sizeof(T) << std::endl;
   return {std::move(output), first, last};
 }
 

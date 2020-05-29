@@ -319,9 +319,7 @@ void BitStreamWriter::appendBitsU64(const std::uint64_t num, const int bitCount)
     const std::uint64_t mask = std::uint64_t(1) << b;
     const int bit = !!(num & mask);
     appendBit(bit);
-    std::cout << bit;
   }
-  std::cout << std::endl;
 }
 
 void BitStreamWriter::appendCode(const Code code)
@@ -651,7 +649,6 @@ void Encoder::writeTreeBitStream()
   for (int s = 0; s < MaxSymbols; ++s) {
     // Write the length of the code using a fixed bit-width:
     const int codeLen = nodes[s].code.getLength();
-    std::cout << "codeLen=" << codeLen << std::endl;
     bitStream.appendBitsU64(codeLen, codeLengthWidth);
 
     // Write the code bits themselves, using a varying bit-width:

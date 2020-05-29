@@ -25,6 +25,8 @@
 
 namespace sfc {
 
+  const bool DEBUG = false;
+
 namespace sfcc {
 
 enum class sfc_t : std::uint8_t

@@ -270,7 +270,8 @@ rle::compress(const std::unique_ptr<std::uint8_t[]>& data,
   auto head = header;
   head.compressiontype = ::sfc::sfcc::compression_t::RLE;
 
-  std::cout << "RLE: output_length=" << output_length << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "RLE: output_length=" << output_length << std::endl;
   // Move-return unique_ptr
   return {std::move(output_data), output_length, head};
 }
@@ -284,7 +285,7 @@ rle::decompress(const std::unique_ptr<std::uint8_t[]>& data,
   // Construct temporary data
   const auto OutputSize =
       (1ULL << (header.sidelength_k * header.ndims)) * header.dtype_nbytes;
-  std::cout << "RLE: Received size=" << length << std::endl;
+  if (::sfc::DEBUG) std::cout << "RLE: Received size=" << length << std::endl;
   std::uint8_t* tmp_data = new std::uint8_t[OutputSize];
 
   // Compress using Huffman encoding
@@ -292,7 +293,8 @@ rle::decompress(const std::unique_ptr<std::uint8_t[]>& data,
   // const int uncompressedSizeBytes, std::uint8_t **compressed,
   // int *compressedSizeBytes, int *compressedSizeBits)
   int output_length = -1;
-  std::cout << "RLE: expected OutputSize=" << OutputSize << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "RLE: expected OutputSize=" << OutputSize << std::endl;
   if (header.dtype_nbytes == 2) {
     output_length = ::rle::easyDecode<std::uint16_t>(
         data.get(), length, (std::uint16_t*)tmp_data, OutputSize);
@@ -308,7 +310,8 @@ rle::decompress(const std::unique_ptr<std::uint8_t[]>& data,
   if (output_length == -1)
     throw std::runtime_error("Could not complete RLE process");
 
-  std::cout << "RLE: Actual output size=" << output_length << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "RLE: Actual output size=" << output_length << std::endl;
 
   // Create appropriately sized unique_ptr
   auto output_data = std::make_unique<std::uint8_t[]>(output_length);
@@ -375,9 +378,7 @@ sfc::sfcc::compression_t rle::getCompressionType() const
 template <class postcompressor>
 bzip<postcompressor>::bzip(bool forceByteCompression)
     : _forceByteCompression{forceByteCompression}
-{
-  std::cout << "Forcing byte compression" << std::endl;
-}
+{}
 template <class postcompressor>
 bzip<postcompressor>::~bzip()
 {}
@@ -405,8 +406,10 @@ bzip<postcompressor>::compress(const std::unique_ptr<std::uint8_t[]>& data,
 
   // Compress each block
   for (auto iBlock = 0; iBlock < nblocks; iBlock++) {
-    std::cout << std::endl
-              << "Compressing block " << iBlock << "/" << nblocks << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << std::endl
+                << "Compressing block " << iBlock << "/" << nblocks
+                << std::endl;
     // Get block pointers etc
     auto inBlock = inputBlocks.get()[iBlock];
     auto& outBlock = outputBlocks[iBlock];
@@ -453,35 +456,41 @@ bzip<postcompressor>::compress(const std::unique_ptr<std::uint8_t[]>& data,
     outBlock.min_value = min;
     outBlock.max_value = max;
 
-    std::cout << "Boundaries of MTF Data:" << std::endl;
-    for (auto i = 0; i < 5; i++) {
-      std::cout << std::hex << (int)mtf[i] << " ";
+    if (::sfc::DEBUG) {
+      std::cout << "Boundaries of MTF Data:" << std::endl;
+      for (auto i = 0; i < 5; i++) {
+        std::cout << std::hex << (int)mtf[i] << " ";
+      }
+      std::cout << std::endl << "..." << std::endl;
+      for (auto i = mtf_length - 5; i < mtf_length; i++) {
+        std::cout << std::hex << (int)mtf[i] << " ";
+      }
+      std::cout << std::endl << std::dec;
     }
-    std::cout << std::endl << "..." << std::endl;
-    for (auto i = mtf_length - 5; i < mtf_length; i++) {
-      std::cout << std::hex << (int)mtf[i] << " ";
-    }
-    std::cout << std::endl << std::dec;
 
     // Postcompressor
     auto postcomp = std::make_unique<postcompressor>();
-    std::cout << "Compressing MTF data of length " << mtf_length << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Compressing MTF data of length " << mtf_length << std::endl;
     auto [outBlock_data, outBlock_length, outblock_head] =
         postcomp->compress(mtf, mtf_length, header);
-    std::cout << "Postcompression is complete: output length="
-              << outBlock_length << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Postcompression is complete: output length="
+                << outBlock_length << std::endl;
     // MTF is complete, free up memory
     mtf.reset();
 
-    std::cout << "Boundaries of Compressed Data:" << std::endl;
-    for (auto i = 0; i < 5; i++) {
-      std::cout << std::hex << (int)outBlock_data[i] << " ";
+    if (::sfc::DEBUG) {
+      std::cout << "Boundaries of Compressed Data:" << std::endl;
+      for (auto i = 0; i < 5; i++) {
+        std::cout << std::hex << (int)outBlock_data[i] << " ";
+      }
+      std::cout << std::endl << "..." << std::endl;
+      for (auto i = outBlock_length - 5; i < outBlock_length; i++) {
+        std::cout << std::hex << (int)outBlock_data[i] << " ";
+      }
+      std::cout << std::endl << std::dec;
     }
-    std::cout << std::endl << "..." << std::endl;
-    for (auto i = outBlock_length - 5; i < outBlock_length; i++) {
-      std::cout << std::hex << (int)outBlock_data[i] << " ";
-    }
-    std::cout << std::endl << std::dec;
 
     // Assign to outblock the postcompressor values
     if (::sfc::sfcc_header::CompressionRequiresPaddingBits(
@@ -500,8 +509,9 @@ bzip<postcompressor>::compress(const std::unique_ptr<std::uint8_t[]>& data,
       [&blocksize_sum](auto& block) { blocksize_sum += block.size(); });
 
   // Move data across
-  std::cout << "Allocating output memory: output summed size=" << blocksize_sum
-            << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "Allocating output memory: output summed size="
+              << blocksize_sum << std::endl;
   auto output_data = std::make_unique<std::uint8_t[]>(blocksize_sum);
   auto output_data_ptr = output_data.get();
   for (auto iBlock = 0; iBlock < nblocks; iBlock++) {
@@ -510,7 +520,8 @@ bzip<postcompressor>::compress(const std::unique_ptr<std::uint8_t[]>& data,
     auto block_data = block.toArray();
     std::move(block_data.get(), block_data.get() + block_size, output_data_ptr);
     output_data_ptr += block_size;
-    std::cout << "Block [" << iBlock << "]: " << block_size << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Block [" << iBlock << "]: " << block_size << std::endl;
   }
 
   // Update file header
@@ -531,7 +542,9 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
   // Does compression use npaddingbits?
   const auto usesNPaddingBits =
       sfc::sfcc_header::CompressionRequiresPaddingBits(header.compressiontype);
-  if (usesNPaddingBits) std::cout << "Using padding bits" << std::endl;
+  if (::sfc::DEBUG) {
+    if (usesNPaddingBits) std::cout << "Using padding bits" << std::endl;
+  }
 
   auto nblocks = 0;
   // Calculate the number of blocks needed
@@ -578,8 +591,9 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
     inputBlocks[iBlock].data = data_ptr;
     data_ptr += inputBlocks[iBlock].length;
 
-    std::cout << "Read block of size " << inputBlocks[iBlock].length
-              << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Read block of size " << inputBlocks[iBlock].length
+                << std::endl;
   }
 
   // Decompress each block
@@ -588,27 +602,31 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
     auto inBlock = inputBlocks.get()[iBlock];
     auto& outBlock = outputBlocks[iBlock];
 
-    std::cout << std::endl
-              << "Decompressing block " << iBlock << "/" << nblocks
-              << " with length " << inBlock.length << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << std::endl
+                << "Decompressing block " << iBlock << "/" << nblocks
+                << " with length " << inBlock.length << std::endl;
 
-    std::cout << "Boundaries of Compressed Data:" << std::endl;
-    for (auto i = 0; i < 5; i++) {
-      std::cout << std::hex << (int)inBlock.data[i] << " ";
+    if (::sfc::DEBUG) {
+      std::cout << "Boundaries of Compressed Data:" << std::endl;
+      for (auto i = 0; i < 5; i++) {
+        std::cout << std::hex << (int)inBlock.data[i] << " ";
+      }
+      std::cout << std::endl << "..." << std::endl;
+      for (auto i = inBlock.length - 5; i < inBlock.length; i++) {
+        std::cout << std::hex << (int)inBlock.data[i] << " ";
+      }
+      std::cout << std::endl << std::dec;
     }
-    std::cout << std::endl << "..." << std::endl;
-    for (auto i = inBlock.length - 5; i < inBlock.length; i++) {
-      std::cout << std::hex << (int)inBlock.data[i] << " ";
-    }
-    std::cout << std::endl << std::dec;
 
     // Postcompressor
     auto postcomp = std::make_unique<postcompressor>();
     auto compressed_data = std::make_unique<std::uint8_t[]>(length);
     std::copy(inBlock.data, inBlock.data + length, compressed_data.get());
 
-    std::cout << "Decompressing compressed data of length " << inBlock.length
-              << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Decompressing compressed data of length " << inBlock.length
+                << std::endl;
     auto decompress_header = header;
 
     if (usesNPaddingBits)
@@ -617,20 +635,23 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
     decompress_header.output_block_length = MAX_BLOCK_SIZE_BYTES;
     auto [mtf_data, mtf_length, mtf_head] = postcomp->decompress(
         compressed_data, inBlock.length, decompress_header);
-    std::cout << "Postcompression is complete: output length=" << mtf_length
-              << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Postcompression is complete: output length=" << mtf_length
+                << std::endl;
     // Decompression is complete, free up memory
     compressed_data.reset();
 
-    std::cout << "Boundaries of MTF Data:" << std::endl;
-    for (auto i = 0; i < 5; i++) {
-      std::cout << std::hex << (int)mtf_data[i] << " ";
+    if (::sfc::DEBUG) {
+      std::cout << "Boundaries of MTF Data:" << std::endl;
+      for (auto i = 0; i < 5; i++) {
+        std::cout << std::hex << (int)mtf_data[i] << " ";
+      }
+      std::cout << std::endl << "..." << std::endl;
+      for (auto i = mtf_length - 5; i < mtf_length; i++) {
+        std::cout << std::hex << (int)mtf_data[i] << " ";
+      }
+      std::cout << std::endl << std::dec;
     }
-    std::cout << std::endl << "..." << std::endl;
-    for (auto i = mtf_length - 5; i < mtf_length; i++) {
-      std::cout << std::hex << (int)mtf_data[i] << " ";
-    }
-    std::cout << std::endl << std::dec;
 
     // Decode MTF data
     auto bwt_data = easyMTFDecodeAnyuType<std::uint8_t, std::uint8_t>(
@@ -639,14 +660,15 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
     mtf_data.reset();
 
     // Decode BWT data
-    std::cout << "Decoding BWT data of length " << std::to_string(mtf_length)
-              << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Decoding BWT data of length " << std::to_string(mtf_length)
+                << std::endl;
     auto bwt_length = mtf_length;
     // Create BWT temporary values
     auto bwt = std::make_unique<std::uint8_t[]>(bwt_length);
     inverse_bw_transform((const sauchar_t*)bwt_data.get(), bwt.get(), nullptr,
                          bwt_length, inBlock.bwt_primary_index.value());
-    std::cout << "Decoded BWT data" << std::endl;
+    if (::sfc::DEBUG) std::cout << "Decoded BWT data" << std::endl;
 
     outBlock.length = bwt_length;
     outBlock.data = bwt.release();
@@ -665,8 +687,9 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
       [&blocksize_sum](auto& block) { blocksize_sum += block.size(); });
 
   // Move data across
-  std::cout << "Allocating output memory: output summed size=" << blocksize_sum
-            << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "Allocating output memory: output summed size="
+              << blocksize_sum << std::endl;
   auto output_data = std::make_unique<std::uint8_t[]>(blocksize_sum);
   auto output_data_ptr = output_data.get();
   for (auto iBlock = 0; iBlock < nblocks; iBlock++) {
@@ -675,7 +698,8 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
     auto block_data = block.toArray();
     std::move(block_data.get(), block_data.get() + block_size, output_data_ptr);
     output_data_ptr += block_size;
-    std::cout << "Block [" << iBlock << "]: " << block_size << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Block [" << iBlock << "]: " << block_size << std::endl;
   }
 
   // Update file header

@@ -18,6 +18,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include "sfcc.h"
 
 namespace sfcc {
 
@@ -29,8 +30,9 @@ std::tuple<::std::unique_ptr<TIndex[]>, T, T> easyMTFAnyuType(
   auto [min, max] = ::std::minmax_element(data, data + length);
   const auto min_elem = *min;
   const auto max_elem = *max;
-  std::cout << "MTF: " << std::int64_t(min_elem) << " to "
-            << std::int64_t(max_elem) << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "MTF: " << std::int64_t(min_elem) << " to "
+              << std::int64_t(max_elem) << std::endl;
   auto alphabet_size = 0ULL;
   std::list<T> alphabet;
   auto prev = min_elem;
@@ -43,9 +45,10 @@ std::tuple<::std::unique_ptr<TIndex[]>, T, T> easyMTFAnyuType(
     throw std::runtime_error(
         "TIndex is not large enough to hold all indices for the given "
         "alphabet");
-  std::cout << "Allocating MTF output memory" << std::endl;
+  if (::sfc::DEBUG) std::cout << "Allocating MTF output memory" << std::endl;
   std::unique_ptr<TIndex[]> output = std::make_unique<TIndex[]>(length);
-  std::cout << "Finished allocating MTF output memory" << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "Finished allocating MTF output memory" << std::endl;
   // Populate output array given input data
   std::transform(data, data + length, output.get(), [&alphabet](T value) {
     TIndex index(-1);
@@ -72,8 +75,9 @@ template <typename T, typename TIndex>
 {
   const auto min_elem = min;
   const auto max_elem = max;
-  std::cout << "MTF: " << std::int64_t(min_elem) << " to "
-            << std::int64_t(max_elem) << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "MTF: " << std::int64_t(min_elem) << " to "
+              << std::int64_t(max_elem) << std::endl;
   auto alphabet_size = 0ULL;
   std::list<T> alphabet;
   auto prev = min_elem;
@@ -86,9 +90,10 @@ template <typename T, typename TIndex>
     throw std::runtime_error(
         "TIndex is not large enough to hold all indices for the given "
         "alphabet");
-  std::cout << "Allocating MTF output memory" << std::endl;
+  if (::sfc::DEBUG) std::cout << "Allocating MTF output memory" << std::endl;
   auto output = std::make_unique<T[]>(length);
-  std::cout << "Finished allocating MTF output memory" << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "Finished allocating MTF output memory" << std::endl;
   // Populate output array given input data
   std::transform(
       data, data + length, output.get(),

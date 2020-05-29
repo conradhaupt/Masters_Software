@@ -66,8 +66,9 @@ void _compress(args::Subparser& sp)
 
   // Bit-Transpose
   if (bittranspose) {
-    std::cout << "Transposing bits with data-type of "
-              << int(header.dtype_nbytes) << " bytes" << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "Transposing bits with data-type of "
+                << int(header.dtype_nbytes) << " bytes" << std::endl;
     auto bittransposer = sfcc::BitTransposer();
     bittransposer.transpose(
         data_in.get(), sfc::pow(dimlength, header.ndims) * header.dtype_nbytes,
@@ -104,12 +105,14 @@ void _compress(args::Subparser& sp)
   }
   outputfile = std::ofstream(outputFileName, std::ios::binary);
   auto header_ptr = sfc::HeaderToArray(header);
-  std::cout << "Header: ";
-  for (auto i = 0; i < header.size(); i++) {
-    std::cout << std::hex << +header_ptr[i] << " ";
+  if (::sfc::DEBUG) {
+    std::cout << "Header: ";
+    for (auto i = 0; i < header.size(); i++) {
+      std::cout << std::hex << +header_ptr[i] << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "First byte of data is " << std::hex << +data[0] << std::endl;
   }
-  std::cout << std::endl;
-  std::cout << "First byte of data is " << std::hex << +data[0] << std::endl;
   outputfile.write((char*)header_ptr.get(), header.size());
   outputfile.write((char*)data, length);
   outputfile.close();
@@ -135,8 +138,9 @@ void _decompress(args::Subparser& sp)
   // Decompress
   auto header = sfile.getHeader();
   bool bittransposed = header.bittransposed;
-  std::cout << "File is " << (bittransposed ? "" : "not ") << "bit-transposed"
-            << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "File is " << (bittransposed ? "" : "not ") << "bit-transposed"
+              << std::endl;
   header.sfctype = sfc::main::sfcs::types::ROW_MAJOR;
   std::uint8_t* data;
   int length;
@@ -168,7 +172,7 @@ void _decompress(args::Subparser& sp)
     bittransposer.reverse_transpose(
         data, sfc::pow(dimlength, header.ndims) * header.dtype_nbytes,
         header.dtype_nbytes);
-    std::cout << "Transposed" << std::endl;
+    if (::sfc::DEBUG) std::cout << "Transposed" << std::endl;
     header.bittransposed = false;
   }
 
@@ -196,7 +200,8 @@ void _decompress(args::Subparser& sp)
       outputFileName.erase(nFilenameExt, outputFileName.size() - nFilenameExt);
     }
     if (bittransposed) {
-      std::cout << "Bit-Tranposed, removing extension" << std::endl;
+      if (::sfc::DEBUG)
+        std::cout << "Bit-Tranposed, removing extension" << std::endl;
       auto nFilenameExt = outputFileName.rfind(".btr");
       outputFileName.erase(nFilenameExt, outputFileName.size() - nFilenameExt);
     }
@@ -212,12 +217,14 @@ void _decompress(args::Subparser& sp)
   else
     output = &std::cout;
   auto header_ptr = sfc::HeaderToArray(header);
-  std::cout << "Header: ";
-  for (auto i = 0; i < header.size(); i++) {
-    std::cout << std::hex << +header_ptr[i] << " ";
+  if (::sfc::DEBUG) {
+    std::cout << "Header: ";
+    for (auto i = 0; i < header.size(); i++) {
+      std::cout << std::hex << +header_ptr[i] << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "First byte of data is " << std::hex << +data[0] << std::endl;
   }
-  std::cout << std::endl;
-  std::cout << "First byte of data is " << std::hex << +data[0] << std::endl;
   output->write((char*)header_ptr.get(), header.size());
   output->write((char*)data, length);
   if (!outputToStdOut) delete output;

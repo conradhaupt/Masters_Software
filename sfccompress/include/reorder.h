@@ -117,10 +117,13 @@ class reorderer
       for (auto i = 0ULL; i < length; i++) {
         auto from_val = _from_2->distToCoords(i);
         auto index = _to_2->coordsToDist(from_val);
-        if (index >= length) {
-          std::cout << "index=" << index << " >= length=" << length << std::endl
-                    << "\tfrom=" << from_val[0] << "," << from_val[1] << ","
-                    << from_val[2] << std::endl;
+        if (::sfc::DEBUG) {
+          if (index >= length) {
+            std::cout << "index=" << index << " >= length=" << length
+                      << std::endl
+                      << "\tfrom=" << from_val[0] << "," << from_val[1] << ","
+                      << from_val[2] << std::endl;
+          }
         }
         temp[index] = data[i];
       }
@@ -128,10 +131,13 @@ class reorderer
       for (auto i = 0ULL; i < length; i++) {
         auto from_val = _from_3->distToCoords(i);
         auto index = _to_3->coordsToDist(from_val);
-        if (index >= length) {
-          std::cout << "index=" << index << " >= length=" << length << std::endl
-                    << "\tfrom=" << from_val[0] << "," << from_val[1] << ","
-                    << from_val[2] << "\n\ti=" << i << std::endl;
+        if (::sfc::DEBUG) {
+          if (index >= length) {
+            std::cout << "index=" << index << " >= length=" << length
+                      << std::endl
+                      << "\tfrom=" << from_val[0] << "," << from_val[1] << ","
+                      << from_val[2] << "\n\ti=" << i << std::endl;
+          }
         }
         temp[index] = data[i];
       }

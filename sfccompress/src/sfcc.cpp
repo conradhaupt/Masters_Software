@@ -39,7 +39,7 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
 {
   // Open file
   std::ifstream file(filename, std::ios::binary | std::ios::in);
-  std::cout << "Opening " << filename << std::endl;
+  if (::sfc::DEBUG) std::cout << "Opening " << filename << std::endl;
   if (!file.good() || !file.is_open())
     throw std::runtime_error("Opening file failed");
   // Make the file throw an exception if any error occurs
@@ -73,9 +73,10 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
   header.sfctype = sfcc::sfc_t(temp);
   header.bittransposed = bittranspose_int != 0;
 
-  std::cout << "sfctype=" << int(temp)
-            << ", bit-transposed=" << (header.bittransposed ? "yes" : "no")
-            << std::endl;
+  if (::sfc::DEBUG)
+    std::cout << "sfctype=" << int(temp)
+              << ", bit-transposed=" << (header.bittransposed ? "yes" : "no")
+              << std::endl;
 
   file.get((char&)temp);
   header.compressiontype = sfcc::compression_t(temp);
@@ -100,7 +101,7 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
       std::minmax_element((std::uint16_t*)_data.get(),
                           (std::uint16_t*)_data.get() + (_data_size / 2));
   delete[] magic_header;
-  std::cout << "Finished opening " << filename << std::endl;
+  if(::sfc::DEBUG) std::cout << "Finished opening " << filename << std::endl;
 }
 
 // sfcc_file::~sfcc_file() {}
@@ -121,7 +122,7 @@ std::unique_ptr<std::uint8_t[]> HeaderToArray(const sfcc_header& header)
   ptr[index++] = std::uint8_t(header.compressiontype);
   if (header.npaddingbits && sfc::sfcc_header::CompressionRequiresPaddingBits(
                                  header.compressiontype)) {
-    std::cout << "npaddingbits = " << std::uint16_t(header.npaddingbits.value())
+    if(::sfc::DEBUG) std::cout << "npaddingbits = " << std::uint16_t(header.npaddingbits.value())
               << std::endl;
     ptr[index++] = std::uint8_t(header.npaddingbits.value());
   }
