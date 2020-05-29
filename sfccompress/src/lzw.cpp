@@ -346,6 +346,17 @@ Dictionary::Dictionary()
   for (int i = 0; i < size; ++i) {
     entries[i].code = Nil;
     entries[i].value = i;
+    entries_map.insert({{Nil, i}, i});
+  }
+}
+
+bool entries_compare(const std::tuple<int, int> &lhs,
+                     const std::tuple<int, int> &rhs)
+{
+  if (std::get<0>(lhs) == std::get<0>(rhs)) {
+    return std::get<1>(lhs) > std::get<1>(rhs);
+  } else {
+    return std::get<0>(lhs) > std::get<0>(rhs);
   }
 }
 
@@ -357,13 +368,18 @@ int Dictionary::findIndex(const int code, const int value) const
 
   // Linear search for now.
   // TODO: Worth optimizing with a proper hash-table?
-  for (int i = 0; i < size; ++i) {
-    if (entries[i].code == code && entries[i].value == value) {
-      return i;
-    }
+  try {
+    return entries_map.at({code, value});
+  } catch (...) {
+    return Nil;
   }
+  // for (int i = 0; i < size; ++i) {
+  //   if (entries[i].code == code && entries[i].value == value) {
+  //     return i;
+  //   }
+  // }
 
-  return Nil;
+  // return Nil;
 }
 
 bool Dictionary::add(const int code, const int value)
@@ -375,6 +391,7 @@ bool Dictionary::add(const int code, const int value)
 
   entries[size].code = code;
   entries[size].value = value;
+  entries_map.insert({{code, value}, size});
   ++size;
   return true;
 }

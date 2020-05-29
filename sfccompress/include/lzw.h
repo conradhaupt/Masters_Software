@@ -69,6 +69,8 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <map>
+#include <tuple>
 
 // Disable the bit stream => std::string dumping methods.
 #ifndef LZW_NO_STD_STRING
@@ -185,6 +187,10 @@ constexpr int MaxDictBits = 12;
 constexpr int StartBits = 9;
 constexpr int FirstCode = (1 << (StartBits - 1));   // 256
 constexpr int MaxDictEntries = (1 << MaxDictBits);  // 4096
+
+bool entries_compare(const std::tuple<int, int> &lhs,
+                     const std::tuple<int, int> &rhs);
+
 class Dictionary final
 {
  public:
@@ -197,6 +203,7 @@ class Dictionary final
   // Dictionary entries 0-255 are always reserved to the byte/ASCII range.
   int size;
   Entry entries[MaxDictEntries];
+  std::map<std::tuple<int, int>, int> entries_map;
 
   Dictionary();
   int findIndex(int code, int value) const;
