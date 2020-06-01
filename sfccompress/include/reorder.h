@@ -111,7 +111,7 @@ class reorderer
   template <typename T>
   void reorder_withtemporary(T* data, unsigned long long length)
   {
-    auto temp = new T[length];
+    auto temp = std::make_unique<T[]>(length);
     // Swap
     if (_NDims == 2) {
       for (auto i = 0ULL; i < length; i++) {
@@ -143,8 +143,7 @@ class reorderer
       }
     }
     // auto itfrom = data;
-    std::move(temp, temp + length, data);
-    delete[] temp;
+    std::move(temp.get(), temp.get() + length, data);
   }
 };
 
