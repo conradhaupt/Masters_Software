@@ -404,6 +404,11 @@ bool Dictionary::flush(int &codeBitsWidth)
       // Clear the dictionary (except the first 256 byte entries).
       codeBitsWidth = StartBits;
       size = FirstCode;
+      entries_map.clear();
+      for (int i = 0; i < size; ++i) {
+        entries_map.insert({{Nil, i}, i});
+      }
+
       return true;
     }
   }

@@ -15,7 +15,7 @@
 
 TEST(lzw, lzwIsReversible)
 {
-  constexpr auto size = 1024ULL;
+  constexpr auto size = 4096ULL;
   auto data = std::make_unique<std::uint8_t[]>(size);
   // Randomise data
   std::generate(data.get(), data.get() + size,
