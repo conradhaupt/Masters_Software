@@ -210,7 +210,7 @@ void _decompress(args::Subparser& sp)
     outputFileName.erase(nFilenameExt, outputFileName.size() - nFilenameExt);
   }
 
-  if (!outputToStdOut)
+  if (!outputToStdOut && ::sfc::DEBUG)
     std::cout << "outputFileName=" << outputFileName << std::endl;
   if (!outputToStdOut)
     output = new std::ofstream(outputFileName, std::ios::binary);
@@ -258,9 +258,6 @@ int main(int argc, char* argv[])
     std::cerr << parser;
     exit(EXIT_FAILURE);
   }
-  //  catch (...) {
-  //   return -1;
-  // }
 
   return 0;
 }
