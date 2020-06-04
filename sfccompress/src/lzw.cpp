@@ -366,20 +366,12 @@ int Dictionary::findIndex(const int code, const int value) const
     return value;
   }
 
-  // Linear search for now.
-  // TODO: Worth optimizing with a proper hash-table?
-  try {
-    return entries_map.at({code, value});
-  } catch (...) {
+  auto it = entries_map.find({code, value});
+  if (it == std::end(entries_map)) {
     return Nil;
+  } else {
+    return it->second;
   }
-  // for (int i = 0; i < size; ++i) {
-  //   if (entries[i].code == code && entries[i].value == value) {
-  //     return i;
-  //   }
-  // }
-
-  // return Nil;
 }
 
 bool Dictionary::add(const int code, const int value)
