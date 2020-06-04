@@ -621,8 +621,9 @@ bzip<postcompressor>::decompress(const std::unique_ptr<std::uint8_t[]>& data,
 
     // Postcompressor
     auto postcomp = std::make_unique<postcompressor>();
-    auto compressed_data = std::make_unique<std::uint8_t[]>(length);
-    std::copy(inBlock.data, inBlock.data + length, compressed_data.get());
+    auto compressed_data = std::make_unique<std::uint8_t[]>(inBlock.length);
+    std::copy(inBlock.data, inBlock.data + inBlock.length,
+              compressed_data.get());
 
     if (::sfc::DEBUG)
       std::cout << "Decompressing compressed data of length " << inBlock.length
