@@ -165,6 +165,17 @@ bool Code::operator==(const Code other) const
 }
 bool Code::operator!=(const Code other) const { return !(*this == other); }
 
+bool Code::operator<(const Code other) const
+{
+  if (bits < other.bits) {
+    return true;
+  } else if (bits == other.bits) {
+    return length < other.length;
+  } else {
+    return false;
+  }
+}
+
 // ========================================================
 // class BitStreamReader:
 // ========================================================
@@ -764,8 +775,6 @@ void Decoder::readPrefixData()
 
     // Store the new code:
     codes[c] = bitStream.getCode();
-    // std::cout << "Code [c]: code=" << int(codes[c].getAsU64())
-    //           << ", len=" << codes[c].getLength() << std::endl;
   }
 
   // There might be some padding left that must be skipped:
@@ -775,16 +784,25 @@ void Decoder::readPrefixData()
     ++treePrefixBits;
   }
   bitStream.clearCode();
+
+  // Populate codes_maps
+  // codes_maps does not replace codes and instead is only used in
+  // findMatchingCodes.
+  for (auto i = 0; i < numberOfCodes; i++) {
+    auto it = codes_maps.find(codes[i]);
+    if (it == std::end(codes_maps)) {
+      codes_maps.insert({codes[i], i});
+    }
+  }
 }
 
 int Decoder::findMatchingCode(const Code code) const
 {
-  for (int c = 0; c < MaxSymbols; ++c) {
-    if (code == codes[c]) {
-      return c;
-    }
-  }
-  return Nil;  // Not found.
+  auto it_map = codes_maps.find(code);
+  if (it_map == std::end(codes_maps))
+    return Nil;
+  else
+    return it_map->second;
 }
 
 int Decoder::decode(std::uint8_t *data, const int dataSizeBytes)

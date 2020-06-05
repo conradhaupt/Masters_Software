@@ -104,6 +104,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <map>
 #include <queue>
 #include <vector>
 
@@ -161,6 +162,7 @@ class Code final
 
   bool operator==(const Code other) const;
   bool operator!=(const Code other) const;
+  bool operator<(const Code other) const;
 
  private:
   std::uint64_t
@@ -384,6 +386,7 @@ class Decoder final
   // its code, since the value/symbol is implicit by the
   // position within the array.
   std::array<Code, MaxSymbols> codes;
+  std::map<Code, int> codes_maps;
 };
 
 // ========================================================
