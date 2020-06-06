@@ -7,13 +7,18 @@ endif()
 include(GoogleTest)
 
 # Unit tests
-add_executable(sfccompress_test
-               src/sfcc.cpp
-               src/reorder.cpp
-               src/bwt.cpp
-               src/lzw.cpp
-               src/mtf.cpp
-               src/bittranspose.cpp)
+add_executable(
+  sfccompress_test
+  src/sfcc.cpp
+  src/reorder.cpp
+  src/bwt.cpp
+  src/lzw.cpp
+  src/mtf.cpp
+  src/bittranspose.cpp
+  src/compressor.cpp
+  ../../src/compressor.cpp # not a pretty way of resolving undefined errors for
+                           # bzip<> templated types when linking
+)
 
 # Alias
 add_executable(sfccompress::sfccompress_test ALIAS sfccompress_test)
@@ -28,6 +33,11 @@ target_include_directories(sfccompress_test PRIVATE include)
 
 target_link_libraries(sfccompress_test libsfccompress)
 target_link_libraries(sfccompress_test divsufsort)
+target_compile_definitions(
+  sfccompress_test
+  PRIVATE
+    TEST_COMPRESSOR_DATA_FILENAME="${CMAKE_CURRENT_SOURCE_DIR}/data/test.small.sfcc"
+)
 
 # Use googletest for testing
 if(TARGET gtest_main)
