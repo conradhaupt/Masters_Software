@@ -45,12 +45,13 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
   // Make the file throw an exception if any error occurs
   file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
   // Load header
-  std::uint8_t* magic_header = new std::uint8_t[4];
-  file.read((char*)magic_header, 4);
+  // std::uint8_t* magic_header = new std::uint8_t[4];
+  auto magic_header = std::make_unique<std::uint8_t[]>(4);
+  file.read((char*)magic_header.get(), 4);
   for (auto i = 0; i < 4; i++)
     if (magic_header[i] != sfcc::magicword[i]) {
       std::cerr << "ERROR: File not correct: ";
-      std::copy((char*)(magic_header), (char*)(magic_header) + 4,
+      std::copy((char*)(magic_header.get()), (char*)(magic_header.get()) + 4,
                 std::ostreambuf_iterator<char>(std::cerr));
       std::cerr << " vs ";
       std::copy((char*)(sfcc::magicword_uint8_t),
@@ -100,8 +101,8 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
   auto [min, max] =
       std::minmax_element((std::uint16_t*)_data.get(),
                           (std::uint16_t*)_data.get() + (_data_size / 2));
-  delete[] magic_header;
-  if(::sfc::DEBUG) std::cout << "Finished opening " << filename << std::endl;
+  // delete[] magic_header;
+  if (::sfc::DEBUG) std::cout << "Finished opening " << filename << std::endl;
 }
 
 // sfcc_file::~sfcc_file() {}
@@ -122,8 +123,9 @@ std::unique_ptr<std::uint8_t[]> HeaderToArray(const sfcc_header& header)
   ptr[index++] = std::uint8_t(header.compressiontype);
   if (header.npaddingbits && sfc::sfcc_header::CompressionRequiresPaddingBits(
                                  header.compressiontype)) {
-    if(::sfc::DEBUG) std::cout << "npaddingbits = " << std::uint16_t(header.npaddingbits.value())
-              << std::endl;
+    if (::sfc::DEBUG)
+      std::cout << "npaddingbits = "
+                << std::uint16_t(header.npaddingbits.value()) << std::endl;
     ptr[index++] = std::uint8_t(header.npaddingbits.value());
   }
   return std::move(ptr);

@@ -60,7 +60,8 @@ huffman::decompress(const std::unique_ptr<std::uint8_t[]>& data,
           : (length - 1) * 8 + header.npaddingbits.value();
   auto uncompressed_size_bytes =
       (1ULL << (header.sidelength_k * header.ndims)) * header.dtype_nbytes;
-  std::uint8_t* tmp_data = new std::uint8_t[uncompressed_size_bytes];
+  // std::uint8_t* tmp_data = new std::uint8_t[uncompressed_size_bytes];
+  auto tmp_data = std::make_unique<std::uint8_t[]>(uncompressed_size_bytes);
 
   // Compress using Huffman encoding
   // void easyEncode(const std::uint8_t *uncompressed,
@@ -69,12 +70,14 @@ huffman::decompress(const std::unique_ptr<std::uint8_t[]>& data,
 
   ::huffman::easyDecode(data.get(), length,
                         // ((length - 1) * 8) + header.npaddingbits.value() + 1,
-                        length * 8, tmp_data, uncompressed_size_bytes);
+                        length * 8, tmp_data.get(), uncompressed_size_bytes);
 
   // Create appropriately sized unique_ptr
   auto output_data = std::make_unique<std::uint8_t[]>(uncompressed_size_bytes);
-  std::move(tmp_data, tmp_data + uncompressed_size_bytes, output_data.get());
-  delete[] tmp_data;
+  std::move(tmp_data.get(), tmp_data.get() + uncompressed_size_bytes,
+            output_data.get());
+  // delete[] tmp_data;
+  tmp_data.reset();
   auto head = header;
   head.compressiontype = ::sfc::sfcc::compression_t::NONE;
   head.sfctype = ::sfc::sfcc::sfc_t::ROW_MAJOR;
@@ -202,20 +205,23 @@ lzw::decompress(const std::unique_ptr<std::uint8_t[]>& data,
     output_length =
         (1ULL << (header.sidelength_k * header.ndims)) * header.dtype_nbytes;
   }
-  std::uint8_t* tmp_data = new std::uint8_t[output_length];
+  // std::uint8_t* tmp_data = new std::uint8_t[output_length];
+  auto tmp_data = std::make_unique<std::uint8_t[]>(output_length);
 
   auto length_bits = header.npaddingbits.value() == 0
                          ? length * 8
                          : ((length - 1) * 8) + header.npaddingbits.value();
 
-  ::lzw::easyDecode(data.get(), length, length_bits, tmp_data, output_length);
+  ::lzw::easyDecode(data.get(), length, length_bits, tmp_data.get(),
+                    output_length);
 
   // Create appropriately sized unique_ptr
   auto output_data = std::make_unique<std::uint8_t[]>(output_length);
 
   // Move tmp data to unique_ptr
-  std::move(tmp_data, tmp_data + output_length, output_data.get());
-  delete[] tmp_data;
+  std::move(tmp_data.get(), tmp_data.get() + output_length, output_data.get());
+  // delete[] tmp_data;
+  tmp_data.reset();
   auto head = header;
   head.compressiontype = ::sfc::sfcc::compression_t::NONE;
   // Move-return unique_ptr
@@ -238,7 +244,8 @@ rle::compress(const std::unique_ptr<std::uint8_t[]>& data,
 {
   // Construct temporary data
   const auto MaxOutputSize = (length << 2);
-  std::uint8_t* tmp_data = new std::uint8_t[MaxOutputSize];
+  // std::uint8_t* tmp_data = new std::uint8_t[MaxOutputSize];
+  auto tmp_data = std::make_unique<std::uint8_t[]>(MaxOutputSize);
 
   // Compress using Huffman encoding
   // void easyEncode(const std::uint8_t *uncompressed,
@@ -249,13 +256,12 @@ rle::compress(const std::unique_ptr<std::uint8_t[]>& data,
   if (header.dtype_nbytes == 2) {
     auto ptr = reinterpret_cast<std::uint16_t*>(data.get());
     output_length = ::rle::easyEncode<std::uint16_t>(
-        ptr, length / sizeof(std::uint16_t), tmp_data, MaxOutputSize);
+        ptr, length / sizeof(std::uint16_t), tmp_data.get(), MaxOutputSize);
   } else if (header.dtype_nbytes == 4) {
     auto ptr = reinterpret_cast<std::uint32_t*>(data.get());
     output_length = ::rle::easyEncode<std::uint32_t>(
-        ptr, length / sizeof(std::uint32_t), tmp_data, MaxOutputSize);
+        ptr, length / sizeof(std::uint32_t), tmp_data.get(), MaxOutputSize);
   } else {
-    delete[] tmp_data;
     throw std::logic_error("Unexpected data-type size of " +
                            std::to_string(header.dtype_nbytes) + " bytes");
   }
@@ -265,8 +271,9 @@ rle::compress(const std::unique_ptr<std::uint8_t[]>& data,
   // Create appropriately sized unique_ptr
   auto output_data = std::make_unique<std::uint8_t[]>(output_length);
 
-  std::move(tmp_data, tmp_data + output_length, output_data.get());
-  delete[] tmp_data;
+  std::move(tmp_data.get(), tmp_data.get() + output_length, output_data.get());
+  // delete[] tmp_data;
+  tmp_data.reset();
   auto head = header;
   head.compressiontype = ::sfc::sfcc::compression_t::RLE;
 
@@ -286,7 +293,8 @@ rle::decompress(const std::unique_ptr<std::uint8_t[]>& data,
   const auto OutputSize =
       (1ULL << (header.sidelength_k * header.ndims)) * header.dtype_nbytes;
   if (::sfc::DEBUG) std::cout << "RLE: Received size=" << length << std::endl;
-  std::uint8_t* tmp_data = new std::uint8_t[OutputSize];
+  // std::uint8_t* tmp_data = new std::uint8_t[OutputSize];
+  auto tmp_data = std::make_unique<std::uint8_t[]>(OutputSize);
 
   // Compress using Huffman encoding
   // void easyEncode(const std::uint8_t *uncompressed,
@@ -297,12 +305,11 @@ rle::decompress(const std::unique_ptr<std::uint8_t[]>& data,
     std::cout << "RLE: expected OutputSize=" << OutputSize << std::endl;
   if (header.dtype_nbytes == 2) {
     output_length = ::rle::easyDecode<std::uint16_t>(
-        data.get(), length, (std::uint16_t*)tmp_data, OutputSize);
+        data.get(), length, (std::uint16_t*)tmp_data.get(), OutputSize);
   } else if (header.dtype_nbytes == 4) {
     output_length = ::rle::easyDecode<std::uint32_t>(
-        data.get(), length, (std::uint32_t*)tmp_data, OutputSize);
+        data.get(), length, (std::uint32_t*)tmp_data.get(), OutputSize);
   } else {
-    delete[] tmp_data;
     throw std::logic_error("Unexpected data-type size of " +
                            std::to_string(header.dtype_nbytes) + " bytes");
   }
@@ -316,9 +323,10 @@ rle::decompress(const std::unique_ptr<std::uint8_t[]>& data,
   // Create appropriately sized unique_ptr
   auto output_data = std::make_unique<std::uint8_t[]>(output_length);
 
-  std::move((std::uint8_t*)tmp_data, (std::uint8_t*)tmp_data + (output_length),
-            output_data.get());
-  delete[] tmp_data;
+  std::move((std::uint8_t*)tmp_data.get(),
+            (std::uint8_t*)tmp_data.get() + (output_length), output_data.get());
+  // delete[] tmp_data;
+  tmp_data.reset();
   auto head = header;
   head.compressiontype = ::sfc::sfcc::compression_t::NONE;
   // Move-return unique_ptr
