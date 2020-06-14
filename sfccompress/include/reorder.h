@@ -32,10 +32,16 @@ class reorderer
 
   const sfc::size_t _NDims;
 
+  const bool _sfcsAreTheSame;
+
  public:
   reorderer(std::unique_ptr<sfc::sfcurve<2>>&& from,
-            std::unique_ptr<sfc::sfcurve<2>>&& to)
-      : _from_2(std::move(from)), _to_2(std::move(to)), _NDims{2}
+            std::unique_ptr<sfc::sfcurve<2>>&& to,
+            const bool& sfcsAreTheSame = false)
+      : _from_2(std::move(from)),
+        _to_2(std::move(to)),
+        _NDims{2},
+        _sfcsAreTheSame{sfcsAreTheSame}
   {
     if (_from_2 == nullptr || _to_2 == nullptr)
       throw std::runtime_error(
@@ -44,8 +50,14 @@ class reorderer
       throw std::runtime_error("SFCurves must have the same size");
   }
   reorderer(std::unique_ptr<sfc::sfcurve<3>>&& from,
-            std::unique_ptr<sfc::sfcurve<3>>&& to)
-      : _from_3(std::move(from)), _to_3(std::move(to)), _NDims{3}
+            std::unique_ptr<sfc::sfcurve<3>>&& to,
+            const bool& sfcsAreTheSame = false)
+
+      : _from_3(std::move(from)),
+        _to_3(std::move(to)),
+        _NDims{3},
+        _sfcsAreTheSame{sfcsAreTheSame}
+
   {
     if (_from_3 == nullptr || _to_3 == nullptr)
       throw std::runtime_error(
@@ -58,6 +70,7 @@ class reorderer
   template <typename T>
   void reorder(T* data, unsigned long long length)
   {
+    if (_sfcsAreTheSame) return;
     if (_NDims == 2 && _from_2 == _to_2) return;
     if (_NDims == 3 && _from_3 == _to_3) return;
     std::vector<bool> _moved_checklist;
@@ -101,6 +114,7 @@ class reorderer
     if (lengthInBytes % nBytesInDType != 0)
       throw std::range_error("Data length is not divisible by data-type size");
 
+    if (_sfcsAreTheSame) return;
     if (nBytesInDType == 2)
       reorder_withtemporary((std::uint16_t*)data,
                             lengthInBytes / sizeof(std::uint16_t));
@@ -111,6 +125,7 @@ class reorderer
   template <typename T>
   void reorder_withtemporary(T* data, unsigned long long length)
   {
+    if (_sfcsAreTheSame) return;
     auto temp = std::make_unique<T[]>(length);
     // Swap
     if (_NDims == 2) {
@@ -152,14 +167,16 @@ std::unique_ptr<reorderer> make_reorderer(
     const sfc::main::sfcs::types& from_type,
     const sfc::main::sfcs::types& to_type)
 {
+  auto sameSFCS = from_type == to_type;
+  // If the SFCs are different
   if (NDims == 2) {
     return std::make_unique<reorderer>(
         sfc::main::SFCToSFCurve<2>(from_type, dimlength),
-        sfc::main::SFCToSFCurve<2>(to_type, dimlength));
+        sfc::main::SFCToSFCurve<2>(to_type, dimlength), sameSFCS);
   } else if (NDims == 3) {
     return std::make_unique<reorderer>(
         sfc::main::SFCToSFCurve<3>(from_type, dimlength),
-        sfc::main::SFCToSFCurve<3>(to_type, dimlength));
+        sfc::main::SFCToSFCurve<3>(to_type, dimlength), sameSFCS);
   }
   return nullptr;
 }
