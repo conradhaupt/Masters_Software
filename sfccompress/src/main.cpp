@@ -31,8 +31,13 @@ void _compress(args::Subparser& sp)
                                      sfc::main::desc::compress_file);
   args::Positional<std::string> outfile(sp, "output file",
                                         sfc::main::desc::compress_out_file);
-  args::Flag bittranspose(sp, "bittranspose", sfc::main::desc::bittranspose,
-                          {'b', "bittranspose"});
+  args::Group bittranspose_group(
+      sp, "This group is all exclusive:", args::Group::Validators::Xor);
+  args::Flag bittranspose(bittranspose_group, "bittranspose",
+                          sfc::main::desc::bittranspose, {'b', "bittranspose"});
+  args::Flag nobittranspose(bittranspose_group, "do not bittranspose",
+                            sfc::main::desc::nobittranspose,
+                            {'B', "nobittranspose"});
   sp.Parse();
   if (!file || (!sfc && !comp)) std::cout << sp << std::endl;
 
@@ -65,7 +70,7 @@ void _compress(args::Subparser& sp)
       header.dtype_nbytes);
 
   // Bit-Transpose
-  if (bittranspose) {
+  if (bittranspose && !nobittranspose) {
     if (::sfc::DEBUG)
       std::cout << "Transposing bits with data-type of "
                 << int(header.dtype_nbytes) << " bytes" << std::endl;

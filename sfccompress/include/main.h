@@ -38,6 +38,9 @@ const std::string compression =
     "The compression scheme with which to compress the data";
 const std::string bittranspose =
     "Reorder bits of the data so that they are grouped by significance";
+const std::string nobittranspose =
+    "Do not reorder bits of the data by significance";
+
 }  // namespace desc
 namespace sfcs {
 using types = ::sfc::sfcc::sfc_t;
