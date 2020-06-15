@@ -77,7 +77,12 @@
 			"filesystem": "cpp",
 			"hash_set": "cpp",
 			"future": "cpp",
-			"*.ipp": "cpp"
+			"*.ipp": "cpp",
+			"any": "cpp",
+			"compare": "cpp",
+			"concepts": "cpp",
+			"ranges": "cpp",
+			"stop_token": "cpp"
 		},
 		"editor.tabSize": 2,
 		"licenser.projectName": "SFC Compression Methods",
