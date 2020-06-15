@@ -262,6 +262,10 @@ int main(int argc, char* argv[])
     std::cerr << eParse.what() << std::endl;
     std::cerr << parser;
     exit(EXIT_FAILURE);
+  } catch (const args::ValidationError& eValid) {
+    std::cerr << eValid.what() << std::endl;
+    std::cerr << parser;
+    exit(EXIT_FAILURE);
   }
 
   return 0;
