@@ -33,7 +33,7 @@ uint64_t getHKeyFromIntCoord(const sfc::size_t dimSize,
                              const coords_type& coords)
 {
   // Coords type must match the number of dimensions
-  static_assert(coords.size() == _NDim);
+  // static_assert(coords.size() == _NDim);
   uint64_t tmp_coords[_NDim];
   std::copy(std::begin(coords), std::end(coords), std::rbegin(tmp_coords));
   // std::for_each(std::begin(coords), std::end(coords),
