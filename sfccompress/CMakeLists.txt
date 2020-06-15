@@ -14,7 +14,7 @@ set(LIBSFCCOMPRESS_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(LIBSFCCOMPRESS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_library(
-  libsfccompress
+  libsfccompress STATIC
   # Source files
   ${LIBSFCCOMPRESS_SOURCE_DIR}/sfcc.cpp
   ${LIBSFCCOMPRESS_SOURCE_DIR}/compressor.cpp
