@@ -3,7 +3,7 @@
 from os import system
 import sys
 import sfccfile as sFile
-from sfccfile import SFC, Compression, Config, SFCC, Results, GetCompression, GetSFC, SFCToArg, CompressionToArg
+from sfccfile import SFC, Compression, Config, SFCC, Results, GetCompression, GetSFC
 
 __SFCCOMPRESS_EXEC = '/home/conrad/sfccompress'
 __GZIP_EXEC = '/usr/bin/gzip'
