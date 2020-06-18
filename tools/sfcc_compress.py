@@ -85,29 +85,29 @@ conf = Config(arg_sfc, arg_bwt, arg_bitshuffle, arg_compression)
 print(conf)
 if compress:
     if not conf.compression.external():
-        compress_sfccompress(conf, filename)
+        compress_sfccompress(conf, arg_filename)
     elif conf.compression == Compression.bzip2:
-        compress_bzip2(conf, filename)
+        compress_bzip2(conf, arg_filename)
     elif conf.compression == Compression.gzip:
-        compress_gzip(conf, filename)
+        compress_gzip(conf, arg_filename)
     elif conf.compression == Compression.lz4:
-        compress_lz4(conf, filename)
+        compress_lz4(conf, arg_filename)
     elif conf.compression == Compression.lzo:
-        compress_lzo(conf, filename)
+        compress_lzo(conf, arg_filename)
     else:
         raise RuntimeError('Unknown compression scheme: %s' %
                            (conf.compression))
 else:
     if not conf.compression.external():
-        compress_sfccompress(conf, filename)
+        compress_sfccompress(conf, arg_filename)
     elif conf.compression == Compression.bzip2:
-        compress_bzip2(conf, filename)
+        compress_bzip2(conf, arg_filename)
     elif conf.compression == Compression.gzip:
-        compress_gzip(conf, filename)
+        compress_gzip(conf, arg_filename)
     elif conf.compression == Compression.lz4:
-        compress_lz4(conf, filename)
+        compress_lz4(conf, arg_filename)
     elif conf.compression == Compression.lzo:
-        compress_lzo(conf, filename)
+        compress_lzo(conf, arg_filename)
     else:
         raise RuntimeError('Unknown compression scheme: %s' %
                            (conf.compression))
