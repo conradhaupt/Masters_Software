@@ -2,6 +2,14 @@ from enum import Enum
 from os.path import basename
 
 
+def UnL(arr):
+    output = []
+    for a in arr:
+        output.append(a.lower())
+        output.append(a.upper())
+    return output
+
+
 class SFC(Enum):
     raster = 0
     zorder = 1
@@ -20,10 +28,21 @@ def SFCToStr(sfc):
         return 'Hilbert'
 
 
-__RASTER = ['raster', 'row_major', 'rstr']
-__ZORDER = ['zorder', 'morton', 'mrtn']
-__GRAY = ['gray', 'gray_code', 'gry']
-__HILBERT = ['hilbert', 'hbrt']
+def SFCToExtension(sfc):
+    if sfc == SFC.raster:
+        return ''
+    elif sfc == SFC.zorder:
+        return '.mrtn'
+    elif sfc == SFC.gray:
+        return '.gry'
+    elif sfc == SFC.hilbert:
+        return '.hbrt'
+
+
+__RASTER = UnL(['raster', 'row_major', 'rstr'])
+__ZORDER = UnL(['zorder', 'morton', 'mrtn'])
+__GRAY = UnL(['gray', 'gray_code', 'gry'])
+__HILBERT = UnL(['hilbert', 'hbrt'])
 
 __SFC = [*__RASTER, *__ZORDER, *__GRAY, *__HILBERT]
 
@@ -53,6 +72,9 @@ class Compression(Enum):
     lzw = 7
     rle = 8
 
+    def external(self):
+        return self in [Compression.bzip2, Compression.gzip, Compression.lz4, Compression.lzo]
+
 
 def CompressionToStr(comp):
     if comp == Compression.none:
@@ -75,15 +97,36 @@ def CompressionToStr(comp):
         return 'RLE'
 
 
-__HUFFMAN = ['huffman', 'huff', 'hff']
-__GZIP = ['gzip', 'gz']
-__BZIP2 = ['bzip', 'bzip2', 'bz2']
-__LZ4 = ['lz4']
-__LZ77 = ['lz77', 'bzip_lz77']
-__LZO = ['lzo']
-__LZW = ['lzw', 'bzip_lzw']
-__RLE = ['rle']
-__NONE = ['none']
+def CompressionToExtension(comp):
+    if comp == Compression.none:
+        return ''
+    elif comp == Compression.bzip2:
+        return '.bz2'
+    elif comp == Compression.gzip:
+        return '.gz'
+    elif comp == Compression.huffman:
+        return '.hff'
+    elif comp == Compression.lz4:
+        return '.lz4'
+    elif comp == Compression.lz77:
+        return '.lz77'
+    elif comp == Compression.lzo:
+        return '.lzo'
+    elif comp == Compression.lzw:
+        return '.lzw'
+    elif comp == Compression.rle:
+        return '.rle'
+
+
+__HUFFMAN = UnL(['huffman', 'huff', 'hff'])
+__GZIP = UnL(['gzip', 'gz'])
+__BZIP2 = UnL(['bzip', 'bzip2', 'bz2'])
+__LZ4 = UnL(['lz4'])
+__LZ77 = UnL(['lz77', 'bzip_lz77'])
+__LZO = UnL(['lzo'])
+__LZW = UnL(['lzw', 'bzip_lzw'])
+__RLE = UnL(['rle'])
+__NONE = UnL(['none'])
 
 __COMPRESSON = [*__NONE, *__HUFFMAN, *__GZIP, *__BZIP2,
                 *__LZ4, *__LZ77, *__LZO, *__LZW, *__RLE]
@@ -114,21 +157,61 @@ def GetCompression(stringCompression: str):
                            (stringCompression))
 
 
-class SFCC:
-    def __init__(self, filename: str, sfc, bwt: bool, bitshuffle: bool, compression):
-        self.filename = filename
+class Config:
+
+    __VALID_BWT_COMPRESSION = [Compression.none, Compression.lz77,
+                               Compression.lzw, Compression.lz4]
+
+    def __init__(self, sfc, bwt, bitshuffle, compression):
         if isinstance(sfc, str):
             self.sfc = GetSFC(sfc)
         else:
             self.sfc = sfc
 
+        self.bwt = bwt
+        self.bitshuffle = bitshuffle
         if isinstance(compression, str):
             self.compression = GetCompression(compression)
         else:
             self.compression = compression
 
-        self.bwt = bwt
-        self.bitshuffle = bitshuffle
+        # if not self.valid():
+        #     raise RuntimeError('Invalid Config')
+
+    def valid(self):
+        if self.bwt and self.compression not in self.__VALID_BWT_COMPRESSION:
+            return False
+        return True
+
+    def expectedFilename(self, filename):
+        _filename = filename.split('.sfcc')[0] + '.sfcc'
+        _filename += SFCToExtension(self.sfc)
+        if self.bitshuffle:
+            _filename += '.btr'
+        if self.bwt:
+            _filename += '.bwt'
+        _filename += CompressionToExtension(self.compression)
+        return _filename
+
+    def __str__(self):
+        return '{}, {} {}, {} {}, {}'.format(self.sfc, 'bwt:', self.bwt, 'bitshuffle:', self.bitshuffle, self.compression)
+
+    def previousConfig(self):
+        # If the config requires an external compression tool, the input config is as follows
+        if self.compression.external():
+            return Config(self.sfc, self.bwt, self.bitshuffle, Compression.none)
+
+        # The config is the output from sfccompress, therefore the input config is the original file
+        return Config(SFC.raster, False, False, Compression.none)
+
+    def isOriginal(self):
+        return self.sfc == SFC.raster and not self.bwt and not self.bitshuffle and self.compression == Compression.none
+
+
+class SFCC:
+    def __init__(self, filename: str, sfc, bwt: bool, bitshuffle: bool, compression):
+        self.filename = filename
+        self._config = Config(sfc, bwt, bitshuffle, compression)
 
     @property
     def filename(self):
@@ -143,9 +226,41 @@ class SFCC:
             vals.remove('tif')
         self._filename = '.'.join(vals)
 
+    @property
+    def sfc(self):
+        return self._config.sfc
+
+    @property
+    def bwt(self):
+        return self._config.bwt
+
+    @property
+    def bitshuffle(self):
+        return self._config.bitshuffle
+
+    @property
+    def compression(self):
+        return self._config.compression
+
     @filename.deleter
     def filename(self):
         del self._filename
+
+    @sfc.setter
+    def sfc(self, val):
+        self._config.sfc = val
+
+    @bwt.setter
+    def bwt(self, val):
+        self._config.bwt = val
+
+    @bitshuffle.setter
+    def bitshuffle(self, val):
+        self._config.bitshuffle = val
+
+    @compression.setter
+    def compression(self, val):
+        self._config.compression = val
 
     def __eq__(self, other):
         return (self.filename, self.sfc, self.bwt, self.bitshuffle, self.compression) == (other.filename, other.sfc, other.bwt, other.bitshuffle, other.compression)
@@ -241,8 +356,8 @@ class SFCCBuilder:
         return SFCC(self.filename, self.sfc, self.bwt, self.bitshuffle, self.compression)
 
 
-__BWT = ['bwt', 'bzip_lz77', 'bzip_lzw']
-__BITSHUFFLE = ['btr', '-b']
+__BWT = UnL(['bwt', 'bzip_lz77', 'bzip_lzw'])
+__BITSHUFFLE = ['btr', '-b', 'BTR']
 
 
 def parseFilename(filename):
@@ -260,7 +375,7 @@ def parseFilename(filename):
     builder.setFilename('.'.join(filename_components[:sfcc_pos+1]))
     del filename_components[:sfcc_pos+1]
 
-    parts = [v.lower() for v in filename_components]
+    parts = [v for v in filename_components]
     for part in parts:
         _p = False
         if part in __SFC:
@@ -287,7 +402,7 @@ def parseCLI(cli: str):
     del components[-1]
     sfcc = parseFilename(filename)
 
-    parts = [v.lower() for v in components]
+    parts = [v for v in components]
     # print('Before:', sfcc)
     # print(parts)
     for part in parts:
