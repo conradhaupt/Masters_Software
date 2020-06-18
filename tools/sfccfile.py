@@ -37,6 +37,8 @@ def SFCToExtension(sfc):
         return '.gry'
     elif sfc == SFC.hilbert:
         return '.hbrt'
+    else:
+        return sfc
 
 
 __RASTER = UnL(['raster', 'row_major', 'rstr'])
@@ -162,7 +164,7 @@ class Config:
     __VALID_BWT_COMPRESSION = [Compression.none, Compression.lz77,
                                Compression.lzw, Compression.lz4]
 
-    def __init__(self, sfc, bwt, bitshuffle, compression):
+    def __init__(self, sfc: SFC, bwt: bool, bitshuffle: bool, compression: Compression):
         if isinstance(sfc, str):
             self.sfc = GetSFC(sfc)
         else:
@@ -206,6 +208,92 @@ class Config:
 
     def isOriginal(self):
         return self.sfc == SFC.raster and not self.bwt and not self.bitshuffle and self.compression == Compression.none
+
+    def toShortStr(self):
+        return self.expectedFilename('.sfcc')
+
+    def sfccompressArgs(self):
+        if self.sfc == SFC.raster:
+            _sfc = 'ROW_MAJOR'
+        elif self.sfc == SFC.zorder:
+            _sfc = 'MORTON'
+        elif self.sfc == SFC.gray:
+            _sfc = 'GRAY_CODE'
+        elif self.sfc == SFC.hilbert:
+            _sfc = 'HILBERT'
+        else:
+            _sfc = None
+
+        if self.compression == Compression.none and not self.bwt:
+            _comp = 'NONE'
+        elif self.compression == Compression.none and self.bwt:
+            _comp = 'BWT'
+        elif self.compression == Compression.huffman:
+            _comp = 'HUFFMAN'
+        elif self.compression == Compression.rle:
+            _comp = 'RLE'
+        elif self.compression == Compression.lz77 and not self.bwt:
+            _comp = 'LZ77'
+        elif self.compression == Compression.lz77 and self.bwt:
+            _comp = 'BZIP_LZ77'
+        elif self.compression == Compression.lzw and not self.bwt:
+            _comp = 'LZW'
+        elif self.compression == Compression.lzw and self.bwt:
+            _comp = 'BZIP_LZW'
+        else:
+            _comp = None
+
+        if self.bitshuffle:
+            _bs = '-b'
+        else:
+            _bs = '-B'
+
+        return (_sfc, _comp, _bs)
+
+    def pyCompressArg(self):
+        if self.sfc == SFC.raster:
+            _sfc = 'raster'
+        elif self.sfc == SFC.zorder:
+            _sfc = 'zorder'
+        elif self.sfc == SFC.gray:
+            _sfc = 'gray'
+        elif self.sfc == SFC.hilbert:
+            _sfc = 'hilbert'
+        else:
+            _sfc = None
+
+        if self.compression == Compression.none:
+            _comp = 'none'
+        elif self.compression == Compression.huffman:
+            _comp = 'huff'
+        elif self.compression == Compression.rle:
+            _comp = 'rle'
+        elif self.compression == Compression.lz77:
+            _comp = 'lz77'
+        elif self.compression == Compression.lzw:
+            _comp = 'lzw'
+        elif self.compression == Compression.bzip2:
+            _comp = 'bzip'
+        elif self.compression == Compression.gzip:
+            _comp = 'gzip'
+        elif self.compression == Compression.lz4:
+            _comp = 'lz4'
+        elif self.compression == Compression.lzo:
+            _comp = 'lzo'
+        else:
+            _comp = None
+
+        if self.bitshuffle:
+            _bs = 'btr'
+        else:
+            _bs = 'nobtr'
+
+        if self.bwt:
+            _bwt = 'bwt'
+        else:
+            _bwt = 'nobwt'
+
+        return (_sfc, _bwt, _bs, _comp)
 
 
 class SFCC:
