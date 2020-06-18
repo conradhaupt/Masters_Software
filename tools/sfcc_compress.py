@@ -9,7 +9,7 @@ __SFCCOMPRESS_EXEC = '/home/conrad/sfccompress'
 __GZIP_EXEC = '/usr/bin/gzip'
 __BZIP2_EXEC = '/usr/bin/bzip2'
 __LZ4_EXEC = '/usr/bin/lz4'
-__LZO_EXEC = '/usr/bin/lzo'
+__LZO_EXEC = '/usr/bin/lzop'
 
 
 def inFile(conf: Config, filename):
@@ -82,7 +82,6 @@ arg_compression = GetCompression(sys.argv[5])
 arg_filename = sys.argv[6]
 
 conf = Config(arg_sfc, arg_bwt, arg_bitshuffle, arg_compression)
-print(conf)
 if compress:
     if not conf.compression.external():
         compress_sfccompress(conf, arg_filename)
