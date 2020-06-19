@@ -40,9 +40,14 @@ for comp, bwt, bitshuffle in it.product(Compression, [True, False], [True, False
     configs[conf_name] = conf
     encountered.add(conf_name)
 
+ignore_root = True
+
 print(RenderTree(root, style=AsciiStyle()).by_attr())
 with open(arg_output, 'w') as out:
     for node in PreOrderIter(root):
+        if ignore_root and node.name == root_name:
+            print(f"Ignoring root node with name {node.name}")
+            continue
         conf = configs[node.name]
         _sfc, _bwt, _bs, _comp = conf.pyCompressArg()
         # Compress
