@@ -28,7 +28,6 @@ encountered = set()
 encountered.add(root_name)
 
 for comp, bwt, bitshuffle in it.product(Compression, [True, False], [True, False]):
-    sfc = SFC.gray
     conf = Config(sfc, bwt, bitshuffle, comp)
     if not conf.valid():
         continue
