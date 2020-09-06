@@ -96,3 +96,19 @@ if(TARGET divsufsort)
 else()
   message(FATAL_ERROR "Could NOT find downloadeded libdivsufsort")
 endif()
+
+# add Google benchmark library
+message(STATUS "Invoking googlebenchmark DownloadPackage")
+include(googlebenchmark-download)
+add_subdirectory(${googlebenchmark_SOURCE_DIR} ${googlebenchmark_BINARY_DIR}
+                 EXCLUDE_FROM_ALL)
+include_directories("${googlebenchmark_BINARY_DIR}/include")
+
+# google benchmark
+if(TARGET benchmark)
+  message(STATUS "Found downloaded google benchmark")
+  # target_include_directories(benchmark
+                            #  PUBLIC "${googlebenchmark_BINARY_DIR}/include")
+else()
+  message(FATAL_ERROR "Could NOT find downloaded google benchmark")
+endif()
