@@ -5,14 +5,16 @@ include(DownloadProject)
 
 # Add googletest library if BUILD_TESTS is enabled
 if(BUILD_TESTS)
-  set(SFC_GTEST_SEARCH_DIR "" CACHE PATH "dir to search in for googletest")
+  set(SFC_GTEST_SEARCH_DIR
+      ""
+      CACHE PATH "dir to search in for googletest")
 
   # If find_* didn't work, try download, build, and integrate with project
   if(NOT TARGET gtest_main AND NOT SFC_COMPILE_GTEST_IF_NOT_FOUND)
     message(
       FATAL_ERROR
         "Could NOT find GTest. Enable SFC_COMPILE_GTEST_IF_NOT_FOUND to download and install it"
-      )
+    )
   elseif(NOT TARGET gtest_main)
     message(STATUS "GTest not found, using DownloadPackage")
     include(googletest-download)
@@ -65,7 +67,9 @@ endif() # if
 
 # Add args library for argument parsing from https://github.com/Taywee/args.git
 message(STATUS "Invoking args DownloadPackage")
-set(ARGS_BUILD_UNITTESTS OFF CACHE BOOL "Hello")
+set(ARGS_BUILD_UNITTESTS
+    OFF
+    CACHE BOOL "Hello")
 include(args-download)
 # Add args subdir
 add_subdirectory(${args_SOURCE_DIR} ${args_BINARY_DIR} EXCLUDE_FROM_ALL)
@@ -79,14 +83,16 @@ endif() # if
 # add libdivsufsort library
 message(STATUS "Invoking libdivsufsort DownloadPackage")
 include(libdivsufsort-download)
-add_subdirectory(${libdivsufsort_SOURCE_DIR} ${libdivsufsort_BINARY_DIR} EXCLUDE_FROM_ALL)
+add_subdirectory(${libdivsufsort_SOURCE_DIR} ${libdivsufsort_BINARY_DIR}
+                 EXCLUDE_FROM_ALL)
 include_directories("${libdivsufsort_BINARY_DIR}/include")
 message("${libdivsufsort_BINARY_DIR}/include")
 
-## libdivsufsort
+# libdivsufsort
 if(TARGET divsufsort)
   message(STATUS "Found downloaded libdivsufsort")
-  target_include_directories(divsufsort PUBLIC "${libdivsufsort_BINARY_DIR}/include")
+  target_include_directories(divsufsort
+                             PUBLIC "${libdivsufsort_BINARY_DIR}/include")
 else()
   message(FATAL_ERROR "Could NOT find downloadeded libdivsufsort")
 endif()
