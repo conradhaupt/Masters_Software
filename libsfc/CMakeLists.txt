@@ -34,6 +34,9 @@ target_link_libraries(libsfc INTERFACE libhilbert)
 # Add tests (compiler, unit)
 add_subdirectory(tests)
 
+# Add benchmarks
+add_subdirectory(benchmark)
+
 # Handle BMI2 support
 if(BMI2_SUPPORTED)
   target_compile_options(libsfc INTERFACE -mbmi2)
