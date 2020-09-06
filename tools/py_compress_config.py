@@ -27,7 +27,7 @@ configs[Config(SFC.raster, False, False, Compression.none).toShortStr()] = Confi
 encountered = set()
 encountered.add(root_name)
 
-for comp, bwt, bitshuffle in it.product(Compression, [True, False], [True, False]):
+for sfc, comp, bwt, bitshuffle in it.product(SFC, Compression, [True, False], [True, False]):
     conf = Config(sfc, bwt, bitshuffle, comp)
     if not conf.valid():
         continue

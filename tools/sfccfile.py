@@ -2,6 +2,10 @@ from enum import Enum
 from os.path import basename
 
 
+def noneToNegativeOne(val):
+    return val if val is not None else -1
+
+
 def UnL(arr):
     output = []
     for a in arr:
@@ -378,19 +382,27 @@ class SFCC:
 
 
 class Results:
-    def __init__(self, runtime_compress=None, runtime_decompress=None, size=None):
+    def __init__(self, runtime_compress=None, runtime_decompress=None, size=None, relative_runtime_compress=None, relative_runtime_decompress=None):
         self.runtime_compress = runtime_compress
         self.runtime_decompress = runtime_decompress
         self.size = size
+        self.relative_runtime_compress = relative_runtime_compress
+        self.relative_runtime_decompress = relative_runtime_decompress
 
     def __eq__(self, other):
-        return (self.runtime_compress, self.runtime_decompress, self.size) == (other.runtime_compress, other.runtime_decompress, other.size)
+        return (self.runtime_compress, self.runtime_decompress, self.size, self.relative_runtime_compress, self.relative_runtime_decompress) == (other.runtime_compress, other.runtime_decompress, other.size, other.relative_runtime_compress, other.relative_runtime_decompress)
 
     def __hash__(self):
-        return hash((self.runtime_compress, self.runtime_decompress, self.size))
+        return hash((self.runtime_compress, self.runtime_decompress, self.size, self.relative_runtime_compress, self.relative_runtime_decompress))
 
     def __str__(self):
-        return '%d ms, %d ms, %d bytes' % (-1 if self.runtime_compress is None else self.runtime_compress, -1 if self.runtime_decompress is None else self.runtime_decompress, -1 if self.size is None else self.size)
+        return '%d ms, %d ms, %d bytes, %d ms, %d ms' % (-1 if self.runtime_compress is None else self.runtime_compress, -1 if self.runtime_decompress is None else self.runtime_decompress, -1 if self.size is None else self.size, -1 if self.relative_runtime_compress is None else self.relative_runtime_compress, -1 if self.relative_runtime_decompress is None else self.relative_runtime_decompress)
+
+    def isIncomplete(self):
+        return self.runtime_compress is None or self.runtime_decompress is None or self.size is None or self.relative_runtime_compress is None or self.relative_runtime_decompress is None
+
+    def to_csv(self):
+        return ','.join([str(noneToNegativeOne(x)) for x in [self.size, self.runtime_compress, self.runtime_decompress, self.relative_runtime_compress, self.relative_runtime_decompress]])
 
 
 class SFCCBuilder:
