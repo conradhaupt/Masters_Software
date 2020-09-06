@@ -24,11 +24,11 @@ class range
   T iter;
 
  public:
-  explicit range(T begin, T end) : iter{begin}, last{end}
+  constexpr explicit range(T begin, T end) : iter{begin}, last{end}
   {
     static_assert(std::is_integral_v<T>, "Integral required");
   }
-  explicit range(T end) : range(T(), end) {}
+  constexpr explicit range(T end) : range(T(), end) {}
 
   // Iterable functions
   const range &begin() const { return *this; }
