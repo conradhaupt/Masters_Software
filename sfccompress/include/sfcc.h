@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <future>
 #include <iostream>
 #include <iterator>
 #include <memory>
@@ -25,7 +26,7 @@
 
 namespace sfc {
 
-  const bool DEBUG = false;
+const bool DEBUG = false;
 
 namespace sfcc {
 
@@ -117,18 +118,34 @@ class sfcc_file
 
  private:
   sfcc_header _header;
-  std::unique_ptr<std::uint8_t[]> _data;
+  std::unique_ptr<std::uint8_t[]> _data_file;
+  std::future<std::unique_ptr<std::uint8_t[]>> _data;
   unsigned long long _data_size;
+
+  std::unique_ptr<std::uint8_t[]> loadData(std::shared_ptr<std::ifstream> file,
+                                           unsigned long long data_size);
+
+  inline void _dataWaitAndGet()
+  {
+    if (!_data_file) {
+      _data_file = _data.get();
+    }
+  }
 
  public:
   sfcc_file(const std::string& filename);
   // ~sfcc_file(){}
   sfcc_header& getHeader() { return _header; }
   const sfcc_header& getHeader() const { return _header; }
-  std::uint8_t* getData() const { return _data.get(); }
-  const std::unique_ptr<std::uint8_t[]>& getDataPointer() const
+  std::uint8_t* getData()
   {
-    return _data;
+    _dataWaitAndGet();
+    return _data_file.get();
+  }
+  const std::unique_ptr<std::uint8_t[]>& getDataPointer()
+  {
+    _dataWaitAndGet();
+    return _data_file;
   }
   unsigned long long size() const { return _data_size; }
   unsigned long long sizein_bytes() const { return _data_size; }

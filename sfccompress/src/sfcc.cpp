@@ -35,19 +35,20 @@ const std::uint8_t magicword_uint8_t[] = {'S', 'F', 'C', 'C'};
 const std::uint8_t bittranspose_mask = 0b10000000;
 }  // namespace sfcc
 
-sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
+sfcc_file::sfcc_file(const std::string& filename)
 {
   // Open file
-  std::ifstream file(filename, std::ios::binary | std::ios::in);
+  std::shared_ptr<std::ifstream> file = std::make_shared<std::ifstream>(
+      filename, std::ios::binary | std::ios::in);
   if (::sfc::DEBUG) std::cout << "Opening " << filename << std::endl;
-  if (!file.good() || !file.is_open())
+  if (!file->good() || !file->is_open())
     throw std::runtime_error("Opening file failed");
   // Make the file throw an exception if any error occurs
-  file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+  file->exceptions(std::ifstream::failbit | std::ifstream::badbit);
   // Load header
   // std::uint8_t* magic_header = new std::uint8_t[4];
   auto magic_header = std::make_unique<std::uint8_t[]>(4);
-  file.read((char*)magic_header.get(), 4);
+  file->read((char*)magic_header.get(), 4);
   for (auto i = 0; i < 4; i++)
     if (magic_header[i] != sfcc::magicword[i]) {
       std::cerr << "ERROR: File not correct: ";
@@ -61,11 +62,11 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
       exit(EXIT_FAILURE);
     }
   sfc::sfcc_header header;
-  file.get((char&)header.ndims);
-  file.get((char&)header.sidelength_k);
-  file.get((char&)header.dtype_nbytes);
+  file->get((char&)header.ndims);
+  file->get((char&)header.sidelength_k);
+  file->get((char&)header.dtype_nbytes);
   std::uint8_t temp;
-  file.get((char&)temp);
+  file->get((char&)temp);
 
   // Extract bittranspose
   auto bittranspose_int = temp & sfcc::bittranspose_mask;
@@ -79,12 +80,12 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
               << ", bit-transposed=" << (header.bittransposed ? "yes" : "no")
               << std::endl;
 
-  file.get((char&)temp);
+  file->get((char&)temp);
   header.compressiontype = sfcc::compression_t(temp);
   if (sfc::sfcc_header::CompressionRequiresPaddingBits(
           header.compressiontype)) {
     std::uint8_t temp;
-    file.get((char&)temp);
+    file->get((char&)temp);
     header.npaddingbits = temp;
   }
 
@@ -95,14 +96,24 @@ sfcc_file::sfcc_file(const std::string& filename) : _data(nullptr)
   file_size -= _header.size();
   _data_size = file_size;
 
-  _data = std::make_unique<std::uint8_t[]>(_data_size);
-  auto i = 1ULL;
-  file.read((char*)_data.get(), _data_size);
-  auto [min, max] =
-      std::minmax_element((std::uint16_t*)_data.get(),
-                          (std::uint16_t*)_data.get() + (_data_size / 2));
+  _data = std::async(
+      [this](auto file, auto data_size) {
+        return this->loadData(file, data_size);
+      },
+      file, _data_size);
+  // auto [min, max] =
+  //     std::minmax_element((std::uint16_t*)_data.get(),
+  //                         (std::uint16_t*)_data.get() + (_data_size / 2));
   // delete[] magic_header;
   if (::sfc::DEBUG) std::cout << "Finished opening " << filename << std::endl;
+}
+
+std::unique_ptr<std::uint8_t[]> sfcc_file::loadData(
+    std::shared_ptr<std::ifstream> file, unsigned long long data_size)
+{
+  auto tmp = std::make_unique<std::uint8_t[]>(data_size);
+  file->read((char*)tmp.get(), data_size);
+  return std::move(tmp);
 }
 
 // sfcc_file::~sfcc_file() {}
