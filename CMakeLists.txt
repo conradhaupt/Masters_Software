@@ -14,7 +14,8 @@ endif()
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(BUILD_SHARED_LIBS OFF)
+option(BUILD_SHARED_LIBS "Build libraries as shared/dynamic" OFF)
+option(BENCHMARK_ENABLE_TESTING "Enable testing for Google Benchmark library" OFF)
 
 # Git submodules
 find_package(Git REQUIRED)
