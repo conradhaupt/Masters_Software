@@ -9,8 +9,8 @@ download_project(
   https://github.com/google/benchmark.git
   GIT_TAG
   master
-  UPDATE_DISCONNECTED
-  ON)
+  UPDATE_DISCONNECTED ON
+  BENCHMARK_ENABLE_TESTING OFF)
 
 # Prevent GoogleTest from overriding our compiler/linker options when building
 # with Visual Studio

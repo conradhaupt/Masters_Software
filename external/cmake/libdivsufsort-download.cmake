@@ -7,4 +7,5 @@ download_project(PROJ libdivsufsort
                  GIT_TAG master
                  UPDATE_DISCONNECTED ON
                  CMAKE_ARGS "-DBUILD_SHARED_LIBS=OFF"
+                 BUILD_SHARED_LIBS OFF
                  )
