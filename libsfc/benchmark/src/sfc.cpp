@@ -62,7 +62,7 @@ static void BM_Hilbert_2_Forward(benchmark::State& state)
 {
   const auto sidelength = state.range(0);
   const auto max_dist = (sidelength * sidelength);
-  auto hilbert = sfc::hilbert(sidelength);
+  auto hilbert = sfc::hilbert<2>(sidelength);
   for (auto _ : state) {
     state.PauseTiming();
     sfc::hilbert<2>::dist_type dist = rand() % max_dist;
@@ -125,7 +125,7 @@ BENCHMARK(BM_Gray_2_Reverse)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
 static void BM_Hilbert_2_Reverse(benchmark::State& state)
 {
   const unsigned long long sidelength = state.range(0);
-  auto hilbert = sfc::hilbert(sidelength);
+  auto hilbert = sfc::hilbert<2>(sidelength);
   for (auto _ : state) {
     state.PauseTiming();
     sfc::hilbert<2>::coords_type coords = {rand() % sidelength,
@@ -190,7 +190,7 @@ static void BM_Hilbert_3_Forward(benchmark::State& state)
 {
   const auto sidelength = state.range(0);
   const auto max_dist = (sidelength * sidelength * sidelength);
-  auto hilbert = sfc::hilbert(sidelength);
+  auto hilbert = sfc::hilbert<3>(sidelength);
   for (auto _ : state) {
     state.PauseTiming();
     sfc::hilbert<3>::dist_type dist = rand() % max_dist;
@@ -253,7 +253,7 @@ BENCHMARK(BM_Gray_3_Reverse)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
 static void BM_Hilbert_3_Reverse(benchmark::State& state)
 {
   const unsigned long long sidelength = state.range(0);
-  auto hilbert = sfc::hilbert(sidelength);
+  auto hilbert = sfc::hilbert<3>(sidelength);
   for (auto _ : state) {
     state.PauseTiming();
     sfc::hilbert<3>::coords_type coords = {
