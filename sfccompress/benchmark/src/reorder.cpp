@@ -270,7 +270,7 @@ static void BM_Reorder_Raster_3(benchmark::State& state)
                           sizeof(std::uint16_t));
 }
 
-BENCHMARK(BM_Reorder_Raster_3)->RangeMultiplier(2)->Range(1 << 8, 1 << 9);
+BENCHMARK(BM_Reorder_Raster_3)->RangeMultiplier(2)->Range(1 << 5, 1 << 9);
 
 static void BM_Reorder_Morton_3(benchmark::State& state)
 {
@@ -298,7 +298,7 @@ static void BM_Reorder_Morton_3(benchmark::State& state)
                           sizeof(std::uint16_t));
 }
 
-BENCHMARK(BM_Reorder_Morton_3)->RangeMultiplier(2)->Range(1 << 8, 1 << 9);
+BENCHMARK(BM_Reorder_Morton_3)->RangeMultiplier(2)->Range(1 << 5, 1 << 9);
 
 static void BM_Reorder_Gray_3(benchmark::State& state)
 {
@@ -326,7 +326,7 @@ static void BM_Reorder_Gray_3(benchmark::State& state)
                           sizeof(std::uint16_t));
 }
 
-BENCHMARK(BM_Reorder_Gray_3)->RangeMultiplier(2)->Range(1 << 8, 1 << 9);
+BENCHMARK(BM_Reorder_Gray_3)->RangeMultiplier(2)->Range(1 << 5, 1 << 9);
 
 static void BM_Reorder_Hilbert_3(benchmark::State& state)
 {
@@ -354,7 +354,7 @@ static void BM_Reorder_Hilbert_3(benchmark::State& state)
                           sizeof(std::uint16_t));
 }
 
-BENCHMARK(BM_Reorder_Hilbert_3)->RangeMultiplier(2)->Range(1 << 8, 1 << 9);
+BENCHMARK(BM_Reorder_Hilbert_3)->RangeMultiplier(2)->Range(1 << 5, 1 << 9);
 
 // Reverse reordering
 static void BM_Reorder_Raster_3_Reverse(benchmark::State& state)
@@ -385,7 +385,7 @@ static void BM_Reorder_Raster_3_Reverse(benchmark::State& state)
 
 BENCHMARK(BM_Reorder_Raster_3_Reverse)
     ->RangeMultiplier(2)
-    ->Range(1 << 8, 1 << 9);
+    ->Range(1 << 5, 1 << 9);
 
 static void BM_Reorder_Morton_3_Reverse(benchmark::State& state)
 {
@@ -415,7 +415,7 @@ static void BM_Reorder_Morton_3_Reverse(benchmark::State& state)
 
 BENCHMARK(BM_Reorder_Morton_3_Reverse)
     ->RangeMultiplier(2)
-    ->Range(1 << 8, 1 << 9);
+    ->Range(1 << 5, 1 << 9);
 
 static void BM_Reorder_Gray_3_Reverse(benchmark::State& state)
 {
@@ -445,7 +445,7 @@ static void BM_Reorder_Gray_3_Reverse(benchmark::State& state)
 
 BENCHMARK(BM_Reorder_Gray_3_Reverse)
     ->RangeMultiplier(2)
-    ->Range(1 << 8, 1 << 9);
+    ->Range(1 << 5, 1 << 9);
 
 static void BM_Reorder_Hilbert_3_Reverse(benchmark::State& state)
 {
@@ -475,4 +475,4 @@ static void BM_Reorder_Hilbert_3_Reverse(benchmark::State& state)
 
 BENCHMARK(BM_Reorder_Hilbert_3_Reverse)
     ->RangeMultiplier(2)
-    ->Range(1 << 8, 1 << 9);
+    ->Range(1 << 5, 1 << 9);
