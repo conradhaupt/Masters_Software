@@ -24,7 +24,7 @@ static void BM_Raster_2_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Raster_2_Forward)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Raster_2_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Morton_2_Forward(benchmark::State& state)
 {
@@ -40,7 +40,7 @@ static void BM_Morton_2_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Morton_2_Forward)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Morton_2_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Gray_2_Forward(benchmark::State& state)
 {
@@ -56,7 +56,7 @@ static void BM_Gray_2_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Gray_2_Forward)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Gray_2_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Hilbert_2_Forward(benchmark::State& state)
 {
@@ -72,7 +72,7 @@ static void BM_Hilbert_2_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Hilbert_2_Forward)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Hilbert_2_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Raster_2_Reverse(benchmark::State& state)
 {
@@ -88,7 +88,7 @@ static void BM_Raster_2_Reverse(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Raster_2_Reverse)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Raster_2_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Morton_2_Reverse(benchmark::State& state)
 {
@@ -104,7 +104,7 @@ static void BM_Morton_2_Reverse(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Morton_2_Reverse)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Morton_2_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Gray_2_Reverse(benchmark::State& state)
 {
@@ -120,7 +120,7 @@ static void BM_Gray_2_Reverse(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Gray_2_Reverse)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Gray_2_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Hilbert_2_Reverse(benchmark::State& state)
 {
@@ -135,7 +135,7 @@ static void BM_Hilbert_2_Reverse(benchmark::State& state)
   }
   state.SetItemsProcessed(state.iterations());
 }
-BENCHMARK(BM_Hilbert_2_Reverse)->RangeMultiplier(2)->Range(1 << 9, 1 << 12);
+BENCHMARK(BM_Hilbert_2_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 // Process forward and reverse mappings for all SFCs in three-dimensions
 static void BM_Raster_3_Forward(benchmark::State& state)
@@ -152,7 +152,7 @@ static void BM_Raster_3_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Raster_3_Forward)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Raster_3_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Morton_3_Forward(benchmark::State& state)
 {
@@ -168,7 +168,7 @@ static void BM_Morton_3_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Morton_3_Forward)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Morton_3_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Gray_3_Forward(benchmark::State& state)
 {
@@ -184,7 +184,7 @@ static void BM_Gray_3_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Gray_3_Forward)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Gray_3_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Hilbert_3_Forward(benchmark::State& state)
 {
@@ -200,7 +200,7 @@ static void BM_Hilbert_3_Forward(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Hilbert_3_Forward)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Hilbert_3_Forward)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Raster_3_Reverse(benchmark::State& state)
 {
@@ -216,7 +216,7 @@ static void BM_Raster_3_Reverse(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Raster_3_Reverse)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Raster_3_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Morton_3_Reverse(benchmark::State& state)
 {
@@ -232,7 +232,7 @@ static void BM_Morton_3_Reverse(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Morton_3_Reverse)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Morton_3_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Gray_3_Reverse(benchmark::State& state)
 {
@@ -248,7 +248,7 @@ static void BM_Gray_3_Reverse(benchmark::State& state)
   state.SetItemsProcessed(state.iterations());
 }
 
-BENCHMARK(BM_Gray_3_Reverse)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Gray_3_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
 
 static void BM_Hilbert_3_Reverse(benchmark::State& state)
 {
@@ -263,4 +263,4 @@ static void BM_Hilbert_3_Reverse(benchmark::State& state)
   }
   state.SetItemsProcessed(state.iterations());
 }
-BENCHMARK(BM_Hilbert_3_Reverse)->RangeMultiplier(2)->Range(1 << 4, 1 << 8);
+BENCHMARK(BM_Hilbert_3_Reverse)->RangeMultiplier(2)->Range(1 << 8, 1 << 12);
