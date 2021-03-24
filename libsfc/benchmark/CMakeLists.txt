@@ -16,3 +16,6 @@ target_link_libraries(sfc_benchmark PUBLIC libsfc)
 
 # Use google benchmark
 target_link_libraries(sfc_benchmark PUBLIC benchmark::benchmark)
+
+# Set optimization level
+target_compile_options(sfc_benchmark PRIVATE $<$<CXX_COMPILER_ID:GNU>:-O3>)
