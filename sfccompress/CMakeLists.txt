@@ -99,3 +99,6 @@ endif()
 
 # Add tests (unit)
 add_subdirectory(tests)
+
+# Add benchmarks
+add_subdirectory(benchmark)
